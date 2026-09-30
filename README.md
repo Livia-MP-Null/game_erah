@@ -1,5 +1,5 @@
-<h1 align="center">Ordo Calamitatis</h1>
-<h2 align="center">Sistema de Gerenciamento de Personagens</h2>
+<h1 align="center">Game erah</h1>
+<h2 align="center">Sistema sobre a evolução dos jogos</h2>
 <div align="center">
 
 ![HTML5](https://img.shields.io/badge/HTML5-E34F26?style=for-the-badge&logo=html5&logoColor=white) 
@@ -9,9 +9,88 @@
 ![PHP](https://img.shields.io/badge/PHP-777BB4?style=for-the-badge&logo=php&logoColor=white)
 ![CSS3](https://img.shields.io/badge/CSS3-1572B6?style=for-the-badge&logo=css3&logoColor=white)
 </div>
-### Site que mostra a evolução dos jogos:
-Será um programa feito em PHP feito para mostrar a evolução dos jogos. Ele foi criado para trazer um conhecimento de evolução da tecnologia em games, trazendo uma tela arrumada,facil e simples para os visitantes.
+
+É um programa feito em PHP feito para mostrar a evolução dos jogos. Ele foi criado para trazer um conhecimento de evolução da tecnologia em games, trazendo uma tela arrumada,facil e simples para os visitantes.
 A plataforma deixa você fazer as tarefas principais do dia a dia(se vc for um Adm), como cadastrar, ver a lista, mudar os dados e apagar os registros, usando o sistema de CRUD que funciona junto com um banco de dados PostgreSQL.
+
+---
+
+## 1 Como iniciar o projeto na sua máquina
+Para este trabalho rodar no seu computador, será necessário ter instalado um ambiente de servidor local  e o banco de dados PostgreSQL.
+
+### 2 Pré-Requisitos
+- 1 PHP (v7.4 no mínimo) habilitado com o pdo_pgsql.
+- 2 PostgreSQL instalado e a rodar na porta 5432.
+- 3 Ter o git instalado na máquina.
+---
+
+### 3 Instalação
+
+#### Passo 1: Clonar o Repositório no git hub
+Abra o *Git Bash*, e escreva: 
+```bash
+# Copie o reposítório de fora do GitHub
+git clone https://github.com/Livia-MP-Null/game_erah.git
+
+# Abra o arquivo clonado
+cd game_erah
+```
+---
+
+#### Passo 2: Configurar o Banco de Dados
+O projeto deve contar com um arquivo SQL dentro da pasta database, nela está toda as estrutura do Banco de Dados ultilizada pelo Backend. 
+
+Siga os passos descritos abaixo para para recriar o banco no seu PostgreSQL:
+
+1. Abra o Terminal 
+2. Conecte-se ao Postgres usando o usuário padrão 
+
+```bash
+psql -U postgres
+```
+3. Se já existir o banco de dados de algum teste anterior, delete-o e recrie a database, usando os comandos abaixo:
+```sql
+DROP DATABASE IF EXISTS game_erahdb; 
+CREATE DATABASE game_erahdb;
+```
+4. Crie um usuário do Postgres específico para gerenciar este Banco de Dados, ainda com o Postgres aberto, escreva os comandos:
+```sql
+CREATE USER game_erah WITH PASSWORD "*sua_senha*";
+ALTER DATABASE game_erahdb OWNER TO game_erah;
+\q
+```
+
+5. Após transferirmos o Banco de Dados para o usuário *game_erah*, abriremos a pasta *database*, e faça o seguinte comando para restaurar as tabelas e registros:
+```bash
+# Caso você não tenha aberto a pasta, faça:
+cd database
+# Usamos o arquivo já existente para recuperar as estruturas
+psql -U game_erah -h localhost -d game_erahdb -f dumpgame_erahdb.sql
+# Retornamos para a raiz
+cd ..
+```
+---
+#### Passo 3: Configurar a Conexão no PHP
+Pelo VSCode, abra o arquivo *connect.php* na pasta *database*, editando apenas um campo:
+```php
+$host = "localhost"; # Não altere esse campo
+$dbname = "game_erahdb"; # Não altere esse campo
+$user = "game_erah"; # Não altere esse campo
+$password = "INSIRA SUA SENHA AQUI"; # Altere apenas esse campo
+```
+---
+
+#### Passo 4: Acessar a Aplicação localmente
+Depois de seguir todos esse passos, você abrirá o terminal e fará os seguintes comandos:
+```bash
+# No caso de a raiz do projeto não estar aberta, use o comando:
+cd game_erah
+# Caso você deseje rodar a aplicação localmente, execute o comando:
+php -S localhost:8000 
+```
+Por fim, abra no seu navegador de preferencia, digite o URL *localhost:8000*, e aproveite a aplicação.
+
+---
 
 
 ## Requisitos funcionais

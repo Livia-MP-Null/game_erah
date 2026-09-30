@@ -13,7 +13,7 @@ require_once __DIR__ . '/../includes/verifica_user.php';
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <link rel="stylesheet" href="/game_erah/style/style.css">
+    <link rel="stylesheet" href="../style/style.css">
 
     <title>Relatório</title>
 
@@ -23,20 +23,18 @@ require_once __DIR__ . '/../includes/verifica_user.php';
 
     <?php include __DIR__ . '/../includes/header.php'; ?>
 
-    <h1>Relatório:</h1>
+
 
     <main>
-
+        <h1>Relatório:</h1>
         <?php
 
         if (isset($conexao) && $conexao !== null) {
 
             relatorio($conexao);
-
         } else {
 
             echo "<p>Sem conexão com o banco de dados para gerar o relatório.</p>";
-
         }
 
         ?>

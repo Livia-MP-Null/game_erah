@@ -1,0 +1,60 @@
+/* FOOTER */
+.rodape {
+    background: #1a0d0d;
+    text-align: center;
+    padding: 40px 20px;
+    margin: 20px;
+    border-radius: 20px;
+}
+
+.rodape h4 {
+    color: #fff;
+    margin-bottom: 20px;
+}
+
+.rodape-titulo {
+    font-size: 13px;
+    margin-bottom: 12px;
+}
+
+.newsletter {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    margin-bottom: 25px;
+}
+
+.newsletter input {
+    padding: 8px 12px;
+    border-radius: 5px;
+    border: 1px solid #555;
+    background: transparent;
+    color: #fff;
+}
+
+.newsletter button {
+    padding: 8px 18px;
+    border: none;
+    border-radius: 5px;
+    background: #e50914;
+    color: #fff;
+    cursor: pointer;
+}
+
+.rodape-links {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 25px;
+    font-size: 12px;
+    margin-bottom: 15px;
+}
+
+.rodape-links a:hover {
+    color: #ff8c00;
+}
+
+.rodape-copy {
+    font-size: 11px;
+    color: #888;
+}

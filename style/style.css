@@ -1,0 +1,536 @@
+/* ========================================
+   BASE
+   ======================================== */
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Arial, Helvetica, sans-serif;
+    background: #000;
+    color: #fff;
+}
+
+a {
+    text-decoration: none;
+    color: inherit;
+}
+
+
+/* ========================================
+   HEADER
+   ======================================== */
+
+.topo {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: 10;
+}
+
+.navbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 10px;
+    padding: 15px 40px;
+}
+
+.logo {
+    font-weight: bold;
+    font-size: 20px;
+    color: #ff8c00;
+}
+
+.menu,
+.login {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 18px;
+}
+
+.menu a:hover {
+    color: #ff8c00;
+}
+
+.btn-laranja {
+    background: #ff8c00;
+    padding: 8px 18px;
+    border-radius: 20px;
+}
+
+.btn-contorno {
+    border: 1px solid #fff;
+    padding: 8px 18px;
+    border-radius: 20px;
+}
+
+.btn-laranja:hover,
+.btn-contorno:hover {
+    opacity: 0.8;
+}
+
+
+/* ========================================
+   HERO
+   ======================================== */
+
+.hero {
+    min-height: 500px;
+    display: flex;
+    align-items: flex-end;
+    padding: 40px;
+
+    background:
+        linear-gradient(to top, #000 5%, rgba(0, 0, 0, 0.3) 70%),
+        url("/game_erah/img/hero.jpg") center / cover no-repeat,
+        #2a1000;
+}
+
+.hero-conteudo {
+    max-width: 600px;
+}
+
+.hero h1 {
+    font-size: 44px;
+    line-height: 1.2;
+    margin-bottom: 15px;
+}
+
+.hero h1 span {
+    color: #ff8c00;
+}
+
+.hero p {
+    font-size: 14px;
+    margin-bottom: 8px;
+}
+
+.hero .boas-vindas {
+    color: #bbb;
+    font-size: 13px;
+}
+
+
+/* ========================================
+   OBJETIVO
+   ======================================== */
+
+.objetivo {
+    text-align: center;
+    padding: 60px 20px 30px;
+}
+
+.objetivo h2 {
+    color: #ff8c00;
+    margin-bottom: 15px;
+}
+
+.objetivo p {
+    max-width: 650px;
+    margin: 0 auto;
+    color: #ccc;
+    font-size: 14px;
+    line-height: 1.6;
+}
+
+
+/* ========================================
+   PILARES
+   ======================================== */
+
+.pilares {
+    text-align: center;
+    padding: 40px 20px 60px;
+}
+
+.pilares h2 {
+    color: #ff8c00;
+    font-size: 18px;
+    margin-bottom: 40px;
+}
+
+.pilares-lista {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 25px;
+}
+
+.card {
+    width: 260px;
+    padding: 30px 20px;
+    border-radius: 10px;
+    position: relative;
+}
+
+.card h3 {
+    margin: 30px 0 12px;
+    font-size: 16px;
+}
+
+.card p {
+    font-size: 13px;
+    line-height: 1.5;
+}
+
+.icone {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 22px;
+    position: absolute;
+    top: -25px;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+
+/* Cores dos cards */
+
+.card-vermelho {
+    background: #5a0a0a;
+}
+
+.card-vermelho .icone {
+    background: #e53935;
+}
+
+.card-laranja {
+    background: #5a3300;
+}
+
+.card-laranja .icone {
+    background: #ff8c00;
+}
+
+.card-amarelo {
+    background: #5a4800;
+}
+
+.card-amarelo .icone {
+    background: #fbc02d;
+}
+
+
+/* ========================================
+   SOBRE
+   ======================================== */
+
+.sobre {
+    text-align: center;
+    padding: 40px 20px 60px;
+}
+
+.sobre h2 {
+    color: #ff5a1f;
+    margin-bottom: 15px;
+}
+
+.sobre p {
+    max-width: 650px;
+    margin: 0 auto;
+    color: #888;
+    font-size: 14px;
+    line-height: 1.6;
+}
+
+
+/* ========================================
+   GALERIA
+   ======================================== */
+
+.galeria {
+    position: relative;
+}
+
+.galeria-faixa {
+    display: flex;
+    height: 350px;
+}
+
+.galeria-faixa img {
+    flex: 1;
+    min-width: 0;
+    height: 100%;
+    object-fit: cover;
+    background: #333;
+}
+
+.galeria-botao {
+    position: absolute;
+    right: 20px;
+    bottom: 20px;
+    background: #ff8c00;
+    padding: 10px 20px;
+    border-radius: 20px;
+    font-size: 13px;
+}
+
+.galeria-botao:hover {
+    opacity: 0.85;
+}
+
+
+/* ========================================
+   FOOTER
+   ======================================== */
+
+.rodape {
+    background: #1a0d0d;
+    text-align: center;
+    padding: 40px 20px;
+    margin: 20px;
+    border-radius: 20px;
+}
+
+.rodape h4 {
+    color: #fff;
+    margin-bottom: 20px;
+}
+
+.rodape-titulo {
+    font-size: 13px;
+    margin-bottom: 12px;
+}
+
+.newsletter {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    margin-bottom: 25px;
+}
+
+.newsletter input {
+    padding: 8px 12px;
+    border-radius: 5px;
+    border: 1px solid #555;
+    background: transparent;
+    color: #fff;
+}
+
+.newsletter button {
+    padding: 8px 18px;
+    border: none;
+    border-radius: 5px;
+    background: #e50914;
+    color: #fff;
+    cursor: pointer;
+}
+
+.rodape-links {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 25px;
+    font-size: 12px;
+    margin-bottom: 15px;
+}
+
+.rodape-links a:hover {
+    color: #ff8c00;
+}
+
+.rodape-copy {
+    font-size: 11px;
+    color: #888;
+}
+
+
+/* ========================================
+   RESPONSIVIDADE
+   ======================================== */
+
+@media (max-width: 600px) {
+
+    .galeria-faixa {
+        height: 220px;
+    }
+
+}
+
+/* ========================================
+   PÁGINAS DE USUÁRIOS
+   ======================================== */
+
+main {
+    padding: 40px 20px;
+}
+
+main h1 {
+    text-align: center;
+    color: #ff8c00;
+    margin-bottom: 30px;
+    font-size: 28px;
+}
+
+
+/* ========================================
+   FORMULÁRIO
+   ======================================== */
+
+main form {
+    width: 90%;
+    max-width: 500px;
+    margin: 0 auto 25px;
+    padding: 30px;
+    background: #1a0d0d;
+    border-radius: 15px;
+    border: 1px solid #333;
+}
+
+
+/* Labels */
+
+main form label {
+    display: block;
+    color: #fff;
+    margin-bottom: 8px;
+    font-size: 14px;
+}
+
+
+/* Campos */
+
+main form input[type="text"],
+main form input[type="number"],
+main form input[type="password"],
+main form input[type="email"],
+main form input[type="date"] {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 18px;
+
+    background: #000;
+    color: #fff;
+
+    border: 1px solid #555;
+    border-radius: 6px;
+
+    outline: none;
+}
+
+
+/* Campo selecionado */
+
+main form input[type="text"]:focus,
+main form input[type="number"]:focus,
+main form input[type="password"]:focus,
+main form input[type="email"]:focus,
+main form input[type="date"]:focus {
+    border-color: #ff8c00;
+}
+
+
+/* ========================================
+   BOTÕES
+   ======================================== */
+
+main form input[type="submit"],
+main form input[type="reset"] {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 20px;
+    cursor: pointer;
+    font-size: 14px;
+}
+
+
+main form input[type="submit"] {
+    background: #ff8c00;
+    color: #fff;
+}
+
+
+main form input[type="reset"] {
+    background: #555;
+    color: #fff;
+    margin-left: 8px;
+}
+
+
+main form input[type="submit"]:hover,
+main form input[type="reset"]:hover {
+    opacity: 0.8;
+}
+
+
+/* ========================================
+   LINK "CONSULTA DB"
+   ======================================== */
+
+main > a {
+    display: block;
+    width: fit-content;
+    margin: 15px auto;
+    color: #ff8c00;
+    font-size: 14px;
+}
+
+
+main > a:hover {
+    color: #fff;
+}
+
+
+/* ========================================
+   FORMULÁRIO DE ATUALIZAÇÃO
+   ======================================== */
+
+.meu-formulario .campo {
+    margin-bottom: 5px;
+}
+
+
+.meu-formulario .campo label {
+    display: block;
+}
+
+
+.meu-formulario .botoes {
+    margin-top: 10px;
+    text-align: center;
+}
+
+
+/* ========================================
+   RELATÓRIO
+   ======================================== */
+
+main p {
+    max-width: 700px;
+    margin: 20px auto;
+    color: #ccc;
+    line-height: 1.6;
+}
+
+
+/* ========================================
+   CELULAR
+   ======================================== */
+
+@media (max-width: 600px) {
+
+    main {
+        padding: 30px 10px;
+    }
+
+    main h1 {
+        font-size: 23px;
+    }
+
+    main form {
+        width: 100%;
+        padding: 20px;
+    }
+
+}

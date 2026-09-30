@@ -11,6 +11,7 @@ require_once __DIR__ . '/../includes/verifica_user.php';
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../style/style.css">
     <title>Atualizar</title>
 </head>
 
@@ -18,7 +19,6 @@ require_once __DIR__ . '/../includes/verifica_user.php';
 
     <?php include __DIR__ . '/../includes/header.php'; ?>
 
-    <h1>Atualizar:</h1>
 
     <main>
 

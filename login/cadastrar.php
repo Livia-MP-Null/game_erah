@@ -1,29 +1,7 @@
 <?php
 
+require_once __DIR__ . '/../database/conect.php';
 require_once __DIR__ . '/../includes/functions.php';
-
-if ($_SERVER['REQUEST_METHOD'] == "POST") {
-
-    $nome = $_POST['nome'];
-    $email = $_POST['email'];
-    $senha = $_POST['senha'];
-    $nasc = $_POST['nasc'];
-    $ativo = $_POST['ativo'] === 'true' ? 1 : 0;
-
-    $cadastro = cadastrar_user(
-        $conexao,
-        $nome,
-        $email,
-        $senha,
-        $nasc,
-        $ativo
-    );
-
-    if ($cadastro) {
-        header("Location: ../login/login.php");
-        exit();
-    }
-}
 
 ?>
 
@@ -33,66 +11,107 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Cadastre-se</title>
+    <title>Cadastrar</title>
+    <link rel="stylesheet" href="../style/auth.css">
 </head>
 
-<body>
+<body class="auth-body">
 
-    <?php include __DIR__ . '/../includes/header.php'; ?>
+    <div class="auth">
 
-    <h1>Registre-se no sistema:</h1>
+        <div class="auth-imagem cadastro"></div>
 
-    <hr>
+        <main class="auth-painel">
+            <div class="auth-caixa">
 
-    <main>
+                <h1 class="auth-titulo">Bem vindo(a) ao gameverah!</h1>
 
-        <form action="" method="POST">
+                <nav class="auth-abas">
+                    <a href="login.php">Login</a>
+                    <a href="cadastrar.php" class="ativa">Cadastrar</a>
+                </nav>
 
-            <label for="nome">Nome:</label>
-            <input type="text" name="nome" id="nome" required>
+                <form class="auth-form" action="" method="post">
 
-            <br>
+                    <label for="email">E-mail</label>
+                    <input
+                        type="email"
+                        name="email"
+                        id="email"
+                        placeholder="Digite seu e-mail"
+                        required>
 
-            <label for="email">E-mail:</label>
-            <input type="email" name="email" id="email" required>
+                    <label for="nome">Nome de usuário</label>
+                    <input
+                        type="text"
+                        name="nome"
+                        id="nome"
+                        placeholder="Digite seu nome de usuário"
+                        required>
 
-            <br>
+                    <label for="nasc">Nascimento</label>
+                    <input
+                        type="date"
+                        name="nasc"
+                        id="nasc"
+                        required>
 
-            <label for="senha">Senha:</label>
-            <input type="password" name="senha" id="senha" required>
+                    <label for="senha">Senha</label>
+                    <div class="campo-senha">
+                        <input
+                            type="password"
+                            name="senha"
+                            id="senha"
+                            placeholder="Digite sua senha"
+                            required>
+                        <button type="button" class="ver-senha" aria-label="Mostrar senha">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M1 12s4-7 11-7 11 7 11 7-4 7-11 7S1 12 1 12z" />
+                                <circle cx="12" cy="12" r="3" />
+                            </svg>
+                        </button>
+                    </div>
 
-            <br>
+                    <div class="auth-acoes">
+                        <button type="submit" class="auth-botao">Cadastrar</button>
+                    </div>
 
-            <label for="nasc">Nascimento:</label>
-            <input type="date" name="nasc" id="nasc" required>
+                </form>
 
-            <br>
+                <?php
 
-            <label>Ativo:</label>
+                // Só roda quando o formulário for enviado
+                if ($_SERVER['REQUEST_METHOD'] == "POST") {
 
-            <input type="radio" name="ativo" id="ativo-sim" value="true" checked>
-            <label for="ativo-sim">Sim</label>
+                    $name = $_POST['nome'];
+                    $nasc = $_POST['nasc'];
+                    $senha = $_POST['senha'];
+                    $email = $_POST['email'];
 
-            <input type="radio" name="ativo" id="ativo-nao" value="false">
-            <label for="ativo-nao">Não</label>
+                    // O campo "Ativo" saiu da tela: todo novo usuário entra como ativo (1)
+                    $ativo = 1;
 
-            <br><br>
+                    cadastrar($conexao, $name, $nasc, $senha, $email, $ativo);
+                }
 
-            <input type="reset" value="Limpar">
-            <input type="submit" value="Enviar">
+                ?>
 
-        </form>
+            </div>
+        </main>
 
-        <p>
-            Já tem cadastro?
-            <a href="./login.php">Entre aqui</a>
-        </p>
+    </div>
 
-    </main>
-
-    <hr>
-
-    <?php include __DIR__ . '/../includes/footer.php'; ?>
+    <script>
+        // Mostra / esconde a senha ao clicar no olhinho
+        document.querySelectorAll('.ver-senha').forEach(function (botao) {
+            botao.addEventListener('click', function () {
+                var campo = botao.parentElement.querySelector('input');
+                var mostrando = campo.type === 'text';
+                campo.type = mostrando ? 'password' : 'text';
+                botao.setAttribute('aria-label', mostrando ? 'Mostrar senha' : 'Esconder senha');
+            });
+        });
+    </script>
 
 </body>
 

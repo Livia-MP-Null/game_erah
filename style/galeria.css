@@ -1,0 +1,37 @@
+/* GALERIA */
+.galeria {
+    position: relative;
+}
+
+.galeria-faixa {
+    display: flex;
+    height: 350px;
+}
+
+.galeria-faixa img {
+    flex: 1;
+    min-width: 0;
+    height: 100%;
+    object-fit: cover;
+    background: #333;          /* aparece se a imagem não existir */
+}
+
+.galeria-botao {
+    position: absolute;
+    right: 20px;
+    bottom: 20px;
+    background: #ff8c00;
+    padding: 10px 20px;
+    border-radius: 20px;
+    font-size: 13px;
+}
+
+.galeria-botao:hover {
+    opacity: 0.85;
+}
+
+@media (max-width: 600px) {
+    .galeria-faixa {
+        height: 220px;
+    }
+}

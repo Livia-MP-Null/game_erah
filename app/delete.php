@@ -10,14 +10,15 @@ require_once __DIR__ . '/../includes/verifica_user.php';
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../style/style.css">
     <title>Deleta User</title>
 </head>
 
 <body>
-    <h1>Página para apagar o usuário:</h1>
+    
     <?php include __DIR__ . '/../includes/header.php'; ?>
-
     <main>
+        <h1>Página para apagar o usuário:</h1>
         <form action="" method="post">
             <label for="id" style="color: white;">ID: </label>
             <input type="number" name="id" id="id">

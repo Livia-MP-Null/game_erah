@@ -11,6 +11,7 @@ require_once __DIR__ . '/../includes/verifica_user.php';
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../style/style.css">
     <title>Cadastrar</title>
 </head>
 
@@ -20,25 +21,21 @@ require_once __DIR__ . '/../includes/verifica_user.php';
 
     <main>
 
-        <h1>Cadastro de aluno:</h1>
+        <h1>Cadastro de usuário:</h1>
 
         <form action="" method="post">
 
             <label for="nome">Nome:</label>
             <input type="text" name="nome" id="nome">
-            <br>
 
             <label for="senha">Senha:</label>
             <input type="password" name="senha" id="senha">
-            <br>
 
             <label for="email">E-mail:</label>
             <input type="email" name="email" id="email">
-            <br>
 
             <label for="nasc">Nascimento:</label>
             <input type="date" name="nasc" id="nasc">
-            <br>
 
             <label>Ativo:</label>
 
@@ -48,7 +45,6 @@ require_once __DIR__ . '/../includes/verifica_user.php';
             <input type="radio" name="ativo" id="ativo_nao" value="false">
             <label for="ativo_nao">Não</label>
 
-            <br>
 
             <input type="submit" value="Cadastrar">
             <input type="reset" value="Limpar">

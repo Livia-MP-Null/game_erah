@@ -1,0 +1,52 @@
+/* HEADER */
+.topo {
+    position: absolute;      /* fica por cima da imagem do hero */
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: 10;
+}
+
+.navbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 10px;
+    padding: 15px 40px;
+}
+
+.logo {
+    font-weight: bold;
+    font-size: 20px;
+    color: #ff8c00;
+}
+
+.menu,
+.login {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 18px;
+}
+
+.menu a:hover {
+    color: #ff8c00;
+}
+
+.btn-laranja {
+    background: #ff8c00;
+    padding: 8px 18px;
+    border-radius: 20px;
+}
+
+.btn-contorno {
+    border: 1px solid #fff;
+    padding: 8px 18px;
+    border-radius: 20px;
+}
+
+.btn-laranja:hover,
+.btn-contorno:hover {
+    opacity: 0.8;
+}

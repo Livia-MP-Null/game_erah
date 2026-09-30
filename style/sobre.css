@@ -1,0 +1,18 @@
+/* O QUE É */
+.sobre {
+    text-align: center;
+    padding: 40px 20px 60px;
+}
+
+.sobre h2 {
+    color: #ff5a1f;
+    margin-bottom: 15px;
+}
+
+.sobre p {
+    max-width: 650px;
+    margin: 0 auto;
+    color: #888;
+    font-size: 14px;
+    line-height: 1.6;
+}

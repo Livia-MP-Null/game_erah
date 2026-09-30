@@ -1,5 +1,14 @@
-# Game.erah:
-## O que é:
+<h1 align="center">Ordo Calamitatis</h1>
+<h2 align="center">Sistema de Gerenciamento de Personagens</h2>
+<div align="center">
+
+![HTML5](https://img.shields.io/badge/HTML5-E34F26?style=for-the-badge&logo=html5&logoColor=white) 
+![Git](https://img.shields.io/badge/GIT-E44C30?style=for-the-badge&logo=git&logoColor=white) 
+![Figma](https://img.shields.io/badge/Figma-696969?style=for-the-badge&logo=figma&logoColor=figma) 
+![PostgreSQL](https://img.shields.io/badge/PostgreSQL-000?style=for-the-badge&logo=postgresql) 
+![PHP](https://img.shields.io/badge/PHP-777BB4?style=for-the-badge&logo=php&logoColor=white)
+![CSS3](https://img.shields.io/badge/CSS3-1572B6?style=for-the-badge&logo=css3&logoColor=white)
+</div>
 ### Site que mostra a evolução dos jogos:
 Será um programa feito em PHP feito para mostrar a evolução dos jogos. Ele foi criado para trazer um conhecimento de evolução da tecnologia em games, trazendo uma tela arrumada,facil e simples para os visitantes.
 A plataforma deixa você fazer as tarefas principais do dia a dia(se vc for um Adm), como cadastrar, ver a lista, mudar os dados e apagar os registros, usando o sistema de CRUD que funciona junto com um banco de dados PostgreSQL.

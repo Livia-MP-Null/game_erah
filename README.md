@@ -393,35 +393,6 @@ erDiagram
     JOGO      ||--o{ COMENTARIO : "recebe"
 ```
 
-### Fluxo de navegação
-
-```mermaid
-flowchart TD
-    A([Entrar no site]) --> B[Página inicial]
-    B --> C[Escolher uma década]
-    C --> D[Filtrar por categoria]
-    D --> E[Abrir a ficha do jogo]
-    B --> S[Buscar pelo nome]
-    S --> E
-
-    E --> F{Quer favoritar ou comentar?}
-    F -->|Não| Z([Fim])
-    F -->|Sim| G{Está logado?}
-    G -->|Não| H[Login ou cadastro]
-    H --> I{Dados válidos?}
-    I -->|Não| H
-    I -->|Sim| J[Favoritar ou comentar]
-    G -->|Sim| J
-    J --> Z
-
-    B --> K{É administrador?}
-    K -->|Sim| L[Painel administrativo]
-    L --> M[Cadastrar, editar ou remover jogos, usuários, décadas e categorias]
-    M --> Z
-    K -->|Não| Z
-```
-
----
 
 ##  Protótipos
 

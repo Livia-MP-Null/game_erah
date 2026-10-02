@@ -345,8 +345,6 @@ erDiagram
         varchar nome
         varchar email "Único"
         text senha
-        varchar tipo
-        boolean ativo
     }
     DECADA {
         int id PK
@@ -366,17 +364,18 @@ erDiagram
         text descricao
         varchar imagem
         int decada_id FK
+        CONSTRAINT fk_jogo_decada FK
     }
     FAVORITO {
         int usuario_id FK
         int jogo_id FK
     }
     COMENTARIO {
-        int id PK
+         int id PK
         int usuario_id FK
         int jogo_id FK
-        text texto
-        timestamp criado_em
+        CONSTRAINT fk_favorito_usuario FK
+        CONSTRAINT fk_favorito_jogo FK
     }
 
     DECADA    ||--o{ JOGO       : "reúne"

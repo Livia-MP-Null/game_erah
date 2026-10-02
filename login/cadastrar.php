@@ -14,7 +14,6 @@ require_once __DIR__ . '/../includes/functions.php';
     <title>Cadastrar</title>
     <link rel="stylesheet" href="../style/auth.css">
 </head>
-
 <body class="auth-body">
 
     <div class="auth">

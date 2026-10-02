@@ -168,13 +168,13 @@ cd game_erah
 php -S localhost:8000
 ```
 
-Pronto! Abra **http://localhost:8000** no navegador e aproveite. 🎉
+Pronto! Abra **http://localhost:8000** no navegador e aproveite. 
 
 </details>
 
 ---
 
-## 🗂️ Estrutura de pastas
+## Estrutura de pastas
 
 ```
 game_erah
@@ -328,7 +328,7 @@ game_erah
 | texto      | TEXT      | NOT NULL          | Conteúdo do comentário      |
 | criado_em  | TIMESTAMP | DEFAULT now()   | Data e hora do comentário   |
 
-## 🧭 Diagramas
+##  Diagramas
 
 ### Modelo Entidade-Relacionamento
 

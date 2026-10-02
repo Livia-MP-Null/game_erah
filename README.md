@@ -1,4 +1,4 @@
-a<div align="center">
+<div align="center">
 
 # Game Erah
 
@@ -168,13 +168,13 @@ cd game_erah
 php -S localhost:8000
 ```
 
-Pronto! Abra **http://localhost:8000** no navegador e aproveite. 
+Pronto! Abra **http://localhost:8000** no navegador e aproveite. 🎉
 
 </details>
 
 ---
 
-## Estrutura de pastas
+## 🗂️ Estrutura de pastas
 
 ```
 game_erah
@@ -266,11 +266,11 @@ game_erah
 | Campo   | Tipo         | Restrições                | Descrição                |
 | ------- | ------------ | ------------------------- | ------------------------ |
 | id    | SERIAL       | PRIMARY KEY               | Identificador do usuário |
-| nome  | VARCHAR(100) | NOT NULL                  | Nome do usuário          |
+| nome | VARCHAR(100) | NOT NULL                  | Nome do usuário          |
 | email | VARCHAR(255) | UNIQUE, NOT NULL          | E-mail para login        |
 | senha | TEXT         | NOT NULL                  | Senha criptografada      |
-| tipo  | VARCHAR(10)  | NOT NULL, DEFAULT comum | Tipo do usuário          |
-| ativo | BOOLEAN      | NOT NULL, DEFAULT true  | Estado do usuário        |
+| tipo  | VARCHAR(10)  | NOT NULL, DEFAULT `comum` | Tipo do usuário          |
+| ativo | BOOLEAN      | NOT NULL, DEFAULT `true`  | Estado do usuário        |
 
 ## `decada`
 
@@ -297,38 +297,38 @@ game_erah
 | desenvolvedora | VARCHAR(100) | —                         | Empresa que criou o jogo |
 | plataformas    | VARCHAR(200) | —                         | Plataformas do jogo      |
 | descricao      | TEXT         | —                         | Descrição do jogo        |
-| imagem         | VARCHAR(255) | —                         | Caminho da imagem        |
-| decada_id      | INT          | FOREIGN KEY → decada.id | Década do jogo           |
+| imagem        | VARCHAR(255) | —                         | Caminho da imagem        |
+| decada_id     | INT          | FOREIGN KEY → `decada.id` | Década do jogo           |
 
-## `jogo_categoria`
+## ` jogo_categoria`
 
 | Campo          | Tipo | Restrições          | Descrição             |
 | -------------- | ---- | ------------------- | --------------------- |
 | jogo_id      | INT  | FK → jogo.id      | Jogo relacionado      |
 | categoria_id | INT  | FK → categoria.id | Categoria relacionada |
 
-**Chave primária:** (jogo_id, wcategoria_id)
+**Chave primária:** (jogo_id, categoria_id)
 
 ## `favorito`
 
 | Campo        | Tipo | Restrições        | Descrição             |
 | ------------ | ---- | ----------------- | --------------------- |
 | usuario_id | INT  | FK → usuario.id | Usuário que favoritou |
-| jogo_id    | INT  | FK → jogo.id    | Jogo favoritado       |
+| jogo_id   | INT  | FK → jogo.id    | Jogo favoritado       |
 
-**Chave primária:** (usuario_id, jogo_id)
+**Chave primária:** (`usuario_id, jogo_id)
 
 ## `comentario`
 
 | Campo        | Tipo      | Restrições        | Descrição                   |
 | ------------ | --------- | ----------------- | --------------------------- |
 | id         | SERIAL    | PRIMARY KEY       | Identificador do comentário |
-| usuario_id | INT       | FK → usuario.id | Autor do comentário         |
-| jogo_id    | INT       | FK → jogo.id    | Jogo comentado              |
-| texto      | TEXT      | NOT NULL          | Conteúdo do comentário      |
-| criado_em  | TIMESTAMP | DEFAULT now()   | Data e hora do comentário   |
+| usuario_id | INT       | FK → | Autor do comentário         |
+| jogo_id   | INT       | FK → jogo.id    | Jogo comentado              |
+| texto     | TEXT      | NOT NULL          | Conteúdo do comentário      |
+| criado_em  | TIMESTAMP | DEFAULT   | Data e hora do comentário   |
 
-##  Diagramas
+## 🧭 Diagramas
 
 ### Modelo Entidade-Relacionamento
 
@@ -383,7 +383,8 @@ erDiagram
 
 ##  Protótipos
 
-**Baixa fidelidade:** _em breve_
+**Baixa fidelidade:** <img width="5803" height="6475" alt="image" src="https://github.com/user-attachments/assets/a2b2e8d0-edf6-4eeb-97c6-efb1666c8523" />
+
 
 **Alta fidelidade:** [Clique aqui para ver no Figma](https://www.figma.com/design/ADrwIyHNxIPXHmH4bonXNR/E-Learning-Site--Community-?node-id=0-1&t=kyFfQaBdBLAscwWi-1)
 

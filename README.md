@@ -1,4 +1,4 @@
-<div align="center">
+a<div align="center">
 
 # Game Erah
 
@@ -265,68 +265,68 @@ game_erah
 
 | Campo   | Tipo         | Restrições                | Descrição                |
 | ------- | ------------ | ------------------------- | ------------------------ |
-| `id`    | SERIAL       | PRIMARY KEY               | Identificador do usuário |
-| `nome`  | VARCHAR(100) | NOT NULL                  | Nome do usuário          |
-| `email` | VARCHAR(255) | UNIQUE, NOT NULL          | E-mail para login        |
-| `senha` | TEXT         | NOT NULL                  | Senha criptografada      |
-| `tipo`  | VARCHAR(10)  | NOT NULL, DEFAULT `comum` | Tipo do usuário          |
-| `ativo` | BOOLEAN      | NOT NULL, DEFAULT `true`  | Estado do usuário        |
+| id    | SERIAL       | PRIMARY KEY               | Identificador do usuário |
+| nome  | VARCHAR(100) | NOT NULL                  | Nome do usuário          |
+| email | VARCHAR(255) | UNIQUE, NOT NULL          | E-mail para login        |
+| senha | TEXT         | NOT NULL                  | Senha criptografada      |
+| tipo  | VARCHAR(10)  | NOT NULL, DEFAULT comum | Tipo do usuário          |
+| ativo | BOOLEAN      | NOT NULL, DEFAULT true  | Estado do usuário        |
 
 ## `decada`
 
 | Campo        | Tipo        | Restrições       | Descrição               |
 | ------------ | ----------- | ---------------- | ----------------------- |
-| `id`         | SERIAL      | PRIMARY KEY      | Identificador da década |
-| `nome`       | VARCHAR(50) | UNIQUE, NOT NULL | Nome da década          |
-| `ano_inicio` | INT         | NOT NULL         | Ano inicial da década   |
+| id         | SERIAL      | PRIMARY KEY      | Identificador da década |
+| nome       | VARCHAR(50) | UNIQUE, NOT NULL | Nome da década          |
+| ano_inicio | INT         | NOT NULL         | Ano inicial da década   |
 
 ## `categoria`
 
 | Campo  | Tipo        | Restrições       | Descrição                  |
 | ------ | ----------- | ---------------- | -------------------------- |
-| `id`   | SERIAL      | PRIMARY KEY      | Identificador da categoria |
-| `nome` | VARCHAR(60) | UNIQUE, NOT NULL | Nome da categoria          |
+| id   | SERIAL      | PRIMARY KEY      | Identificador da categoria |
+| nome | VARCHAR(60) | UNIQUE, NOT NULL | Nome da categoria          |
 
 ## `jogo`
 
 | Campo            | Tipo         | Restrições                | Descrição                |
 | ---------------- | ------------ | ------------------------- | ------------------------ |
-| `id`             | SERIAL       | PRIMARY KEY               | Identificador do jogo    |
-| `titulo`         | VARCHAR(150) | NOT NULL                  | Nome do jogo             |
-| `ano_lancamento` | INT          | NOT NULL                  | Ano de lançamento        |
-| `desenvolvedora` | VARCHAR(100) | —                         | Empresa que criou o jogo |
-| `plataformas`    | VARCHAR(200) | —                         | Plataformas do jogo      |
-| `descricao`      | TEXT         | —                         | Descrição do jogo        |
-| `imagem`         | VARCHAR(255) | —                         | Caminho da imagem        |
-| `decada_id`      | INT          | FOREIGN KEY → `decada.id` | Década do jogo           |
+| id             | SERIAL       | PRIMARY KEY               | Identificador do jogo    |
+| titulo         | VARCHAR(150) | NOT NULL                  | Nome do jogo             |
+| ano_lancamento | INT          | NOT NULL                  | Ano de lançamento        |
+| desenvolvedora | VARCHAR(100) | —                         | Empresa que criou o jogo |
+| plataformas    | VARCHAR(200) | —                         | Plataformas do jogo      |
+| descricao      | TEXT         | —                         | Descrição do jogo        |
+| imagem         | VARCHAR(255) | —                         | Caminho da imagem        |
+| decada_id      | INT          | FOREIGN KEY → decada.id | Década do jogo           |
 
 ## `jogo_categoria`
 
 | Campo          | Tipo | Restrições          | Descrição             |
 | -------------- | ---- | ------------------- | --------------------- |
-| `jogo_id`      | INT  | FK → `jogo.id`      | Jogo relacionado      |
-| `categoria_id` | INT  | FK → `categoria.id` | Categoria relacionada |
+| jogo_id      | INT  | FK → jogo.id      | Jogo relacionado      |
+| categoria_id | INT  | FK → categoria.id | Categoria relacionada |
 
-**Chave primária:** (`jogo_id`, `categoria_id`)
+**Chave primária:** (jogo_id, wcategoria_id)
 
 ## `favorito`
 
 | Campo        | Tipo | Restrições        | Descrição             |
 | ------------ | ---- | ----------------- | --------------------- |
-| `usuario_id` | INT  | FK → `usuario.id` | Usuário que favoritou |
-| `jogo_id`    | INT  | FK → `jogo.id`    | Jogo favoritado       |
+| usuario_id | INT  | FK → usuario.id | Usuário que favoritou |
+| jogo_id    | INT  | FK → jogo.id    | Jogo favoritado       |
 
-**Chave primária:** (`usuario_id`, `jogo_id`)
+**Chave primária:** (usuario_id, jogo_id)
 
 ## `comentario`
 
 | Campo        | Tipo      | Restrições        | Descrição                   |
 | ------------ | --------- | ----------------- | --------------------------- |
-| `id`         | SERIAL    | PRIMARY KEY       | Identificador do comentário |
-| `usuario_id` | INT       | FK → `usuario.id` | Autor do comentário         |
-| `jogo_id`    | INT       | FK → `jogo.id`    | Jogo comentado              |
-| `texto`      | TEXT      | NOT NULL          | Conteúdo do comentário      |
-| `criado_em`  | TIMESTAMP | DEFAULT `now()`   | Data e hora do comentário   |
+| id         | SERIAL    | PRIMARY KEY       | Identificador do comentário |
+| usuario_id | INT       | FK → usuario.id | Autor do comentário         |
+| jogo_id    | INT       | FK → jogo.id    | Jogo comentado              |
+| texto      | TEXT      | NOT NULL          | Conteúdo do comentário      |
+| criado_em  | TIMESTAMP | DEFAULT now()   | Data e hora do comentário   |
 
 ## 🧭 Diagramas
 

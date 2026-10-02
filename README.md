@@ -200,8 +200,6 @@ game_erah
         logout.php
 ```
 
-> [!NOTE]
-> Essa árvore mostra a organização principal. Se você adicionar pastas novas (como `img/` ou `js/`), vale atualizar aqui.
 
 ---
 

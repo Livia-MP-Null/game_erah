@@ -392,9 +392,8 @@ erDiagram
 
 **Baixa fidelidade:** _em breve_
 
-**Alta fidelidade:** [Clique aqui para ver no Figma](#)
+**Alta fidelidade:** [Clique aqui para ver no Figma](https://www.figma.com/design/ADrwIyHNxIPXHmH4bonXNR/E-Learning-Site--Community-?node-id=0-1&t=kyFfQaBdBLAscwWi-1)
 
-<!-- Troque o "#" acima pelo link do seu protótipo no Figma -->
 
 ---
 

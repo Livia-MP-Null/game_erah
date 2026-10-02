@@ -224,7 +224,6 @@ game_erah
 | **RF11** | Favoritar jogo | Permitir que o usuário logado favorite e desfavorite jogos | Baixa |  |
 | **RF12** | Comentar jogo | Permitir que o usuário logado envie comentários na página de um jogo | Baixa |  |
 
-> Marque com ✅ conforme cada requisito for ficando pronto.
 
 ### Requisitos não funcionais
 
@@ -266,10 +265,7 @@ game_erah
 
 ---
 
-##  Banco de dados
 
-> [!IMPORTANT]
-> Esta é a estrutura planejada para o sistema. Se alguma tabela ou campo do seu `dumpgame_erahdb.sql` estiver com nome diferente, ajuste aqui para ficar igual ao banco real.
 
 ### `usuario`
 

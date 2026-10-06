@@ -1,7 +1,7 @@
 <?php
 
 require_once __DIR__ . '/../includes/functions.php';
-require_once __DIR__ . '/../includes/verifica_user.php';
+require_once __DIR__ . '/../includes/verifica_admin.php';
 
 ?>
 

@@ -18,10 +18,17 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
         if (password_verify($senha, $usuario['senha'])) {
 
+            session_regenerate_id(true);
+
             $_SESSION['id'] = $usuario['id'];
             $_SESSION['email'] = $usuario['email'];
+            $_SESSION['admin'] = (bool) $usuario['admin'];
 
-            header("Location: ../index.php");
+            if ($_SESSION['admin']) {
+                header("Location: select.php");
+            } else {
+                header("Location: ../index.php");
+            }
             exit();
         } else {
 
@@ -68,23 +75,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 <form class="auth-form" method="POST">
 
                     <label for="email">E-mail</label>
-                    <input
-                        type="email"
-                        name="email"
-                        id="email"
-                        placeholder="Digite seu e-mail"
-                        required>
+                    <input type="email" name="email" id="email" placeholder="Digite seu e-mail" required>
 
                     <label for="senha">Senha</label>
                     <div class="campo-senha">
-                        <input
-                            type="password"
-                            name="senha"
-                            id="senha"
-                            placeholder="Digite sua senha"
-                            required>
+                        <input type="password" name="senha" id="senha" placeholder="Digite sua senha" required>
                         <button type="button" class="ver-senha" aria-label="Mostrar senha">
-                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                                stroke-linecap="round" stroke-linejoin="round">
                                 <path d="M1 12s4-7 11-7 11 7 11 7-4 7-11 7S1 12 1 12z" />
                                 <circle cx="12" cy="12" r="3" />
                             </svg>

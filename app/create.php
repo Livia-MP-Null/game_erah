@@ -1,7 +1,7 @@
 <?php
 
 require_once __DIR__ . '/../includes/functions.php';
-require_once __DIR__ . '/../includes/verifica_user.php';
+require_once __DIR__ . '/../includes/verifica_admin.php';
 
 ?>
 
@@ -66,7 +66,7 @@ require_once __DIR__ . '/../includes/verifica_user.php';
         // Converte "true" e "false" para 1 e 0
         $ativo = $_POST['ativo'] === 'true' ? 1 : 0;
 
-        cadastrar($conexao, $name, $nasc, $senha, $email, $ativo);
+        cadastrar($conexao, $name, $nasc, $senha, $email,);
     }
 
     include __DIR__ . '/../includes/footer.php';

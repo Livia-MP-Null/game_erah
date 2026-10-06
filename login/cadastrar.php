@@ -90,7 +90,7 @@ require_once __DIR__ . '/../includes/functions.php';
                     // O campo "Ativo" saiu da tela: todo novo usuário entra como ativo (1)
                     $ativo = 1;
 
-                    cadastrar($conexao, $name, $nasc, $senha, $email, $ativo);
+                    cadastrar($conexao, $name, $nasc, $senha, $email,);
                 }
 
                 ?>

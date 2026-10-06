@@ -1,0 +1,49 @@
+/* Estilos extras da parte de jogos. Ajuste as cores ao seu style.css */
+:root { --j-fundo: #1b1f24; --j-borda: #2f353d; --j-destaque: #f28c28; --j-texto: #e8e8e8; }
+
+.form-jogo { display: flex; flex-direction: column; gap: 8px; max-width: 640px; }
+.form-jogo textarea, .form-jogo input[type=text], .form-jogo input[type=number] { width: 100%; }
+.form-jogo .botoes { display: flex; gap: 16px; align-items: center; margin-top: 12px; }
+.previa { max-width: 260px; border-radius: 6px; }
+
+.msg-erro { background: #5a1d1d; color: #ffd6d6; padding: 10px 14px; border-radius: 6px; }
+.msg-ok   { background: #1d4a2a; color: #d6ffe0; padding: 10px 14px; border-radius: 6px; }
+
+.resumo { display: flex; flex-wrap: wrap; gap: 12px; margin: 16px 0; }
+.resumo-item { background: var(--j-fundo); border: 1px solid var(--j-borda); border-radius: 8px;
+               padding: 12px 18px; text-align: center; }
+.resumo-item strong { display: block; font-size: 1.6rem; color: var(--j-destaque); }
+
+.btn-admin { background: var(--j-destaque); color: #111; padding: 8px 14px; border-radius: 6px;
+             text-decoration: none; font-weight: 600; margin-right: 12px; }
+
+.tabela-rolagem { overflow-x: auto; }
+.tabela-jogos { width: 100%; border-collapse: collapse; }
+.tabela-jogos th, .tabela-jogos td { padding: 8px 10px; border-bottom: 1px solid var(--j-borda); text-align: left; }
+.miniatura { width: 64px; height: 40px; object-fit: cover; border-radius: 4px; }
+.acoes { display: flex; gap: 12px; align-items: center; }
+.acoes form { margin: 0; }
+.btn-perigo { background: none; border: 1px solid #c0392b; color: #ff8a80; padding: 4px 10px;
+              border-radius: 4px; cursor: pointer; }
+
+.painel-grade { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 16px; }
+.painel-cartao { background: var(--j-fundo); border: 1px solid var(--j-borda); border-radius: 10px; padding: 16px; }
+.painel-cartao h2 { margin-top: 0; color: var(--j-destaque); }
+.painel-cartao a { display: block; padding: 6px 0; }
+
+.filtro-decadas { display: flex; flex-wrap: wrap; gap: 8px; margin: 16px 0; }
+.filtro-decadas a { border: 1px solid var(--j-borda); padding: 6px 12px; border-radius: 20px; text-decoration: none; }
+.filtro-decadas a.ativa { background: var(--j-destaque); color: #111; border-color: var(--j-destaque); }
+
+.grade-jogos { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 16px; }
+.cartao-jogo { background: var(--j-fundo); border: 1px solid var(--j-borda); border-radius: 10px;
+               overflow: hidden; text-decoration: none; color: var(--j-texto); }
+.cartao-jogo img, .sem-imagem { width: 100%; height: 140px; object-fit: cover; display: block; }
+.sem-imagem { display: flex; align-items: center; justify-content: center; background: #262b31; color: #888; }
+.cartao-info { padding: 10px 12px; }
+.cartao-info h3 { margin: 0 0 4px; font-size: 1rem; }
+
+.detalhe-jogo { max-width: 800px; }
+.detalhe-meta { opacity: .75; }
+.detalhe-imagem, .detalhe-video { width: 100%; border-radius: 8px; margin: 12px 0; }
+.detalhe-descricao { line-height: 1.6; }

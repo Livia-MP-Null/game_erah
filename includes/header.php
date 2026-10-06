@@ -1,3 +1,12 @@
+<?php
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
+
+$logado = !empty($_SESSION['id']);
+$admin  = !empty($_SESSION['admin']);
+?>
+
 <header class="topo">
     <nav class="navbar">
 
@@ -7,18 +16,24 @@
         <!-- Links do sistema -->
         <div class="menu">
             <a href="/game_erah/index.php">Início</a>
-            <a href="/game_erah/app/create.php">Cadastrar</a>
-            <a href="/game_erah/app/delete.php">Excluir</a>
-            <a href="/game_erah/app/update.php">Atualizar</a>
-            <a href="/game_erah/app/select.php">Relatório</a>
-            <a href="/game_erah/app/select_w.php">Consultar</a>
+
+            <?php if ($admin): ?>
+                <a href="/game_erah/app/create.php">Cadastrar</a>
+                <a href="/game_erah/app/delete.php">Excluir</a>
+                <a href="/game_erah/app/update.php">Atualizar</a>
+                <a href="/game_erah/app/select.php">Relatório</a>
+                <a href="/game_erah/app/select_w.php">Consultar</a>
+            <?php endif; ?>
         </div>
 
         <!-- Links de login -->
         <div class="login">
-            <a href="/game_erah/login/cadastrar.php" class="btn-contorno">Cadastre-se</a>
-            <a href="/game_erah/login/login.php" class="btn-laranja">Entrar</a>
-            <a href="/game_erah/login/logout.php" class="btn-contorno">Sair</a>
+            <?php if ($logado): ?>
+                <a href="/game_erah/login/logout.php" class="btn-contorno">Sair</a>
+            <?php else: ?>
+                <a href="/game_erah/login/cadastrar.php" class="btn-contorno">Cadastre-se</a>
+                <a href="/game_erah/login/login.php" class="btn-laranja">Entrar</a>
+            <?php endif; ?>
         </div>
 
     </nav>

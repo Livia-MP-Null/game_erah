@@ -47,3 +47,53 @@
 .detalhe-meta { opacity: .75; }
 .detalhe-imagem, .detalhe-video { width: 100%; border-radius: 8px; margin: 12px 0; }
 .detalhe-descricao { line-height: 1.6; }
+
+/* ===== Botões de década (cores baseadas no mockup) ===== */
+.d-1960 { --cor: #7a1f1f; --cor-texto: #ff9a9a; }
+.d-1970 { --cor: #7a4313; --cor-texto: #ffb870; }
+.d-1980 { --cor: #6e610a; --cor-texto: #f2dd5a; }
+.d-1990 { --cor: #1d5f27; --cor-texto: #8fe69b; }
+.d-2000 { --cor: #0e5f4c; --cor-texto: #74e6c7; }
+.d-2010 { --cor: #0b5568; --cor-texto: #7fdcf2; }
+.d-2020 { --cor: #33337f; --cor-texto: #aeaefc; }
+
+.btn-decada {
+    display: block; width: 100%; max-width: 320px; padding: 14px 20px;
+    border-radius: 10px; text-align: center; text-decoration: none; font-weight: 700;
+    background: var(--cor); color: var(--cor-texto); border: 1px solid var(--cor-texto);
+    transition: transform .15s, filter .15s;
+}
+a.btn-decada:hover { transform: translateY(-2px); filter: brightness(1.25); }
+.btn-decada.grande { display: inline-block; width: auto; max-width: none; font-size: 1.6rem; padding: 12px 36px; }
+
+.decadas-botoes { display: flex; flex-direction: column; align-items: center; gap: 20px; margin: 28px 0; }
+.pagina-decadas { text-align: center; }
+.sub { opacity: .8; }
+
+/* ===== Página de uma década ===== */
+.pagina-decada { max-width: 1000px; margin: 0 auto; }
+.voltar { display: inline-block; margin-bottom: 16px; text-decoration: none; color: var(--j-destaque); font-weight: 600; }
+.decada-topo { text-align: center; margin-bottom: 32px; }
+.vazio { text-align: center; opacity: .8; padding: 40px 0; }
+
+.jogo-secao {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 28px; align-items: center;
+    padding: 28px 0; border-top: 1px solid var(--j-borda);
+}
+.jogo-secao:nth-of-type(even) .jogo-midia { order: -1; }   /* alterna imagem esquerda/direita */
+.jogo-titulo { margin: 0 0 8px; font-size: 1.9rem; color: var(--j-destaque); }
+.jogo-meta { opacity: .85; font-size: .95rem; }
+.jogo-descricao { line-height: 1.65; }
+.jogo-midia { display: flex; flex-direction: column; gap: 12px; }
+.jogo-midia img, .jogo-midia video { width: 100%; border-radius: 10px; border: 1px solid var(--j-borda); }
+
+.decada-nav { display: flex; justify-content: space-between; gap: 16px; margin: 40px 0 16px;
+              border-top: 1px solid var(--j-borda); padding-top: 24px; }
+.decada-nav .btn-decada { width: auto; max-width: none; }
+
+@media (max-width: 720px) {
+    .jogo-secao { grid-template-columns: 1fr; }
+    .jogo-secao:nth-of-type(even) .jogo-midia { order: 0; }
+    .decada-nav { flex-direction: column; align-items: stretch; }
+    .decada-nav .btn-decada { width: 100%; }
+}

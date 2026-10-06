@@ -1,12 +1,16 @@
 <?php
 // Formulário usado por jogos_create.php e jogos_update.php
-// Espera: $dados (titulo, ano_lancamento, descricao), $textoBotao e, na edição, $jogoAtual
+// Espera: $dados (titulo, desenvolvedora, ano_lancamento, descricao), $textoBotao e, na edição, $jogoAtual
 ?>
 <form action="" method="post" enctype="multipart/form-data" class="form-jogo">
 
     <label for="titulo">Nome do jogo:</label>
     <input type="text" name="titulo" id="titulo" maxlength="255" required
            value="<?= esc_html($dados['titulo']) ?>">
+
+    <label for="desenvolvedora">Quem criou (desenvolvedora):</label>
+    <input type="text" name="desenvolvedora" id="desenvolvedora" maxlength="255" required
+           value="<?= esc_html($dados['desenvolvedora']) ?>">
 
     <label for="ano_lancamento">Ano de lançamento:</label>
     <input type="number" name="ano_lancamento" id="ano_lancamento"

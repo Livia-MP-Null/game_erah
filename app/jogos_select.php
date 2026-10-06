@@ -59,7 +59,7 @@ $ok = $mensagens[$_GET['ok'] ?? ''] ?? '';
                 <table class="tabela-jogos">
                     <thead>
                         <tr>
-                            <th>ID</th><th>Imagem</th><th>Nome</th><th>Ano</th><th>Década</th><th>Vídeo</th><th>Ações</th>
+                            <th>ID</th><th>Imagem</th><th>Nome</th><th>Desenvolvedora</th><th>Ano</th><th>Década</th><th>Vídeo</th><th>Ações</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -72,6 +72,7 @@ $ok = $mensagens[$_GET['ok'] ?? ''] ?? '';
                                     <?php else: ?>—<?php endif; ?>
                                 </td>
                                 <td><?= esc_html($j['titulo']) ?></td>
+                                <td><?= esc_html($j['desenvolvedora']) ?></td>
                                 <td><?= (int) $j['ano_lancamento'] ?></td>
                                 <td><?= (int) $j['decada'] ?>s</td>
                                 <td><?= $j['video'] ? 'Sim' : 'Não' ?></td>

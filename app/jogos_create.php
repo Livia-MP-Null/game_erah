@@ -4,13 +4,14 @@ require_once __DIR__ . '/../includes/verifica_admin.php';
 require_once __DIR__ . '/../includes/functions_jogos.php';
 
 $erro  = '';
-$dados = ['titulo' => '', 'ano_lancamento' => '', 'descricao' => ''];
+$dados = ['titulo' => '', 'desenvolvedora' => '', 'ano_lancamento' => '', 'descricao' => ''];
 
 if (post_excedeu_limite()) {
     $erro = "Os arquivos enviados passam do limite do servidor (post_max_size no php.ini).";
 } elseif ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     $dados['titulo']         = trim($_POST['titulo'] ?? '');
+    $dados['desenvolvedora'] = trim($_POST['desenvolvedora'] ?? '');
     $dados['ano_lancamento'] = trim($_POST['ano_lancamento'] ?? '');
     $dados['descricao']      = trim($_POST['descricao'] ?? '');
 
@@ -22,7 +23,7 @@ if (post_excedeu_limite()) {
         $imagem = salvar_upload($_FILES['imagem'] ?? null, IMAGEM_TIPOS, IMAGEM_MAX);
         $video  = salvar_upload($_FILES['video'] ?? null, VIDEO_TIPOS, VIDEO_MAX);
 
-        jogo_criar($conexao, $dados['titulo'], $dados['ano_lancamento'], $dados['descricao'], $imagem, $video);
+        jogo_criar($conexao, $dados['titulo'], $dados['ano_lancamento'], $dados['desenvolvedora'], $dados['descricao'], $imagem, $video);
 
         header("Location: jogos_select.php?ok=criado");
         exit();

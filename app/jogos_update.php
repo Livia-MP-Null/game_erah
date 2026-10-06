@@ -14,6 +14,7 @@ if (!$jogoAtual) {
 $erro  = '';
 $dados = [
     'titulo'         => $jogoAtual['titulo'],
+    'desenvolvedora' => $jogoAtual['desenvolvedora'],
     'ano_lancamento' => $jogoAtual['ano_lancamento'],
     'descricao'      => $jogoAtual['descricao'],
 ];
@@ -23,6 +24,7 @@ if (post_excedeu_limite()) {
 } elseif ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     $dados['titulo']         = trim($_POST['titulo'] ?? '');
+    $dados['desenvolvedora'] = trim($_POST['desenvolvedora'] ?? '');
     $dados['ano_lancamento'] = trim($_POST['ano_lancamento'] ?? '');
     $dados['descricao']      = trim($_POST['descricao'] ?? '');
 
@@ -34,7 +36,7 @@ if (post_excedeu_limite()) {
         $novaImagem = salvar_upload($_FILES['imagem'] ?? null, IMAGEM_TIPOS, IMAGEM_MAX);
         $novoVideo  = salvar_upload($_FILES['video'] ?? null, VIDEO_TIPOS, VIDEO_MAX);
 
-        jogo_atualizar($conexao, $id, $dados['titulo'], $dados['ano_lancamento'], $dados['descricao'], $novaImagem, $novoVideo);
+        jogo_atualizar($conexao, $id, $dados['titulo'], $dados['ano_lancamento'], $dados['desenvolvedora'], $dados['descricao'], $novaImagem, $novoVideo);
 
         // Só apaga o arquivo antigo depois que o banco foi atualizado
         if ($novaImagem) apagar_arquivo($jogoAtual['imagem']);

@@ -11,7 +11,7 @@ require_once __DIR__ . '/../includes/verifica_admin.php';
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="../style/style.css">
-    <title>Consulta aluno</title>
+    <title>Consulta usuário</title>
 </head>
 
 <body>

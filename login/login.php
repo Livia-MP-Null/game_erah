@@ -98,7 +98,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     </div>
 
                     <div class="auth-acoes">
-                        <button type="submit" class="auth-botao">Entrar</button>
+                        <a href="http:/game_erah/app/select.php" class="auth-botao">Entrar</a>
                     </div>
 
                 </form>

@@ -1,14 +1,31 @@
 <?php
 
-// ---------- Configurações de upload ----------
-const IMAGEM_TIPOS  = ['image/jpeg' => 'jpg', 'image/png' => 'png', 'image/webp' => 'webp'];
-const VIDEO_TIPOS   = ['video/mp4' => 'mp4', 'video/webm' => 'webm'];
-const IMAGEM_MAX    = 5 * 1024 * 1024;     // 5 MB
-const VIDEO_MAX     = 100 * 1024 * 1024;   // 100 MB
+// ============================================================
+// CONFIGURAÇÕES DE UPLOAD
+// ============================================================
+
+const IMAGEM_TIPOS = [
+    'image/jpeg' => 'jpg',
+    'image/png'  => 'png',
+    'image/webp' => 'webp'
+];
+
+const VIDEO_TIPOS = [
+    'video/mp4'  => 'mp4',
+    'video/webm' => 'webm'
+];
+
+const IMAGEM_MAX = 5 * 1024 * 1024;      // 5 MB
+const VIDEO_MAX  = 100 * 1024 * 1024;    // 100 MB
+
 const PASTA_UPLOADS = __DIR__ . '/../uploads/jogos/';
 const URL_UPLOADS   = '/game_erah/uploads/jogos/';
 
-// Décadas que existem no site (ano inicial => texto do botão)
+
+// ============================================================
+// DÉCADAS DISPONÍVEIS NO SITE
+// ============================================================
+
 function decadas_site()
 {
     return [
@@ -18,168 +35,546 @@ function decadas_site()
         1990 => 'Anos 90',
         2000 => 'Anos 2000',
         2010 => 'Anos 2010',
-        2020 => 'Anos 2020',
+        2020 => 'Anos 2020'
     ];
 }
 
+
+// ============================================================
+// ESCAPAR TEXTO PARA HTML
+// ============================================================
+
 function esc_html($texto)
 {
-    return htmlspecialchars((string) $texto, ENT_QUOTES, 'UTF-8');
+    return htmlspecialchars(
+        (string) $texto,
+        ENT_QUOTES,
+        'UTF-8'
+    );
 }
 
-// ---------- Upload ----------
 
-// Devolve o nome do arquivo salvo, ou null se nenhum arquivo foi enviado.
-function salvar_upload($arquivo, $tiposPermitidos, $tamanhoMax)
-{
-    if (!$arquivo || $arquivo['error'] === UPLOAD_ERR_NO_FILE) {
+// ============================================================
+// UPLOAD
+// ============================================================
+
+function salvar_upload(
+    $arquivo,
+    $tiposPermitidos,
+    $tamanhoMax
+) {
+    // Nenhum arquivo foi enviado
+    if (
+        !$arquivo ||
+        $arquivo['error'] === UPLOAD_ERR_NO_FILE
+    ) {
         return null;
     }
-    if ($arquivo['error'] === UPLOAD_ERR_INI_SIZE || $arquivo['error'] === UPLOAD_ERR_FORM_SIZE) {
-        throw new Exception("Arquivo maior que o limite do servidor (ajuste upload_max_filesize no php.ini).");
+
+    // Arquivo ultrapassou upload_max_filesize
+    if (
+        $arquivo['error'] === UPLOAD_ERR_INI_SIZE ||
+        $arquivo['error'] === UPLOAD_ERR_FORM_SIZE
+    ) {
+        throw new Exception(
+            "Arquivo maior que o limite do servidor. "
+            . "Ajuste upload_max_filesize no php.ini."
+        );
     }
+
+    // Outro erro no upload
     if ($arquivo['error'] !== UPLOAD_ERR_OK) {
-        throw new Exception("Erro no upload (código " . $arquivo['error'] . ").");
+        throw new Exception(
+            "Erro no upload (código "
+            . $arquivo['error']
+            . ")."
+        );
     }
+
+    // Verifica tamanho
     if ($arquivo['size'] > $tamanhoMax) {
-        throw new Exception("Arquivo muito grande (máximo " . round($tamanhoMax / 1048576) . " MB).");
+        throw new Exception(
+            "Arquivo muito grande. Máximo: "
+            . round($tamanhoMax / 1048576)
+            . " MB."
+        );
     }
 
-    // Confere o tipo real do arquivo, não só a extensão
-    $mime = (new finfo(FILEINFO_MIME_TYPE))->file($arquivo['tmp_name']);
+    // Descobre o tipo real do arquivo
+    $mime = (
+        new finfo(FILEINFO_MIME_TYPE)
+    )->file(
+        $arquivo['tmp_name']
+    );
+
+    // Verifica se o tipo é permitido
     if (!isset($tiposPermitidos[$mime])) {
-        throw new Exception("Tipo de arquivo não permitido. Aceitos: " . implode(', ', array_values($tiposPermitidos)) . ".");
+        throw new Exception(
+            "Tipo de arquivo não permitido. "
+            . "Aceitos: "
+            . implode(
+                ', ',
+                array_values($tiposPermitidos)
+            )
+            . "."
+        );
     }
 
+    // Cria a pasta se ela não existir
     if (!is_dir(PASTA_UPLOADS)) {
-        mkdir(PASTA_UPLOADS, 0755, true);
+        mkdir(
+            PASTA_UPLOADS,
+            0755,
+            true
+        );
     }
 
-    $nome = bin2hex(random_bytes(16)) . '.' . $tiposPermitidos[$mime];
+    // Cria um nome aleatório para o arquivo
+    $nome =
+        bin2hex(random_bytes(16))
+        . '.'
+        . $tiposPermitidos[$mime];
 
-    if (!move_uploaded_file($arquivo['tmp_name'], PASTA_UPLOADS . $nome)) {
-        throw new Exception("Não foi possível salvar o arquivo no servidor.");
+    // Move o arquivo para a pasta uploads
+    if (
+        !move_uploaded_file(
+            $arquivo['tmp_name'],
+            PASTA_UPLOADS . $nome
+        )
+    ) {
+        throw new Exception(
+            "Não foi possível salvar o arquivo no servidor."
+        );
     }
+
     return $nome;
 }
 
+
+// ============================================================
+// APAGAR ARQUIVO
+// ============================================================
+
 function apagar_arquivo($nome)
 {
-    if ($nome) {
-        $caminho = PASTA_UPLOADS . basename($nome);
-        if (is_file($caminho)) {
-            unlink($caminho);
-        }
+    if (!$nome) {
+        return;
+    }
+
+    $caminho =
+        PASTA_UPLOADS
+        . basename($nome);
+
+    if (is_file($caminho)) {
+        unlink($caminho);
     }
 }
 
-// Se o arquivo enviado passar do post_max_size, o PHP zera $_POST e $_FILES
+
+// ============================================================
+// VERIFICAR POST EXCEDENDO LIMITE
+// ============================================================
+
 function post_excedeu_limite()
 {
-    return $_SERVER['REQUEST_METHOD'] === 'POST'
-        && empty($_POST)
-        && empty($_FILES)
-        && (int) ($_SERVER['CONTENT_LENGTH'] ?? 0) > 0;
+    return
+        $_SERVER['REQUEST_METHOD'] === 'POST'
+        &&
+        empty($_POST)
+        &&
+        empty($_FILES)
+        &&
+        (int) (
+            $_SERVER['CONTENT_LENGTH'] ?? 0
+        ) > 0;
 }
 
-// ---------- Validação ----------
+
+// ============================================================
+// VALIDAR JOGO
+// ============================================================
 
 function validar_jogo($d)
 {
-    if ($d['titulo'] === '' || mb_strlen($d['titulo']) > 255) {
-        throw new Exception("Informe o nome do jogo (até 255 caracteres).");
+    // Nome
+    if (
+        trim($d['titulo'] ?? '') === ''
+        ||
+        mb_strlen(
+            $d['titulo'] ?? ''
+        ) > 255
+    ) {
+        throw new Exception(
+            "Informe o nome do jogo (até 255 caracteres)."
+        );
     }
-    if ($d['desenvolvedora'] === '' || mb_strlen($d['desenvolvedora']) > 255) {
-        throw new Exception("Informe quem criou o jogo (desenvolvedora, até 255 caracteres).");
+
+    // Desenvolvedora
+    if (
+        trim($d['desenvolvedora'] ?? '') === ''
+        ||
+        mb_strlen(
+            $d['desenvolvedora'] ?? ''
+        ) > 255
+    ) {
+        throw new Exception(
+            "Informe a desenvolvedora (até 255 caracteres)."
+        );
     }
-    $ano = filter_var($d['ano_lancamento'], FILTER_VALIDATE_INT);
-    if ($ano === false || $ano < 1950 || $ano > (int) date('Y') + 2) {
-        throw new Exception("Informe um ano de lançamento válido.");
+
+    // Criado por
+    if (
+        trim($d['criado_por'] ?? '') === ''
+        ||
+        mb_strlen(
+            $d['criado_por'] ?? ''
+        ) > 255
+    ) {
+        throw new Exception(
+            "Informe quem fez o jogo (até 255 caracteres)."
+        );
     }
-    if ($d['descricao'] === '') {
-        throw new Exception("Informe a descrição do jogo.");
+
+    // Ano
+    $ano = filter_var(
+        $d['ano_lancamento'] ?? '',
+        FILTER_VALIDATE_INT
+    );
+
+    if (
+        $ano === false
+        ||
+        $ano < 1950
+        ||
+        $ano > (int) date('Y') + 2
+    ) {
+        throw new Exception(
+            "Informe um ano de lançamento válido."
+        );
+    }
+
+    // Descrição
+    if (
+        trim($d['descricao'] ?? '') === ''
+    ) {
+        throw new Exception(
+            "Informe a descrição do jogo."
+        );
     }
 }
 
-// ---------- Banco de dados ----------
 
-// A década (decada_id) é descoberta pelo ano: 1994 -> década que começa em 1990
+// ============================================================
+// DESCOBRIR DÉCADA PELO ANO
+// ============================================================
+
 function decada_do_ano($ano)
 {
-    return intdiv((int) $ano, 10) * 10;
+    return intdiv(
+        (int) $ano,
+        10
+    ) * 10;
 }
 
-function jogo_criar($c, $titulo, $ano, $desenvolvedora, $descricao, $imagem, $video)
-{
-    $s = $c->prepare("INSERT INTO jogo (titulo, ano_lancamento, desenvolvedora, descricao, imagem, video, decada_id)
-                      VALUES (?, ?, ?, ?, ?, ?, (SELECT id FROM decada WHERE ano_inicio = ? LIMIT 1))");
-    $s->execute([$titulo, (int) $ano, $desenvolvedora, $descricao, $imagem, $video, decada_do_ano($ano)]);
+
+// ============================================================
+// CRIAR JOGO
+// ============================================================
+
+function jogo_criar(
+    $c,
+    $titulo,
+    $ano,
+    $desenvolvedora,
+    $criado_por,
+    $descricao,
+    $imagem,
+    $video
+) {
+    $sql = "
+        INSERT INTO jogo (
+            titulo,
+            ano_lancamento,
+            desenvolvedora,
+            criado_por,
+            descricao,
+            imagem,
+            video,
+            decada_id
+        )
+        VALUES (
+            ?,
+            ?,
+            ?,
+            ?,
+            ?,
+            ?,
+            ?,
+            (
+                SELECT id
+                FROM decada
+                WHERE ano_inicio = ?
+                LIMIT 1
+            )
+        )
+    ";
+
+    $s = $c->prepare($sql);
+
+    $s->execute([
+        $titulo,
+        (int) $ano,
+        $desenvolvedora,
+        $criado_por,
+        $descricao,
+        $imagem,
+        $video,
+        decada_do_ano($ano)
+    ]);
 }
+
+
+// ============================================================
+// BUSCAR UM JOGO
+// ============================================================
 
 function jogo_buscar($c, $id)
 {
-    $s = $c->prepare("SELECT *, (ano_lancamento / 10) * 10 AS decada FROM jogo WHERE id = ?");
-    $s->execute([(int) $id]);
-    return $s->fetch(PDO::FETCH_ASSOC);
+    $sql = "
+        SELECT
+            *,
+            FLOOR(
+                ano_lancamento / 10
+            ) * 10 AS decada
+        FROM jogo
+        WHERE id = ?
+    ";
+
+    $s = $c->prepare($sql);
+
+    $s->execute([
+        (int) $id
+    ]);
+
+    return $s->fetch(
+        PDO::FETCH_ASSOC
+    );
 }
 
-function jogos_listar($c, $decada = null)
-{
-    $sql = "SELECT *, (ano_lancamento / 10) * 10 AS decada FROM jogo";
+
+// ============================================================
+// LISTAR JOGOS
+// ============================================================
+
+function jogos_listar(
+    $c,
+    $decada = null
+) {
+    $sql = "
+        SELECT
+            *,
+            FLOOR(
+                ano_lancamento / 10
+            ) * 10 AS decada
+        FROM jogo
+    ";
+
     $params = [];
+
+    // Filtrar por década
     if ($decada !== null) {
-        $sql .= " WHERE (ano_lancamento / 10) * 10 = ?";
+
+        $sql .= "
+            WHERE FLOOR(
+                ano_lancamento / 10
+            ) * 10 = ?
+        ";
+
         $params[] = (int) $decada;
     }
-    $sql .= " ORDER BY ano_lancamento, titulo";
+
+    $sql .= "
+        ORDER BY
+            ano_lancamento,
+            titulo
+    ";
+
     $s = $c->prepare($sql);
+
     $s->execute($params);
-    return $s->fetchAll(PDO::FETCH_ASSOC);
+
+    return $s->fetchAll(
+        PDO::FETCH_ASSOC
+    );
 }
 
-// $imagem / $video = null mantém o arquivo atual
-function jogo_atualizar($c, $id, $titulo, $ano, $desenvolvedora, $descricao, $imagem, $video)
-{
-    $s = $c->prepare("UPDATE jogo
-                      SET titulo = ?, ano_lancamento = ?, desenvolvedora = ?, descricao = ?,
-                          imagem = COALESCE(?, imagem), video = COALESCE(?, video),
-                          decada_id = (SELECT id FROM decada WHERE ano_inicio = ? LIMIT 1)
-                      WHERE id = ?");
-    $s->execute([$titulo, (int) $ano, $desenvolvedora, $descricao, $imagem, $video, decada_do_ano($ano), (int) $id]);
+
+// ============================================================
+// ATUALIZAR JOGO
+// ============================================================
+
+function jogo_atualizar(
+    $c,
+    $id,
+    $titulo,
+    $ano,
+    $desenvolvedora,
+    $criado_por,
+    $descricao,
+    $imagem,
+    $video
+) {
+    $sql = "
+        UPDATE jogo
+        SET
+            titulo = ?,
+            ano_lancamento = ?,
+            desenvolvedora = ?,
+            criado_por = ?,
+            descricao = ?,
+            imagem = COALESCE(?, imagem),
+            video = COALESCE(?, video),
+            decada_id = (
+                SELECT id
+                FROM decada
+                WHERE ano_inicio = ?
+                LIMIT 1
+            )
+        WHERE id = ?
+    ";
+
+    $s = $c->prepare($sql);
+
+    $s->execute([
+        $titulo,
+        (int) $ano,
+        $desenvolvedora,
+        $criado_por,
+        $descricao,
+        $imagem,
+        $video,
+        decada_do_ano($ano),
+        (int) $id
+    ]);
 }
+
+
+// ============================================================
+// APAGAR JOGO
+// ============================================================
 
 function jogo_apagar($c, $id)
 {
-    $jogo = jogo_buscar($c, $id);
+    // Busca o jogo antes de apagar
+    $jogo = jogo_buscar(
+        $c,
+        $id
+    );
+
     if (!$jogo) {
         return false;
     }
 
-    // Favoritos, comentários e categorias apontam para o jogo: saem junto com ele
+    // Começa uma transação
     $c->beginTransaction();
+
     try {
-        foreach (['favorito', 'comentario', 'jogo_categoria'] as $tabela) {
-            $c->prepare("DELETE FROM $tabela WHERE jogo_id = ?")->execute([(int) $id]);
+
+        // Apaga registros relacionados
+        $tabelas = [
+            'favorito',
+            'comentario',
+            'jogo_categoria'
+        ];
+
+        foreach ($tabelas as $tabela) {
+
+            $c->prepare(
+                "DELETE FROM $tabela WHERE jogo_id = ?"
+            )->execute([
+                (int) $id
+            ]);
         }
-        $c->prepare("DELETE FROM jogo WHERE id = ?")->execute([(int) $id]);
+
+        // Apaga o jogo
+        $c->prepare(
+            "DELETE FROM jogo WHERE id = ?"
+        )->execute([
+            (int) $id
+        ]);
+
+        // Confirma
         $c->commit();
+
     } catch (Exception $e) {
-        $c->rollBack();
+
+        // Desfaz se houver erro
+        if ($c->inTransaction()) {
+            $c->rollBack();
+        }
+
         throw $e;
     }
 
-    apagar_arquivo($jogo['imagem']);
-    apagar_arquivo($jogo['video']);
+    // Apaga imagem
+    apagar_arquivo(
+        $jogo['imagem'] ?? null
+    );
+
+    // Apaga vídeo
+    apagar_arquivo(
+        $jogo['video'] ?? null
+    );
+
     return true;
 }
 
+
+// ============================================================
+// TOTAL DE JOGOS
+// ============================================================
+
 function jogos_total($c)
 {
-    return (int) $c->query("SELECT COUNT(*) FROM jogo")->fetchColumn();
+    $sql = "
+        SELECT COUNT(*)
+        FROM jogo
+    ";
+
+    return (int) $c
+        ->query($sql)
+        ->fetchColumn();
 }
+
+
+// ============================================================
+// JOGOS POR DÉCADA
+// ============================================================
 
 function jogos_por_decada($c)
 {
-    return $c->query("SELECT (ano_lancamento / 10) * 10 AS decada, COUNT(*) AS total
-                      FROM jogo GROUP BY 1 ORDER BY 1")->fetchAll(PDO::FETCH_ASSOC);
+    $sql = "
+        SELECT
+            FLOOR(
+                ano_lancamento / 10
+            ) * 10 AS decada,
+            COUNT(*) AS total
+        FROM jogo
+        GROUP BY
+            FLOOR(
+                ano_lancamento / 10
+            ) * 10
+        ORDER BY
+            FLOOR(
+                ano_lancamento / 10
+            ) * 10
+    ";
+
+    $s = $c->prepare($sql);
+
+    $s->execute();
+
+    return $s->fetchAll(
+        PDO::FETCH_ASSOC
+    );
 }

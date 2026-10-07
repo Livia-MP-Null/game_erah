@@ -23,6 +23,11 @@ $admin  = !empty($_SESSION['admin']);
                 <a href="/game_erah/app/update.php">Atualizar</a>
                 <a href="/game_erah/app/select.php">Relatório</a>
                 <a href="/game_erah/app/select_w.php">Consultar</a>
+                <br>
+                <a href="/game_erah/app/jogos_create.php">Cadastrar Jogos</a>
+                <a href="/game_erah/app/jogos_delete.php">Excluir jogos</a>
+                <a href="/game_erah/app/jogos_update.php">Atualizar jogos</a>
+                <a href="/game_erah/app/jogos_select.php">Relatório jogos</a>
             <?php endif; ?>
         </div>
 

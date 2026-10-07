@@ -178,7 +178,7 @@ function consulta_user($conexao, $email)
 {
     try {
 
-        $sql = "SELECT id, email, senha
+        $sql = "SELECT id, email, senha, admin
                 FROM usuarios
                 WHERE email = :email";
 
@@ -199,3 +199,4 @@ function consulta_user($conexao, $email)
         return false;
     }
 }
+

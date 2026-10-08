@@ -9,8 +9,9 @@ $hash  = password_hash('game.era', PASSWORD_DEFAULT);
 
 $existe = $conexao->prepare("SELECT id FROM usuarios WHERE email = ?");
 $existe->execute([$email]);
-
+//Procura se o e-mail game.era@gmail.com já existe.
 if ($existe->fetch()) {
+    //Se existe, torna o usuário admin, deixa-o ativo e redefine a senha para game.era.
     $s = $conexao->prepare("UPDATE usuarios SET admin = TRUE, ativo = TRUE, senha = ? WHERE email = ?");
     $s->execute([$hash, $email]);
     echo "Usuário já existia: agora é administrador.";

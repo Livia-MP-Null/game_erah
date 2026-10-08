@@ -1,20 +1,49 @@
 <?php
+// Página pública de uma década: todos os jogos dela, um embaixo do outro.
+// Quem chega aqui clicou num botão como  decada.php?d=1960
 
-require_once __DIR__ . '/database/conect.php';
+require_once __DIR__ . '/includes/config.php';              // BASE_URL + sessão
+require_once __DIR__ . '/database/conect.php';              // cria $conexao
 require_once __DIR__ . '/includes/functions_jogos.php';
+require_once __DIR__ . '/includes/functions_interacao.php';
 
 $decadas = decadas_site();
+
+// Qual década? Vem da URL (?d=1960). Se não existir, volta para a escolha.
 $d = (int) ($_GET['d'] ?? 0);
 
-// Década inexistente (ex.: ?d=1955) → volta para a escolha
 if (!isset($decadas[$d])) {
-    header("Location: jogos.php");
+    header("Location: " . BASE_URL . "/jogos.php");
     exit();
 }
 
-$jogos = jogos_listar($conexao, $d);
+// ---- Quem está vendo a página
+$logado       = !empty($_SESSION['id']);
+$usuarioAtual = (int) ($_SESSION['id'] ?? 0);
+$ehAdmin      = !empty($_SESSION['admin']);
 
-// Década anterior e próxima, para navegar sem voltar ao menu
+// ---- Jogos desta década (a MESMA consulta do relatório, só com filtro)
+$jogos   = jogos_listar($conexao, $d);
+$classif = classificacoes_todas($conexao);
+$ids     = array_map('intval', array_column($jogos, 'id'));
+
+// ---- Curtidas, favoritos e comentários.
+// Se essas tabelas ainda não existirem no banco (correcoes_2.sql), a página
+// continua funcionando, só sem essa parte.
+try {
+    $interacoes  = interacoes_dos_jogos($conexao, $ids, $usuarioAtual ?: null);
+    $comentarios = comentarios_por_jogo($conexao, $ids);
+} catch (Exception $e) {
+    error_log("Interações indisponíveis: " . $e->getMessage());
+    $interacoes  = [];
+    $comentarios = [];
+}
+
+// Mensagem de erro deixada por interagir.php (mostra uma vez só)
+$erroInteracao = $_SESSION['erro_interacao'] ?? '';
+unset($_SESSION['erro_interacao']);
+
+// ---- Década anterior e próxima
 $chaves   = array_keys($decadas);
 $pos      = array_search($d, $chaves);
 $anterior = $chaves[$pos - 1] ?? null;
@@ -26,8 +55,8 @@ $proxima  = $chaves[$pos + 1] ?? null;
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="style/style.css">
-    <link rel="stylesheet" href="style/jogos.css">
+    <link rel="stylesheet" href="<?= BASE_URL ?>/style/style.css">
+    <link rel="stylesheet" href="<?= BASE_URL ?>/style/jogos.css">
     <title><?= esc_html($decadas[$d]) ?> | game.erah</title>
 </head>
 
@@ -35,59 +64,7 @@ $proxima  = $chaves[$pos + 1] ?? null;
 
     <?php include __DIR__ . '/includes/header.php'; ?>
 
-    <main class="pagina-decada">
-
-        <a class="voltar" href="jogos.php">← Voltar às décadas</a>
-
-        <div class="decada-topo">
-            <span class="btn-decada grande d-<?= $d ?>"><?= esc_html($decadas[$d]) ?></span>
-            <p class="sub">
-                <?= count($jogos) ?> <?= count($jogos) === 1 ? 'jogo cadastrado' : 'jogos cadastrados' ?>
-            </p>
-        </div>
-
-        <?php if (!$jogos): ?>
-            <p class="vazio">Ainda não há jogos desta década. Volte em breve!</p>
-        <?php endif; ?>
-
-        <?php foreach ($jogos as $j): ?>
-            <article class="jogo-secao">
-
-                <div class="jogo-texto">
-                    <h2 class="jogo-titulo"><?= esc_html($j['titulo']) ?></h2>
-                    <p class="jogo-meta">
-                        <strong>Criado por:</strong> <?= esc_html($j['desenvolvedora']) ?>
-                        &nbsp;·&nbsp;
-                        <strong>Lançamento:</strong> <?= (int) $j['ano_lancamento'] ?>
-                    </p>
-                    <p class="jogo-descricao"><?= nl2br(esc_html($j['descricao'])) ?></p>
-                </div>
-
-                <?php if ($j['imagem'] || $j['video']): ?>
-                    <div class="jogo-midia">
-                        <?php if ($j['imagem']): ?>
-                            <img src="<?= URL_UPLOADS . esc_html($j['imagem']) ?>" alt="<?= esc_html($j['titulo']) ?>">
-                        <?php endif; ?>
-                        <?php if ($j['video']): ?>
-                            <video src="<?= URL_UPLOADS . esc_html($j['video']) ?>" controls preload="metadata"></video>
-                        <?php endif; ?>
-                    </div>
-                <?php endif; ?>
-
-            </article>
-        <?php endforeach; ?>
-
-        <nav class="decada-nav">
-            <?php if ($anterior): ?>
-                <a class="btn-decada d-<?= $anterior ?>" href="decada.php?d=<?= $anterior ?>">← <?= esc_html($decadas[$anterior]) ?></a>
-            <?php else: ?><span></span><?php endif; ?>
-
-            <?php if ($proxima): ?>
-                <a class="btn-decada d-<?= $proxima ?>" href="decada.php?d=<?= $proxima ?>"><?= esc_html($decadas[$proxima]) ?> →</a>
-            <?php else: ?><span></span><?php endif; ?>
-        </nav>
-
-    </main>
+    <?php include __DIR__ . '/includes/view_decada.php'; ?>
 
     <?php include __DIR__ . '/includes/footer.php'; ?>
 

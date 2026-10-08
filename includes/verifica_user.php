@@ -1,14 +1,10 @@
 <?php
 
-require_once __DIR__ . '/../database/conect.php';
+require_once __DIR__ . '/config.php';              // BASE_URL + sessão
+require_once __DIR__ . '/../database/conect.php';  // cria $conexao
 
-if (session_status() == PHP_SESSION_NONE) {
-    session_start();
-}
-
-if (!isset($_SESSION['id'])) {
-    header("Location: ../login/login.php");
+// Qualquer pessoa logada (visitante ou admin) passa. Quem não está, vai para o login.
+if (empty($_SESSION['id'])) {
+    header("Location: " . BASE_URL . "/login/login.php");
     exit();
 }
-
-?>

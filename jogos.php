@@ -1,5 +1,6 @@
 <?php
 
+require_once __DIR__ . '/includes/config.php';   // BASE_URL + sessão (sempre na 1ª linha)
 require_once __DIR__ . '/includes/functions_jogos.php';
 
 ?>
@@ -9,8 +10,8 @@ require_once __DIR__ . '/includes/functions_jogos.php';
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="style/style.css">
-    <link rel="stylesheet" href="style/jogos.css">
+    <link rel="stylesheet" href="<?= BASE_URL ?>/style/style.css">
+    <link rel="stylesheet" href="<?= BASE_URL ?>/style/jogos.css">
     <title>Jogos por década</title>
 </head>
 

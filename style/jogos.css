@@ -97,3 +97,81 @@ a.btn-decada:hover { transform: translateY(-2px); filter: brightness(1.25); }
     .decada-nav { flex-direction: column; align-items: stretch; }
     .decada-nav .btn-decada { width: 100%; }
 }
+
+/* =====================================================================
+   Acrescente este arquivo ao FINAL do seu style/jogos.css
+   (ele vem depois do jogos_acrescentar.css da correção anterior)
+   ===================================================================== */
+
+/* ---------- Barra do administrador ---------- */
+.admin-bar {
+    display: flex; align-items: center; gap: 22px; flex-wrap: wrap;
+    background: #14181d; border-bottom: 2px solid var(--j-destaque, #f28c28);
+    padding: 8px 20px; font-size: .9rem;
+}
+.admin-bar a, .admin-grupo > span { color: #e8e8e8; text-decoration: none; cursor: pointer; }
+.admin-bar a:hover, .admin-grupo:hover > span { color: var(--j-destaque, #f28c28); }
+.admin-bar-titulo {
+    background: var(--j-destaque, #f28c28); color: #111; font-weight: 700;
+    padding: 2px 10px; border-radius: 4px; letter-spacing: .5px;
+}
+.admin-grupo { position: relative; }
+.admin-menu {
+    display: none; position: absolute; top: 100%; left: 0; min-width: 200px; z-index: 50;
+    background: #1b1f24; border: 1px solid var(--j-borda, #2f353d);
+    border-radius: 6px; padding: 6px 0;
+}
+.admin-grupo:hover .admin-menu, .admin-grupo:focus-within .admin-menu { display: block; }
+.admin-menu a { display: block; padding: 7px 16px; white-space: nowrap; }
+.admin-menu a:hover { background: #262b31; }
+
+/* ---------- Página da década (layout do protótipo) ---------- */
+.voltar-circulo {
+    display: inline-flex; width: 44px; height: 44px; border-radius: 50%;
+    align-items: center; justify-content: center; margin-bottom: 16px;
+    background: #d9d9d9; color: #111; text-decoration: none; font-size: 1.4rem; font-weight: 700;
+    transition: transform .15s;
+}
+.voltar-circulo:hover { transform: translateX(-3px); }
+
+.separador { border: 0; border-top: 2px solid var(--j-borda, #2f353d); margin: 36px 0; }
+
+/* Sobrescreve o layout antigo de .jogo-secao (agora o grid fica em .jogo-corpo) */
+.jogo-secao { display: block; padding: 0; border-top: 0; }
+.jogo-secao:nth-of-type(n) .jogo-midia { order: 0; }
+
+.jogo-cabecalho { margin-bottom: 12px; }
+.jogo-corpo { display: grid; grid-template-columns: 1fr 1fr; gap: 28px; align-items: start; }
+
+@media (max-width: 720px) {
+    .jogo-corpo { grid-template-columns: 1fr; }
+}
+
+/* ---------- Favoritar e curtir ---------- */
+.acoes-jogo { display: flex; gap: 12px; flex-wrap: wrap; margin: 20px 0; }
+.acoes-jogo form { margin: 0; }
+
+.btn-icone {
+    display: inline-flex; align-items: center; gap: 8px;
+    background: transparent; border: 1px solid var(--j-borda, #2f353d); color: #e8e8e8;
+    padding: 8px 18px; border-radius: 30px; cursor: pointer; font: inherit; text-decoration: none;
+    transition: transform .15s, background .15s;
+}
+.btn-icone:hover { transform: translateY(-2px); background: #262b31; }
+.btn-icone .icone { font-size: 1.3rem; line-height: 1; }
+.btn-icone.favorito.ativo { border-color: #f2c94c; color: #f2c94c; }
+.btn-icone.curtir.ativo   { border-color: #ff5a6e; color: #ff5a6e; }
+
+/* ---------- Comentários ---------- */
+.comentarios { margin-top: 8px; }
+.comentario-form { display: flex; flex-direction: column; gap: 8px; margin: 12px 0 20px; max-width: 640px; }
+.comentario-form textarea { width: 100%; }
+
+.comentario {
+    background: var(--j-fundo, #1b1f24); border: 1px solid var(--j-borda, #2f353d);
+    border-radius: 8px; padding: 10px 14px; margin: 10px 0; max-width: 640px;
+}
+.comentario time { opacity: .6; font-size: .8rem; margin-left: 8px; }
+.comentario p { margin: 6px 0; }
+.comentario form { margin: 0; }
+

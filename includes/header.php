@@ -1,7 +1,5 @@
 <?php
-if (session_status() === PHP_SESSION_NONE) {
-    session_start();
-}
+require_once __DIR__ . '/config.php';   // BASE_URL + sessão
 
 $logado = !empty($_SESSION['id']);
 $admin  = !empty($_SESSION['admin']);
@@ -11,35 +9,34 @@ $admin  = !empty($_SESSION['admin']);
     <nav class="navbar">
 
         <!-- Logo -->
-        <a class="logo" href="/game_erah/index.php">game.erah</a>
+        <a class="logo" href="<?= BASE_URL ?>/index.php">game.erah</a>
 
-        <!-- Links do sistema -->
+        <!-- Links do site -->
         <div class="menu">
-            <a href="/game_erah/index.php">Início</a>
+            <a href="<?= BASE_URL ?>/index.php">Início</a>
+            <a href="<?= BASE_URL ?>/jogos.php">Jogos</a>
 
             <?php if ($admin): ?>
-                <a href="/game_erah/app/create.php">Cadastrar</a>
-                <a href="/game_erah/app/delete.php">Excluir</a>
-                <a href="/game_erah/app/update.php">Atualizar</a>
-                <a href="/game_erah/app/select.php">Relatório</a>
-                <a href="/game_erah/app/select_w.php">Consultar</a>
-                <br>
-                <a href="/game_erah/app/jogos_create.php">Cadastrar Jogos</a>
-                <a href="/game_erah/app/jogos_delete.php">Excluir jogos</a>
-                <a href="/game_erah/app/jogos_update.php">Atualizar jogos</a>
-                <a href="/game_erah/app/jogos_select.php">Relatório jogos</a>
+                <a href="<?= BASE_URL ?>/app/painel.php">Painel Admin</a>
             <?php endif; ?>
         </div>
 
-        <!-- Links de login -->
+        <!-- Login / cadastro / sair -->
         <div class="login">
             <?php if ($logado): ?>
-                <a href="/game_erah/login/logout.php" class="btn-contorno">Sair</a>
+                <a href="<?= BASE_URL ?>/login/logout.php" class="btn-contorno">Sair</a>
             <?php else: ?>
-                <a href="/game_erah/login/cadastrar.php" class="btn-contorno">Cadastre-se</a>
-                <a href="/game_erah/login/login.php" class="btn-laranja">Entrar</a>
+                <a href="<?= BASE_URL ?>/login/cadastrar.php" class="btn-contorno">Cadastre-se</a>
+                <a href="<?= BASE_URL ?>/login/login.php" class="btn-laranja">Entrar</a>
             <?php endif; ?>
         </div>
 
     </nav>
 </header>
+
+<?php
+// Barra do administrador: aparece em TODAS as páginas, só para admin.
+if ($admin) {
+    include __DIR__ . '/admin_nav.php';
+}
+?>

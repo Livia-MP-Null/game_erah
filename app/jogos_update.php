@@ -4,33 +4,19 @@
 // ARQUIVOS NECESSÁRIOS
 // ============================================================
 
-// Carrega a conexão com o banco e funções gerais.
 require_once __DIR__ . '/../includes/functions.php';
-
-// Verifica se o usuário é administrador.
 require_once __DIR__ . '/../includes/verifica_admin.php';
-
-// Carrega as funções específicas dos jogos.
 require_once __DIR__ . '/../includes/functions_jogos.php';
 
 
 // ============================================================
-// PEGAR O ID DO JOGO
+// BUSCAR O JOGO PELO ID DA URL  (ex.: jogos_update.php?id=5)
 // ============================================================
 
-// Pega o ID enviado pela URL.
-// Exemplo: jogos_update.php?id=5
-$id = (int) ($_GET['id'] ?? 0);
-
-
-// ============================================================
-// BUSCAR O JOGO
-// ============================================================
-
+$id        = (int) ($_GET['id'] ?? 0);
 $jogoAtual = jogo_buscar($conexao, $id);
 
-
-// Se o jogo não existir, volta para o relatório.
+// Jogo inexistente: volta para o relatório
 if (!$jogoAtual) {
     header("Location: jogos_select.php");
     exit();
@@ -43,8 +29,7 @@ if (!$jogoAtual) {
 
 $erro = '';
 
-
-// Preenche o formulário com os dados atuais do jogo.
+// O formulário começa preenchido com os dados atuais
 $dados = [
     'titulo'         => $jogoAtual['titulo'],
     'desenvolvedora' => $jogoAtual['desenvolvedora'],
@@ -53,91 +38,39 @@ $dados = [
     'descricao'      => $jogoAtual['descricao']
 ];
 
+$categorias     = categorias_listar($conexao);
+$posicoesAtuais = classificacoes_do_jogo($conexao, $id);
+
 
 // ============================================================
-// VERIFICAR LIMITE DE UPLOAD
+// PROCESSAMENTO
 // ============================================================
 
 if (post_excedeu_limite()) {
 
-    $erro = "Os arquivos enviados passam do limite do servidor (post_max_size no php.ini).";
-
-
-// ============================================================
-// PROCESSAR FORMULÁRIO
-// ============================================================
+    $erro = "Os arquivos enviados passam do limite do servidor (post_max_size).";
 
 } elseif ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
+    $dados['titulo']         = trim($_POST['titulo'] ?? '');
+    $dados['desenvolvedora'] = trim($_POST['desenvolvedora'] ?? '');
+    $dados['criado_por']     = trim($_POST['criado_por'] ?? '');
+    $dados['ano_lancamento'] = trim($_POST['ano_lancamento'] ?? '');
+    $dados['descricao']      = trim($_POST['descricao'] ?? '');
 
-    // --------------------------------------------------------
-    // RECEBER DADOS DO FORMULÁRIO
-    // --------------------------------------------------------
-
-    $dados['titulo'] = trim(
-        $_POST['titulo'] ?? ''
-    );
-
-    $dados['desenvolvedora'] = trim(
-        $_POST['desenvolvedora'] ?? ''
-    );
-
-    // Campo novo: quem fez/criou o jogo.
-    $dados['criado_por'] = trim(
-        $_POST['criado_por'] ?? ''
-    );
-
-    $dados['ano_lancamento'] = trim(
-        $_POST['ano_lancamento'] ?? ''
-    );
-
-    $dados['descricao'] = trim(
-        $_POST['descricao'] ?? ''
-    );
-
-
-    // --------------------------------------------------------
-    // ARQUIVOS
-    // --------------------------------------------------------
+    $posicoes       = ler_posicoes();
+    $posicoesAtuais = $posicoes;
 
     $novaImagem = null;
-    $novoVideo = null;
-
+    $novoVideo  = null;
 
     try {
 
-        // ----------------------------------------------------
-        // VALIDAR DADOS
-        // ----------------------------------------------------
-
         validar_jogo($dados);
+        validar_posicoes($posicoes);
 
-
-        // ----------------------------------------------------
-        // SALVAR NOVA IMAGEM
-        // ----------------------------------------------------
-
-        $novaImagem = salvar_upload(
-            $_FILES['imagem'] ?? null,
-            IMAGEM_TIPOS,
-            IMAGEM_MAX
-        );
-
-
-        // ----------------------------------------------------
-        // SALVAR NOVO VÍDEO
-        // ----------------------------------------------------
-
-        $novoVideo = salvar_upload(
-            $_FILES['video'] ?? null,
-            VIDEO_TIPOS,
-            VIDEO_MAX
-        );
-
-
-        // ----------------------------------------------------
-        // ATUALIZAR NO BANCO
-        // ----------------------------------------------------
+        $novaImagem = salvar_upload($_FILES['imagem'] ?? null, IMAGEM_TIPOS, IMAGEM_MAX);
+        $novoVideo  = salvar_upload($_FILES['video'] ?? null, VIDEO_TIPOS, VIDEO_MAX);
 
         jogo_atualizar(
             $conexao,
@@ -148,122 +81,62 @@ if (post_excedeu_limite()) {
             $dados['criado_por'],
             $dados['descricao'],
             $novaImagem,
-            $novoVideo
+            $novoVideo,
+            $posicoes
         );
 
-
-        // ----------------------------------------------------
-        // APAGAR ARQUIVOS ANTIGOS
-        // ----------------------------------------------------
-
-        // Só apagamos a imagem antiga se uma nova foi enviada.
+        // Só apaga o arquivo antigo se um novo foi enviado
+        // (e só DEPOIS de o banco ter sido atualizado).
         if ($novaImagem) {
             apagar_arquivo($jogoAtual['imagem']);
         }
 
-
-        // Só apagamos o vídeo antigo se um novo foi enviado.
         if ($novoVideo) {
             apagar_arquivo($jogoAtual['video']);
         }
 
-
-        // ----------------------------------------------------
-        // VOLTAR PARA O RELATÓRIO
-        // ----------------------------------------------------
-
         header("Location: jogos_select.php?ok=atualizado");
         exit();
 
-
     } catch (Exception $e) {
 
-
-        // Se algo der errado, remove os arquivos novos
-        // que eventualmente já tenham sido salvos.
-
+        // Remove os arquivos novos que já tenham sido salvos
         apagar_arquivo($novaImagem);
         apagar_arquivo($novoVideo);
 
-
-        // Mostra o erro na página.
         $erro = $e->getMessage();
     }
 }
 
-
-// Texto que aparece no botão.
 $textoBotao = 'Salvar alterações';
 
-
-// Indica que estamos editando um jogo.
 ?>
 <!DOCTYPE html>
 <html lang="pt-br">
 
 <head>
-
     <meta charset="UTF-8">
-
-    <meta
-        name="viewport"
-        content="width=device-width, initial-scale=1.0"
-    >
-
-    <link
-        rel="stylesheet"
-        href="../style/style.css"
-    >
-
-    <link
-        rel="stylesheet"
-        href="../style/jogos.css"
-    >
-
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../style/style.css">
+    <link rel="stylesheet" href="../style/jogos.css">
     <title>Editar jogo</title>
-
 </head>
 
 <body>
 
-
-    <!-- ======================================================
-         HEADER
-         ====================================================== -->
-
     <?php include __DIR__ . '/../includes/header.php'; ?>
-
 
     <main>
 
         <h1>Editar jogo:</h1>
 
-
-        <!-- ==================================================
-             MENSAGEM DE ERRO
-             ================================================== -->
-
         <?php if ($erro): ?>
-
-            <p class="msg-erro">
-                <?= esc_html($erro) ?>
-            </p>
-
+            <p class="msg-erro"><?= esc_html($erro) ?></p>
         <?php endif; ?>
-
-
-        <!-- ==================================================
-             FORMULÁRIO
-             ================================================== -->
 
         <?php include __DIR__ . '/../includes/form_jogo.php'; ?>
 
     </main>
-
-
-    <!-- ======================================================
-         FOOTER
-         ====================================================== -->
 
     <?php include __DIR__ . '/../includes/footer.php'; ?>
 

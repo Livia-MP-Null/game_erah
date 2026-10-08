@@ -1,0 +1,33 @@
+
+/* ===== Classificação na década (acrescente ao FINAL do seu jogos.css) ===== */
+.selo {
+    display: inline-block;
+    background: rgba(242, 140, 40, .15);
+    border: 1px solid var(--j-destaque, #f28c28);
+    color: var(--j-destaque, #f28c28);
+    padding: 2px 10px;
+    border-radius: 20px;
+    font-size: .8rem;
+    font-weight: 600;
+    margin: 2px 4px 2px 0;
+    white-space: nowrap;
+}
+
+.classificacao {
+    border: 1px solid var(--j-borda, #2f353d);
+    border-radius: 8px;
+    padding: 12px 16px;
+    margin: 8px 0;
+}
+
+.classificacao legend { padding: 0 8px; font-weight: 600; }
+
+.classificacao-linha {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-top: 10px;
+}
+
+.classificacao-linha label { min-width: 200px; }
+.classificacao-linha input { width: 110px; }

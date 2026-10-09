@@ -11,12 +11,13 @@
 ![Git](https://img.shields.io/badge/Git-F05032?style=flat-square&logo=git&logoColor=white)
 ![Figma](https://img.shields.io/badge/Figma-F24E1E?style=flat-square&logo=figma&logoColor=white)
 
-[Sobre](#-sobre-o-projeto) · [Como rodar](#-como-rodar-o-projeto) · [Estrutura](#-estrutura-de-pastas) · [Requisitos](#-requisitos) · [Banco de dados](#-banco-de-dados) · [Diagramas](#-diagramas)
+[Sobre](#sobre-o-projeto) · [Como rodar](#como-rodar-o-projeto) · [Estrutura](#estrutura-de-pastas) · [Requisitos](#requisitos) · [Banco de dados](#banco-de-dados) · [Diagramas](#diagramas)
 
 </div>
 
 ---
 
+<a name="sobre-o-projeto"></a>
 ## Sobre o projeto
 
 O **Game Erah** é uma aplicação web feita em **PHP** com banco de dados **PostgreSQL** que conta a história dos videogames de um jeito simples e visual. Cada década tem seus jogos de destaque, e quem visita o site consegue ver como a tecnologia, os gráficos e a jogabilidade mudaram ao longo do tempo.
@@ -26,7 +27,7 @@ A plataforma tem dois tipos de acesso:
 | Perfil | O que pode fazer |
 |--------|------------------|
 | **Visitante** | Navegar pelas décadas, filtrar jogos por categoria, buscar um jogo e ver a ficha técnica |
-|  **Usuário cadastrado** | Tudo do visitante + favoritar jogos e enviar comentários |
+| **Usuário cadastrado** | Tudo do visitante + favoritar jogos e enviar comentários |
 | **Administrador** | Gerenciar (CRUD) usuários, jogos, décadas e categorias de destaque |
 
 > [!NOTE]
@@ -34,50 +35,39 @@ A plataforma tem dois tipos de acesso:
 
 ---
 
-##  Índice
+## Índice
 
-- [Sobre o projeto](#-sobre-o-projeto)
-- [Como rodar o projeto](#-como-rodar-o-projeto)
+
+- [Sobre o projeto](#sobre-o-projeto)
+- [Como rodar o projeto](#como-rodar-o-projeto)
   - [Pré-requisitos](#pré-requisitos)
-  - [Início rápido](#início-rápido)
   - [Passo a passo detalhado](#passo-a-passo-detalhado)
-- [Estrutura de pastas](#-estrutura-de-pastas)
-- [Requisitos](#-requisitos)
-  - [Funcionais](#requisitos-funcionais)
-  - [Não funcionais](#requisitos-não-funcionais)
+- [Estrutura de pastas](#estrutura-de-pastas)
+- [Requisitos](#requisitos)
+  - [Requisitos funcionais](#requisitos-funcionais)
+  - [Requisitos não funcionais](#requisitos-não-funcionais)
   - [Regras de negócio](#regras-de-negócio)
-- [O que o sistema faz (casos de uso)](#-o-que-o-sistema-faz)
-- [Banco de dados](#-banco-de-dados)
-- [Diagramas](#-diagramas)
-- [Protótipos](#-protótipos)
-- [Como contribuir](#-como-contribuir)
-- [Contato](#-contato)
-
+- [O que o sistema faz](#o-que-o-sistema-faz)
+- [Banco de dados](#banco-de-dados)
+- [Diagramas](#diagramas)
+- [Protótipos](#protótipos)
+- [Como contribuir](#como-contribuir)
+- [Contato](#contato)
 ---
 
-##  Como rodar o projeto
+<a name="como-rodar-o-projeto"></a>
+## Como rodar o projeto
 
+<a name="pre-requisitos"></a>
 ### Pré-requisitos
 
 Antes de começar, confira se você tem na máquina:
 
-- **PHP 7.4 ou superior**, com a extensão `pdo_pgsql` habilitada
-- **PostgreSQL** instalado e rodando na porta `5432`
+- **PHP** com a extensão `pdo_pgsql` habilitada
+- **PostgreSQL** instalado e rodando
 - **Git**
 
-### Início rápido
-
-Se você já tem tudo instalado e só quer ver funcionando, estes são os comandos em ordem (os detalhes de cada um estão logo abaixo):
-
-```bash
-git clone https://github.com/Livia-MP-Null/game_erah.git
-cd game_erah
-# crie o banco e o usuário (Passo 2), ajuste database/connect.php (Passo 3)
-php -S localhost:8000
-```
-
-Depois é só abrir **http://localhost:8000** no navegador.
-
+<a name="passo-a-passo-detalhado"></a>
 ### Passo a passo detalhado
 
 <details>
@@ -89,7 +79,7 @@ Abra o *Git Bash* e rode:
 
 ```bash
 # Baixa o projeto do GitHub
-git clone https://github.com/Livia-MP-Null/game_erah.git
+git clone [https://github.com/Livia-MP-Null/game_erah.git](https://github.com/Livia-MP-Null/game_erah.git)
 
 # Entra na pasta do projeto
 cd game_erah
@@ -104,7 +94,7 @@ cd game_erah
 
 O arquivo SQL com toda a estrutura do banco fica na pasta `database`.
 
-**a)** Abra o terminal e conecte no Postgres com o usuário padrão:
+**a)** Abra o terminal e conecte no PostgreSQL com o usuário padrão:
 
 ```bash
 psql -U postgres
@@ -126,7 +116,7 @@ ALTER DATABASE game_erahdb OWNER TO game_erah;
 ```
 
 > [!TIP]
-> No SQL, a senha vai entre **aspas simples** (`'sua_senha'`). Aspas duplas fazem o Postgres entender como nome de coluna e dá erro.
+> No SQL, a senha vai entre **aspas simples** (`'sua_senha'`). Aspas duplas fazem o PostgreSQL entender como nome de coluna e dá erro.
 
 **d)** Restaure as tabelas e os registros usando o arquivo de dump:
 
@@ -168,12 +158,13 @@ cd game_erah
 php -S localhost:8000
 ```
 
-Pronto! Abra **http://localhost:8000** no navegador e aproveite. 🎉
+Pronto! Abra **http://localhost:8000** no navegador e aproveite.
 
 </details>
 
 ---
 
+<a name="estrutura-de-pastas"></a>
 ## 🗂️ Estrutura de pastas
 
 ```
@@ -200,40 +191,42 @@ game_erah
         logout.php
 ```
 
-
 ---
 
-##  Requisitos
+<a name="requisitos"></a>
+## Requisitos
 
+<a name="requisitos-funcionais"></a>
 ### Requisitos funcionais
 
 | ID | Título | Descrição | Prioridade | Feito? |
 |----|--------|-----------|:----------:|:------:|
-| **RF01** | Cadastro de usuário | Permitir o registro de novos usuários | Alta |  |
-| **RF02** | Relatório de usuários | Listar todos os usuários cadastrados na plataforma | Alta |  |
-| **RF03** | Atualização de usuário | Permitir alterar dados e o estado do usuário (Ativo ou Inativo) | Alta |  |
-| **RF04** | Exclusão de usuário | Permitir apagar o registro de um usuário do banco de dados | Alta |  |
-| **RF05** | Consulta de usuário | Exibir as informações de um usuário a partir do seu id | Alta |  |
-| **RF06** | Linha do tempo por décadas | Permitir navegar pela história dos jogos dividida em décadas | Alta |  |
-| **RF07** | Filtro por categoria | Filtrar os jogos de cada época em *Mais jogados*, *Melhor qualidade gráfica* e *Melhor jogabilidade* | Média |  |
-| **RF08** | Ficha técnica do jogo | Exibir uma página por jogo com ano, desenvolvedora, plataformas, imagens/vídeos e uma breve descrição do impacto cultural | Média |  |
-| **RF09** | Painel administrativo | Permitir que administradores cadastrem, editem ou removam jogos, usuários, décadas e categorias | Média |  |
-| **RF10** | Busca global | Permitir pesquisar um jogo pelo nome na barra de busca | Baixa |  |
-| **RF11** | Favoritar jogo | Permitir que o usuário logado favorite e desfavorite jogos | Baixa |  |
-| **RF12** | Comentar jogo | Permitir que o usuário logado envie comentários na página de um jogo | Baixa |  |
+| **RF01** | Cadastro de usuário | Permitir o registro de novos usuários | Alta | |
+| **RF02** | Relatório de usuários | Listar todos os usuários cadastrados na plataforma | Alta | |
+| **RF03** | Atualização de usuário | Permitir alterar dados e o estado do usuário (Ativo ou Inativo) | Alta | |
+| **RF04** | Exclusão de usuário | Permitir apagar o registro de um usuário do banco de dados | Alta | |
+| **RF05** | Consulta de usuário | Exibir as informações de um usuário a partir do seu id | Alta | |
+| **RF06** | Linha do tempo por décadas | Permitir navegar pela história dos jogos dividida em décadas | Alta | |
+| **RF07** | Filtro por categoria | Filtrar os jogos de cada época em *Mais jogados*, *Melhor qualidade gráfica* e *Melhor jogabilidade* | Média | |
+| **RF08** | Ficha técnica do jogo | Exibir uma página por jogo com ano, desenvolvedora, plataformas, imagens/vídeos e uma breve descrição do impacto cultural | Média | |
+| **RF09** | Painel administrativo | Permitir que administradores cadastrem, editem ou removam jogos, usuários, décadas e categorias | Média | |
+| **RF10** | Busca global | Permitir pesquisar um jogo pelo nome na barra de busca | Baixa | |
+| **RF11** | Favoritar jogo | Permitir que o usuário logado favorite e desfavorite jogos | Baixa | |
+| **RF12** | Comentar jogo | Permitir que o usuário logado envie comentários na página de um jogo | Baixa | |
 
-
+<a name="requisitos-nao-funcionais"></a>
 ### Requisitos não funcionais
 
 | ID | Título | Descrição | Prioridade | Feito? |
 |----|--------|-----------|:----------:|:------:|
-| **RNF01** | Responsividade | A interface deve funcionar bem em celulares, tablets e computadores | Baixa |  |
-| **RNF02** | Desempenho de mídia | Imagens e vídeos devem carregar de forma otimizada (WebP e *lazy loading*), com a página inicial abrindo em menos de 2,5 s | Média |  |
-| **RNF03** | Estética e design | Visual temático inspirado na cultura gamer, com modo escuro, detalhes em neon e transições que lembrem a evolução gráfica | Baixa |  |
-| **RNF04** | Disponibilidade | Hospedagem com pelo menos 99,5% de tempo online | Baixa |  |
-| **RNF05** | SEO | Seguir boas práticas de SEO para que as páginas de jogos e décadas apareçam bem no Google | Alta |  |
-| **RNF06** | Segurança | Usar *prepared statements* nas consultas e `password_hash()` para guardar senhas | Alta |  |
+| **RNF01** | Responsividade | A interface deve funcionar bem em celulares, tablets e computadores | Baixa | |
+| **RNF02** | Desempenho de mídia | Imagens e vídeos devem carregar de forma otimizada (WebP e *lazy loading*), com a página inicial abrindo em menos de 2,5 s | Média | |
+| **RNF03** | Estética e design | Visual temático inspirado na cultura gamer, com modo escuro, detalhes em neon e transições que lembrem a evolução gráfica | Baixa | |
+| **RNF04** | Disponibilidade | Hospedagem com pelo menos 99,5% de tempo online | Baixa | |
+| **RNF05** | SEO | Seguir boas práticas de SEO para que as páginas de jogos e décadas apareçam bem no Google | Alta | |
+| **RNF06** | Segurança | Usar *prepared statements* nas consultas e `password_hash()` para guardar senhas | Alta | |
 
+<a name="regras-de-negocio"></a>
 ### Regras de negócio
 
 | ID | Regra | Descrição |
@@ -247,6 +240,7 @@ game_erah
 
 ---
 
+<a name="o-que-o-sistema-faz"></a>
 ## ⚙️ O que o sistema faz
 
 | # | Ação | Quem pode | Exige login? |
@@ -264,7 +258,8 @@ game_erah
 
 ---
 
-##  Banco de dados
+<a name="banco-de-dados"></a>
+## Banco de dados
 
 ### `usuarios`
 
@@ -278,7 +273,7 @@ game_erah
 | admin | BOOLEAN | NOT NULL, DEFAULT `false` | Define se o usuário é administrador |
 | ativo | BOOLEAN | NOT NULL, DEFAULT `true` | Estado do usuário (ativo/inativo) |
 
-### decada
+### `decada`
 
 | Campo | Tipo | Restrições | Descrição |
 | ----- | ---- | ---------- | --------- |
@@ -286,14 +281,14 @@ game_erah
 | nome | VARCHAR(50) | UNIQUE, NOT NULL | Nome da década |
 | ano_inicio | INT | NOT NULL | Ano inicial da década |
 
-### categoria
+### `categoria`
 
 | Campo | Tipo | Restrições | Descrição |
 | ----- | ---- | ---------- | --------- |
 | id | SERIAL | PRIMARY KEY | Identificador da categoria |
 | nome | VARCHAR(60) | UNIQUE, NOT NULL | Nome da categoria |
 
-### jogo
+### `jogo`
 
 | Campo | Tipo | Restrições | Descrição |
 | ----- | ---- | ---------- | --------- |
@@ -308,14 +303,14 @@ game_erah
 | video | VARCHAR(255) | — | Link do vídeo/trailer do jogo |
 | criado_por | VARCHAR(100) | — | Usuário/Admin que cadastrou o jogo |
 
-### jogo_categoria
+### `jogo_categoria`
 
 | Campo | Tipo | Restrições | Descrição |
 | ----- | ---- | ---------- | --------- |
 | jogo_id | INT | FOREIGN KEY → jogo.id | Jogo relacionado |
 | categoria_id | INT | FOREIGN KEY → categoria.id | Categoria relacionada |
 
-**Chave primária:** jogo_id, categoria_id
+**Chave primária:** (jogo_id, categoria_id)
 
 ### `favorito`
 
@@ -333,7 +328,7 @@ game_erah
 | usuario_id | INT | FOREIGN KEY → usuarios.id | Usuário que curtiu |
 | jogo_id | INT | FOREIGN KEY → jogo.id | Jogo curtido |
 
-**Chave primária:** usuario_id, jogo_id
+**Chave primária:** (usuario_id, jogo_id)
 
 ### `comentario`
 
@@ -344,6 +339,10 @@ game_erah
 | jogo_id | INT | FOREIGN KEY → jogo.id | Jogo comentado |
 | texto | TEXT | NOT NULL | Conteúdo do comentário |
 | criado_em | TIMESTAMP | DEFAULT CURRENT_TIMESTAMP | Data e hora do comentário |
+
+---
+
+<a name="diagramas"></a>
 ## 🧭 Diagramas
 
 ### Modelo Entidade-Relacionamento
@@ -400,29 +399,30 @@ erDiagram
         timestamp criado_em
     }
 
-    DECADA          ||--o{ JOGO           : "reúne"
+    DECADA         ||--o{ JOGO            : "reúne"
     JOGO            ||--o{ JOGO_CATEGORIA : "possui"
     CATEGORIA       ||--o{ JOGO_CATEGORIA : "está em"
-    USUARIOS        ||--o{ FAVORITO       : "marca"
-    JOGO            ||--o{ FAVORITO       : "é marcado"
-    USUARIOS        ||--o{ CURTIDA        : "curte"
-    JOGO            ||--o{ CURTIDA        : "recebe curtida"
-    USUARIOS        ||--o{ COMENTARIO     : "escreve"
-    JOGO            ||--o{ COMENTARIO     : "recebe"
+    USUARIOS        ||--o{ FAVORITO        : "marca"
+    JOGO            ||--o{ FAVORITO        : "é marcado"
+    USUARIOS        ||--o{ CURTIDA         : "curte"
+    JOGO            ||--o{ CURTIDA         : "recebe curtida"
+    USUARIOS        ||--o{ COMENTARIO      : "escreve"
+    JOGO            ||--o{ COMENTARIO      : "recebe"
 ```
-
-
-##  Protótipos
-
-**Baixa fidelidade:** <img width="5803" height="6475" alt="image" src="https://github.com/user-attachments/assets/a2b2e8d0-edf6-4eeb-97c6-efb1666c8523" />
-
-
-**Alta fidelidade:** [Clique aqui para ver no Figma](https://www.figma.com/design/ADrwIyHNxIPXHmH4bonXNR/E-Learning-Site--Community-?node-id=0-1&t=kyFfQaBdBLAscwWi-1)
-
 
 ---
 
-##  Como contribuir
+<a name="prototipos"></a>
+## Protótipos
+
+**Baixa fidelidade:** <img width="5803" height="6475" alt="image" src="https://github.com/user-attachments/assets/a2b2e8d0-edf6-4eeb-97c6-efb1666c8523" />
+
+**Alta fidelidade:** [Clique aqui para ver no Figma](https://www.figma.com/design/ADrwIyHNxIPXHmH4bonXNR/E-Learning-Site--Community-?node-id=0-1&t=kyFfQaBdBLAscwWi-1)
+
+---
+
+<a name="como-contribuir"></a>
+## Como contribuir
 
 1. Faça um **fork** do projeto
 2. Crie uma branch para sua ideia
@@ -441,7 +441,8 @@ erDiagram
 
 ---
 
-##  Contato
+<a name="contato"></a>
+## Contato
 
 - **Autora:** Livia
 - **GitHub:** [@Livia-MP-Null](https://github.com/Livia-MP-Null)

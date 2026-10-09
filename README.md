@@ -247,7 +247,7 @@ game_erah
 
 ---
 
-##  O que o sistema faz
+## ⚙️ O que o sistema faz
 
 | # | Ação | Quem pode | Exige login? |
 |---|------|-----------|:------------:|
@@ -259,86 +259,105 @@ game_erah
 | 6 | Consultar jogos por década e categoria | Qualquer pessoa | Não |
 | 7 | Ver detalhes de um jogo específico | Qualquer pessoa | Não |
 | 8 | Favoritar um jogo | Usuário cadastrado | Sim |
-| 9 | Enviar comentário sobre um jogo | Usuário cadastrado | Sim |
+| 9 | Curtir um jogo | Usuário cadastrado | Sim |
+| 10 | Enviar comentário sobre um jogo | Usuário cadastrado | Sim |
 
-## `usuario`
+---
 
-| Campo   | Tipo         | Restrições                | Descrição                |
-| ------- | ------------ | ------------------------- | ------------------------ |
-| id    | SERIAL       | PRIMARY KEY               | Identificador do usuário |
-| nome | VARCHAR(100) | NOT NULL                  | Nome do usuário          |
-| email | VARCHAR(255) | UNIQUE, NOT NULL          | E-mail para login        |
-| senha | TEXT         | NOT NULL                  | Senha criptografada      |
-| tipo  | VARCHAR(10)  | NOT NULL, DEFAULT `comum` | Tipo do usuário          |
-| ativo | BOOLEAN      | NOT NULL, DEFAULT `true`  | Estado do usuário        |
+##  Banco de dados
 
-## `decada`
+### `usuarios`
 
-| Campo        | Tipo        | Restrições       | Descrição               |
-| ------------ | ----------- | ---------------- | ----------------------- |
-| id         | SERIAL      | PRIMARY KEY      | Identificador da década |
-| nome       | VARCHAR(50) | UNIQUE, NOT NULL | Nome da década          |
-| ano_inicio | INT         | NOT NULL         | Ano inicial da década   |
+| Campo | Tipo | Restrições | Descrição |
+| ----- | ---- | ---------- | --------- |
+| id | SERIAL | PRIMARY KEY | Identificador do usuário |
+| nome | VARCHAR(100) | NOT NULL | Nome do usuário |
+| nasc | DATE | — | Data de nascimento |
+| email | VARCHAR(255) | UNIQUE, NOT NULL | E-mail para login |
+| senha | TEXT | NOT NULL | Senha criptografada |
+| admin | BOOLEAN | NOT NULL, DEFAULT `false` | Define se o usuário é administrador |
+| ativo | BOOLEAN | NOT NULL, DEFAULT `true` | Estado do usuário (ativo/inativo) |
 
-## `categoria`
+### decada
 
-| Campo  | Tipo        | Restrições       | Descrição                  |
-| ------ | ----------- | ---------------- | -------------------------- |
-| id   | SERIAL      | PRIMARY KEY      | Identificador da categoria |
-| nome | VARCHAR(60) | UNIQUE, NOT NULL | Nome da categoria          |
+| Campo | Tipo | Restrições | Descrição |
+| ----- | ---- | ---------- | --------- |
+| id | SERIAL | PRIMARY KEY | Identificador da década |
+| nome | VARCHAR(50) | UNIQUE, NOT NULL | Nome da década |
+| ano_inicio | INT | NOT NULL | Ano inicial da década |
 
-## `jogo`
+### categoria
 
-| Campo            | Tipo         | Restrições                | Descrição                |
-| ---------------- | ------------ | ------------------------- | ------------------------ |
-| id             | SERIAL       | PRIMARY KEY               | Identificador do jogo    |
-| titulo         | VARCHAR(150) | NOT NULL                  | Nome do jogo             |
-| ano_lancamento | INT          | NOT NULL                  | Ano de lançamento        |
-| desenvolvedora | VARCHAR(100) | —                         | Empresa que criou o jogo |
-| plataformas    | VARCHAR(200) | —                         | Plataformas do jogo      |
-| descricao      | TEXT         | —                         | Descrição do jogo        |
-| imagem        | VARCHAR(255) | —                         | Caminho da imagem        |
-| decada_id     | INT          | FOREIGN KEY → `decada.id` | Década do jogo           |
+| Campo | Tipo | Restrições | Descrição |
+| ----- | ---- | ---------- | --------- |
+| id | SERIAL | PRIMARY KEY | Identificador da categoria |
+| nome | VARCHAR(60) | UNIQUE, NOT NULL | Nome da categoria |
 
-## ` jogo_categoria`
+### jogo
 
-| Campo          | Tipo | Restrições          | Descrição             |
-| -------------- | ---- | ------------------- | --------------------- |
-| jogo_id      | INT  | FK → jogo.id      | Jogo relacionado      |
-| categoria_id | INT  | FK → categoria.id | Categoria relacionada |
+| Campo | Tipo | Restrições | Descrição |
+| ----- | ---- | ---------- | --------- |
+| id | SERIAL | PRIMARY KEY | Identificador do jogo |
+| titulo | VARCHAR(150) | NOT NULL | Nome do jogo |
+| ano_lancamento | INT | NOT NULL | Ano de lançamento |
+| desenvolvedora | VARCHAR(100) | — | Empresa que criou o jogo |
+| plataformas | VARCHAR(200) | — | Plataformas do jogo |
+| descricao | TEXT | — | Descrição do jogo |
+| imagem | VARCHAR(255) | — | Caminho da imagem |
+| decada_id | INT | FOREIGN KEY → decada.id | Década do jogo |
+| video | VARCHAR(255) | — | Link do vídeo/trailer do jogo |
+| criado_por | VARCHAR(100) | — | Usuário/Admin que cadastrou o jogo |
 
-**Chave primária:** (jogo_id, categoria_id)
+### jogo_categoria
 
-## `favorito`
+| Campo | Tipo | Restrições | Descrição |
+| ----- | ---- | ---------- | --------- |
+| jogo_id | INT | FOREIGN KEY → jogo.id | Jogo relacionado |
+| categoria_id | INT | FOREIGN KEY → categoria.id | Categoria relacionada |
 
-| Campo        | Tipo | Restrições        | Descrição             |
-| ------------ | ---- | ----------------- | --------------------- |
-| usuario_id | INT  | FK → usuario.id | Usuário que favoritou |
-| jogo_id   | INT  | FK → jogo.id    | Jogo favoritado       |
+**Chave primária:** jogo_id, categoria_id
 
-**Chave primária:** (`usuario_id, jogo_id)
+### `favorito`
 
-## `comentario`
+| Campo | Tipo | Restrições | Descrição |
+| ----- | ---- | ---------- | --------- |
+| usuario_id | INT | FOREIGN KEY → usuarios.id | Usuário que favoritou |
+| jogo_id | INT | FOREIGN KEY → jogo.id | Jogo favoritado |
 
-| Campo        | Tipo      | Restrições        | Descrição                   |
-| ------------ | --------- | ----------------- | --------------------------- |
-| id         | SERIAL    | PRIMARY KEY       | Identificador do comentário |
-| usuario_id | INT       | FK → | Autor do comentário         |
-| jogo_id   | INT       | FK → jogo.id    | Jogo comentado              |
-| texto     | TEXT      | NOT NULL          | Conteúdo do comentário      |
-| criado_em  | TIMESTAMP | DEFAULT   | Data e hora do comentário   |
+**Chave primária:** (usuario_id, jogo_id)
 
+### `curtida`
+
+| Campo | Tipo | Restrições | Descrição |
+| ----- | ---- | ---------- | --------- |
+| usuario_id | INT | FOREIGN KEY → usuarios.id | Usuário que curtiu |
+| jogo_id | INT | FOREIGN KEY → jogo.id | Jogo curtido |
+
+**Chave primária:** usuario_id, jogo_id
+
+### `comentario`
+
+| Campo | Tipo | Restrições | Descrição |
+| ----- | ---- | ---------- | --------- |
+| id | SERIAL | PRIMARY KEY | Identificador do comentário |
+| usuario_id | INT | FOREIGN KEY → usuarios.id | Autor do comentário |
+| jogo_id | INT | FOREIGN KEY → jogo.id | Jogo comentado |
+| texto | TEXT | NOT NULL | Conteúdo do comentário |
+| criado_em | TIMESTAMP | DEFAULT CURRENT_TIMESTAMP | Data e hora do comentário |
 ## 🧭 Diagramas
 
 ### Modelo Entidade-Relacionamento
 
 ```mermaid
 erDiagram
-    USUARIO {
+    USUARIOS {
         int id PK
         varchar nome
+        date nasc
         varchar email "Único"
         text senha
+        boolean admin
+        boolean ativo
     }
     DECADA {
         int id PK
@@ -358,26 +377,38 @@ erDiagram
         text descricao
         varchar imagem
         int decada_id FK
-        CONSTRAINT fk_jogo_decada FK
+        varchar video
+        varchar criado_por
+    }
+    JOGO_CATEGORIA {
+        int jogo_id FK
+        int categoria_id FK
     }
     FAVORITO {
         int usuario_id FK
         int jogo_id FK
     }
-    COMENTARIO {
-         int id PK
+    CURTIDA {
         int usuario_id FK
         int jogo_id FK
-        CONSTRAINT fk_favorito_usuario FK
-        CONSTRAINT fk_favorito_jogo FK
+    }
+    COMENTARIO {
+        int id PK
+        int usuario_id FK
+        int jogo_id FK
+        text texto
+        timestamp criado_em
     }
 
-    DECADA    ||--o{ JOGO       : "reúne"
-    JOGO      }o--o{ CATEGORIA  : "destaca-se em"
-    USUARIO   ||--o{ FAVORITO   : "marca"
-    JOGO      ||--o{ FAVORITO   : "é marcado"
-    USUARIO   ||--o{ COMENTARIO : "escreve"
-    JOGO      ||--o{ COMENTARIO : "recebe"
+    DECADA          ||--o{ JOGO           : "reúne"
+    JOGO            ||--o{ JOGO_CATEGORIA : "possui"
+    CATEGORIA       ||--o{ JOGO_CATEGORIA : "está em"
+    USUARIOS        ||--o{ FAVORITO       : "marca"
+    JOGO            ||--o{ FAVORITO       : "é marcado"
+    USUARIOS        ||--o{ CURTIDA        : "curte"
+    JOGO            ||--o{ CURTIDA        : "recebe curtida"
+    USUARIOS        ||--o{ COMENTARIO     : "escreve"
+    JOGO            ||--o{ COMENTARIO     : "recebe"
 ```
 
 

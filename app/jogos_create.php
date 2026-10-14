@@ -52,7 +52,7 @@ if (post_excedeu_limite()) {
     $imagem = null;
 //define a variavel video como vazia esperando para receber um valor
     $video = null;
-
+//ele tenta fk_livros_autor validar o jogo com a variavel dados com mesmos dados que dados 
     try {
 
         validar_jogo($dados);

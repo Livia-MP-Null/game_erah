@@ -238,8 +238,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
         // Interrompe a execução depois do redirecionamento.
         exit;
-
-
     } catch (Exception $e) {
 
         // Se alguma coisa der errado durante a atualização,
@@ -306,7 +304,7 @@ $decada = decada_do_ano($jogo['ano_lancamento']);
 <!-- Inicia o documento HTML e informa que o idioma é português do Brasil. -->
 
 <head>
-<!-- Inicia a área de configurações da página. -->
+    <!-- Inicia a área de configurações da página. -->
 
     <meta charset="UTF-8">
     <!-- Permite utilizar acentos e caracteres especiais. -->
@@ -332,366 +330,352 @@ $decada = decada_do_ano($jogo['ano_lancamento']);
 </head>
 
 <body>
-<!-- Inicia o conteúdo visível da página. -->
+    <!-- Inicia o conteúdo visível da página. -->
 
-<?php include __DIR__ . '/../includes/header.php'; ?>
-<!-- Inclui o cabeçalho do site.
+    <?php include __DIR__ . '/../includes/header.php'; ?>
+    <!-- Inclui o cabeçalho do site.
      __DIR__ representa a pasta atual do arquivo. -->
 
-<main class="admin-conteudo">
-<!-- Cria a área principal da página administrativa. -->
+    <main class="admin-conteudo">
+        <!-- Cria a área principal da página administrativa. -->
 
-    <div class="admin-titulo">
-    <!-- Área que contém o título da página. -->
+        <div class="admin-titulo">
+            <!-- Área que contém o título da página. -->
 
-        <h1>Editar jogo</h1>
-        <!-- Título principal. -->
+            <h1>Editar jogo</h1>
+            <!-- Título principal. -->
 
-        <p>
-            Altere as informações do jogo abaixo.
-        </p>
-        <!-- Pequena explicação para o administrador. -->
+            <p>
+                Altere as informações do jogo abaixo.
+            </p>
+            <!-- Pequena explicação para o administrador. -->
 
-    </div>
+        </div>
 
 
-    <?php if ($erro): ?>
-    <!-- Só entra neste trecho se $erro tiver algum conteúdo. -->
+        <?php if ($erro): ?>
+            <!-- Só entra neste trecho se $erro tiver algum conteúdo. -->
 
-        <p class="msg-erro">
-            <?= esc_html($erro) ?>
-        </p>
-        <!-- Mostra a mensagem de erro.
+            <p class="msg-erro">
+                <?= esc_html($erro) ?>
+            </p>
+            <!-- Mostra a mensagem de erro.
              esc_html() protege o conteúdo contra HTML indesejado. -->
 
-    <?php endif; ?>
+        <?php endif; ?>
 
 
-    <form
-        class="form-admin"
-        method="post"
-        enctype="multipart/form-data"
-    >
-    <!-- Cria o formulário.
+        <form
+            class="form-admin"
+            method="post"
+            enctype="multipart/form-data">
+            <!-- Cria o formulário.
          method="post" envia os dados através de POST.
          multipart/form-data permite enviar arquivos. -->
 
 
-        <input
-            type="hidden"
-            name="id"
-            value="<?= (int) $jogo['id'] ?>"
-        >
-        <!-- Campo invisível que guarda o ID do jogo.
+            <input
+                type="hidden"
+                name="id"
+                value="<?= (int) $jogo['id'] ?>">
+            <!-- Campo invisível que guarda o ID do jogo.
              Ele é enviado junto com o formulário. -->
 
 
-        <div class="campo">
-        <!-- Agrupa o campo do nome do jogo. -->
+            <div class="campo">
+                <!-- Agrupa o campo do nome do jogo. -->
 
-            <label for="titulo">
-                Nome do jogo
-            </label>
-            <!-- Texto que identifica o campo. -->
+                <label for="titulo">
+                    Nome do jogo
+                </label>
+                <!-- Texto que identifica o campo. -->
 
-            <input
-                type="text"
-                id="titulo"
-                name="titulo"
-                maxlength="255"
-                required
-                value="<?= esc_html($jogo['titulo']) ?>"
-            >
-            <!-- Campo onde o administrador pode editar o nome.
+                <input
+                    type="text"
+                    id="titulo"
+                    name="titulo"
+                    maxlength="255"
+                    required
+                    value="<?= esc_html($jogo['titulo']) ?>">
+                <!-- Campo onde o administrador pode editar o nome.
                  maxlength limita o tamanho.
                  required torna o preenchimento obrigatório.
                  value coloca o nome atual do jogo no campo. -->
 
-        </div>
+            </div>
 
 
-        <div class="campo">
+            <div class="campo">
 
-            <label for="desenvolvedora">
-                Desenvolvedora
-            </label>
-            <!-- Identifica o campo da desenvolvedora. -->
+                <label for="desenvolvedora">
+                    Desenvolvedora
+                </label>
+                <!-- Identifica o campo da desenvolvedora. -->
 
-            <input
-                type="text"
-                id="desenvolvedora"
-                name="desenvolvedora"
-                maxlength="255"
-                required
-                value="<?= esc_html($jogo['desenvolvedora']) ?>"
-            >
-            <!-- Campo para alterar a desenvolvedora. -->
+                <input
+                    type="text"
+                    id="desenvolvedora"
+                    name="desenvolvedora"
+                    maxlength="255"
+                    required
+                    value="<?= esc_html($jogo['desenvolvedora']) ?>">
+                <!-- Campo para alterar a desenvolvedora. -->
 
-        </div>
-
-
-        <div class="campo">
-
-            <label for="criado_por">
-                Feito por
-            </label>
-            <!-- Identifica quem criou o jogo. -->
-
-            <input
-                type="text"
-                id="criado_por"
-                name="criado_por"
-                maxlength="255"
-                required
-                value="<?= esc_html($jogo['criado_por']) ?>"
-            >
-            <!-- Campo para editar o criador do jogo. -->
-
-        </div>
+            </div>
 
 
-        <div class="campo">
+            <div class="campo">
 
-            <label for="ano_lancamento">
-                Ano de lançamento
-            </label>
-            <!-- Identifica o campo do ano. -->
+                <label for="criado_por">
+                    Feito por
+                </label>
+                <!-- Identifica quem criou o jogo. -->
 
-            <input
-                type="number"
-                id="ano_lancamento"
-                name="ano_lancamento"
-                min="1950"
-                max="<?= (int) date('Y') + 2 ?>"
-                required
-                value="<?= (int) $jogo['ano_lancamento'] ?>"
-            >
-            <!-- Campo numérico para alterar o ano.
+                <input
+                    type="text"
+                    id="criado_por"
+                    name="criado_por"
+                    maxlength="255"
+                    required
+                    value="<?= esc_html($jogo['criado_por']) ?>">
+                <!-- Campo para editar o criador do jogo. -->
+
+            </div>
+
+
+            <div class="campo">
+
+                <label for="ano_lancamento">
+                    Ano de lançamento
+                </label>
+                <!-- Identifica o campo do ano. -->
+
+                <input
+                    type="number"
+                    id="ano_lancamento"
+                    name="ano_lancamento"
+                    min="1950"
+                    max="<?= (int) date('Y') + 2 ?>"
+                    required
+                    value="<?= (int) $jogo['ano_lancamento'] ?>">
+                <!-- Campo numérico para alterar o ano.
                  min define o menor ano permitido.
                  date('Y') pega o ano atual.
                  +2 permite cadastrar até dois anos à frente. -->
 
-        </div>
+            </div>
 
 
-        <div class="campo">
+            <div class="campo">
 
-            <label>
-                Década
-            </label>
-            <!-- Identifica a informação da década. -->
+                <label>
+                    Década
+                </label>
+                <!-- Identifica a informação da década. -->
 
-            <input
-                type="text"
-                value="<?= (int) $decada ?>s"
-                readonly
-            >
-            <!-- Mostra a década calculada automaticamente.
+                <input
+                    type="text"
+                    value="<?= (int) $decada ?>s"
+                    readonly>
+                <!-- Mostra a década calculada automaticamente.
                  readonly impede o administrador de editar esse campo. -->
 
-            <small>
-                A década é calculada automaticamente pelo ano de lançamento.
-            </small>
-            <!-- Explica por que a década não pode ser digitada manualmente. -->
+                <small>
+                    A década é calculada automaticamente pelo ano de lançamento.
+                </small>
+                <!-- Explica por que a década não pode ser digitada manualmente. -->
 
-        </div>
+            </div>
 
 
-        <div class="campo">
+            <div class="campo">
 
-            <label for="descricao">
-                Descrição
-            </label>
-            <!-- Identifica o campo da descrição. -->
+                <label for="descricao">
+                    Descrição
+                </label>
+                <!-- Identifica o campo da descrição. -->
 
-            <textarea
-                id="descricao"
-                name="descricao"
-                rows="6"
-                required
-            ><?= esc_html($jogo['descricao']) ?></textarea>
-            <!-- Área de texto para editar a descrição do jogo.
+                <textarea
+                    id="descricao"
+                    name="descricao"
+                    rows="6"
+                    required><?= esc_html($jogo['descricao']) ?></textarea>
+                <!-- Área de texto para editar a descrição do jogo.
                  rows="6" deixa o campo com aproximadamente 6 linhas. -->
 
-        </div>
+            </div>
 
 
-        <div class="campo">
+            <div class="campo">
 
-            <label>
-                Classificação
-            </label>
-            <!-- Título da parte das classificações. -->
+                <label>
+                    Classificação
+                </label>
+                <!-- Título da parte das classificações. -->
 
 
-            <?php foreach ($categorias as $categoria): ?>
-            <!-- Percorre todas as categorias encontradas no banco. -->
+                <?php foreach ($categorias as $categoria): ?>
+                    <!-- Percorre todas as categorias encontradas no banco. -->
 
-                <?php
+                    <?php
 
-                // Pega o ID da categoria atual.
-                $categoriaId = (int) $categoria['id'];
+                    // Pega o ID da categoria atual.
+                    $categoriaId = (int) $categoria['id'];
 
-                // Começa sem nenhuma posição.
-                $valorPosicao = '';
+                    // Começa sem nenhuma posição.
+                    $valorPosicao = '';
 
-                // Verifica se essa categoria já possui uma classificação
-                // para o jogo que está sendo editado.
-                if (isset($classificacoes[$categoriaId])) {
+                    // Verifica se essa categoria já possui uma classificação
+                    // para o jogo que está sendo editado.
+                    if (isset($classificacoes[$categoriaId])) {
 
-                    // Se existir, pega a posição salva.
-                    $valorPosicao = $classificacoes[$categoriaId];
-                }
+                        // Se existir, pega a posição salva.
+                        $valorPosicao = $classificacoes[$categoriaId];
+                    }
 
-                ?>
+                    ?>
 
-                <div class="classificacao-campo">
-                <!-- Cria o espaço visual para uma classificação. -->
+                    <div class="classificacao-campo">
+                        <!-- Cria o espaço visual para uma classificação. -->
 
-                    <label>
-                        <?= esc_html($categoria['nome']) ?>
-                    </label>
-                    <!-- Mostra o nome da categoria. -->
+                        <label>
+                            <?= esc_html($categoria['nome']) ?>
+                        </label>
+                        <!-- Mostra o nome da categoria. -->
 
-                    <input
-                        type="number"
-                        name="posicao[<?= $categoriaId ?>]"
-                        min="1"
-                        max="100"
-                        value="<?= esc_html($valorPosicao) ?>"
-                        placeholder="Posição"
-                    >
-                    <!-- Campo para informar a posição do jogo.
+                        <input
+                            type="number"
+                            name="posicao[<?= $categoriaId ?>]"
+                            min="1"
+                            max="100"
+                            value="<?= esc_html($valorPosicao) ?>"
+                            placeholder="Posição">
+                        <!-- Campo para informar a posição do jogo.
                          O nome posicao[ID] permite enviar várias posições
                          associadas aos IDs das categorias. -->
 
-                </div>
+                    </div>
 
-            <?php endforeach; ?>
-            <!-- Finaliza o loop das categorias. -->
+                <?php endforeach; ?>
+                <!-- Finaliza o loop das categorias. -->
 
-        </div>
-
-
-        <div class="campo">
-
-            <label for="imagem">
-                Nova imagem
-            </label>
-            <!-- Identifica o campo de upload da imagem. -->
+            </div>
 
 
-            <?php if (!empty($jogo['imagem'])): ?>
-            <!-- Verifica se o jogo já possui uma imagem. -->
+            <div class="campo">
 
-                <p>
-                    Imagem atual:
-                    <?= esc_html($jogo['imagem']) ?>
-                </p>
-                <!-- Mostra o nome do arquivo da imagem atual. -->
+                <label for="imagem">
+                    Nova imagem
+                </label>
+                <!-- Identifica o campo de upload da imagem. -->
 
-                <img
-                    class="miniatura"
-                    src="<?= URL_UPLOADS . esc_html($jogo['imagem']) ?>"
-                    alt="<?= esc_html($jogo['titulo']) ?>"
-                >
-                <!-- Mostra uma miniatura da imagem atual.
+
+                <?php if (!empty($jogo['imagem'])): ?>
+                    <!-- Verifica se o jogo já possui uma imagem. -->
+
+                    <p>
+                        Imagem atual:
+                        <?= esc_html($jogo['imagem']) ?>
+                    </p>
+                    <!-- Mostra o nome do arquivo da imagem atual. -->
+
+                    <img
+                        class="miniatura"
+                        src="<?= URL_UPLOADS . esc_html($jogo['imagem']) ?>"
+                        alt="<?= esc_html($jogo['titulo']) ?>">
+                    <!-- Mostra uma miniatura da imagem atual.
                      URL_UPLOADS indica a pasta onde os uploads estão. -->
 
-            <?php endif; ?>
+                <?php endif; ?>
 
 
-            <input
-                type="file"
-                id="imagem"
-                name="imagem"
-                accept="image/jpeg,image/png,image/webp"
-            >
-            <!-- Campo para selecionar uma nova imagem.
+                <input
+                    type="file"
+                    id="imagem"
+                    name="imagem"
+                    accept="image/jpeg,image/png,image/webp">
+                <!-- Campo para selecionar uma nova imagem.
                  accept limita os tipos de arquivo mostrados/aceitos
                  pelo navegador. -->
 
-            <small>
-                Deixe vazio para manter a imagem atual.
-            </small>
-            <!-- Explica que o upload é opcional. -->
+                <small>
+                    Deixe vazio para manter a imagem atual.
+                </small>
+                <!-- Explica que o upload é opcional. -->
 
-        </div>
-
-
-        <div class="campo">
-
-            <label for="video">
-                Novo vídeo
-            </label>
-            <!-- Identifica o campo de vídeo. -->
+            </div>
 
 
-            <?php if (!empty($jogo['video'])): ?>
-            <!-- Verifica se o jogo já possui um vídeo. -->
+            <div class="campo">
 
-                <p>
-                    Vídeo atual:
-                    <?= esc_html($jogo['video']) ?>
-                </p>
-                <!-- Mostra o nome do vídeo atual. -->
-
-            <?php endif; ?>
+                <label for="video">
+                    Novo vídeo
+                </label>
+                <!-- Identifica o campo de vídeo. -->
 
 
-            <input
-                type="file"
-                id="video"
-                name="video"
-                accept="video/mp4,video/webm"
-            >
-            <!-- Campo para selecionar um novo vídeo.
+                <?php if (!empty($jogo['video'])): ?>
+                    <!-- Verifica se o jogo já possui um vídeo. -->
+
+                    <p>
+                        Vídeo atual:
+                        <?= esc_html($jogo['video']) ?>
+                    </p>
+                    <!-- Mostra o nome do vídeo atual. -->
+
+                <?php endif; ?>
+
+
+                <input
+                    type="file"
+                    id="video"
+                    name="video"
+                    accept="video/mp4,video/webm">
+                <!-- Campo para selecionar um novo vídeo.
                  Aceita MP4 e WebM. -->
 
-            <small>
-                Deixe vazio para manter o vídeo atual.
-            </small>
-            <!-- Explica que o vídeo não precisa ser substituído. -->
+                <small>
+                    Deixe vazio para manter o vídeo atual.
+                </small>
+                <!-- Explica que o vídeo não precisa ser substituído. -->
 
-        </div>
+            </div>
 
 
-        <div class="admin-acoes">
-        <!-- Área onde ficam os botões. -->
+            <div class="admin-acoes">
+                <!-- Área onde ficam os botões. -->
 
-            <button
-                type="submit"
-                class="btn-admin"
-            >
-                Salvar alterações
-            </button>
-            <!-- Botão que envia o formulário para o PHP.
+                <button
+                    type="submit"
+                    class="btn-admin">
+                    Salvar alterações
+                </button>
+                <!-- Botão que envia o formulário para o PHP.
                  Como type é submit, os dados são enviados. -->
 
 
-            <a
-                href="jogos_select.php"
-                class="btn-secundario"
-            >
-                Cancelar
-            </a>
-            <!-- Link que leva de volta para a lista de jogos. -->
+                <a
+                    href="jogos_select.php"
+                    class="btn-secundario">
+                    Cancelar
+                </a>
+                <!-- Link que leva de volta para a lista de jogos. -->
 
-        </div>
+            </div>
 
-    </form>
-    <!-- Fecha o formulário. -->
-
-</main>
-<!-- Fecha a área principal. -->
+        </form>
 
 
-<?php include __DIR__ . '/../includes/footer.php'; ?>
-<!-- Inclui o rodapé do site. -->
+    </main>
+
+
+
+    <?php include __DIR__ . '/../includes/footer.php'; ?>
+    <!-- Inclui o rodapé do site. -->
 
 </body>
-<!-- Fecha o corpo da página. -->
+
 
 </html>
-<!-- Fecha o documento HTML. -->
+
 ```

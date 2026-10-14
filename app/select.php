@@ -14,6 +14,8 @@ require_once __DIR__ . '/../includes/verifica_admin.php';
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <link rel="stylesheet" href="../style/style.css">
+    <link rel="stylesheet" href="../style/header.css">
+    <link rel="stylesheet" href="../style/adm_style.css">
 
     <title>Relatório</title>
 
@@ -23,18 +25,20 @@ require_once __DIR__ . '/../includes/verifica_admin.php';
 
     <?php include __DIR__ . '/../includes/header.php'; ?>
 
-
-
     <main>
+
         <h1>Relatório:</h1>
+
         <?php
 
         if (isset($conexao) && $conexao !== null) {
 
             relatorio($conexao);
+
         } else {
 
             echo "<p>Sem conexão com o banco de dados para gerar o relatório.</p>";
+
         }
 
         ?>

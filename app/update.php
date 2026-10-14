@@ -9,16 +9,22 @@ require_once __DIR__ . '/../includes/verifica_admin.php';
 <html lang="pt-br">
 
 <head>
+
     <meta charset="UTF-8">
+
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
     <link rel="stylesheet" href="../style/style.css">
-    <title>Atualizar</title>
+    <link rel="stylesheet" href="../style/header.css">
+    <link rel="stylesheet" href="../style/adm_style.css">
+
+    <title>Atualizar usuário</title>
+
 </head>
 
 <body>
 
     <?php include __DIR__ . '/../includes/header.php'; ?>
-
 
     <main>
 
@@ -27,7 +33,11 @@ require_once __DIR__ . '/../includes/verifica_admin.php';
         <form action="" method="post" class="meu-formulario">
 
             <div class="campo">
-                <label for="id">ID:</label>
+
+                <label for="id">
+                    ID:
+                </label>
+
                 <input
                     type="number"
                     name="id"
@@ -35,54 +45,90 @@ require_once __DIR__ . '/../includes/verifica_admin.php';
                     placeholder="Insira ID para atualizar"
                     required
                 >
+
             </div>
 
+
             <div class="campo">
-                <label for="nome">Nome:</label>
+
+                <label for="nome">
+                    Nome:
+                </label>
+
                 <input
                     type="text"
                     name="nome"
                     id="nome"
                     required
                 >
+
             </div>
 
+
             <div class="campo">
-                <label for="senha">Senha:</label>
+
+                <label for="senha">
+                    Senha:
+                </label>
+
                 <input
                     type="password"
                     name="senha"
                     id="senha"
                     required
                 >
+
             </div>
 
+
             <div class="campo">
-                <label for="email">E-mail:</label>
+
+                <label for="email">
+                    E-mail:
+                </label>
+
                 <input
                     type="email"
                     name="email"
                     id="email"
                     required
                 >
+
             </div>
 
+
             <div class="campo">
-                <label for="nasc">Nascimento:</label>
+
+                <label for="nasc">
+                    Nascimento:
+                </label>
+
                 <input
                     type="date"
                     name="nasc"
                     id="nasc"
                     required
                 >
+
             </div>
 
+
             <div class="botoes">
-                <input type="submit" value="Atualizar">
-                <input type="reset" value="Limpar">
+
+                <input
+                    type="submit"
+                    value="Atualizar"
+                >
+
+                <input
+                    type="reset"
+                    value="Limpar"
+                >
+
             </div>
 
         </form>
+
 
         <?php
 

@@ -1,0 +1,125 @@
+/* ================================= */
+/* BARRA DO ADMINISTRADOR             */
+/* ================================= */
+
+.admin-bar {
+    width: 100%;
+    min-height: 55px;
+    background: #111;
+    border-bottom: 1px solid #333;
+
+    display: flex;
+    align-items: center;
+
+    gap: 30px;
+    padding: 0 70px;
+
+    box-sizing: border-box;
+
+    position: relative;
+    z-index: 1000;
+}
+
+
+/* TÍTULO ADMIN */
+
+.admin-bar-titulo {
+    color: #ff8c00;
+    font-size: 18px;
+    font-weight: bold;
+    margin-right: 10px;
+}
+
+
+/* LINKS PRINCIPAIS DA BARRA */
+
+.admin-bar > a,
+.admin-grupo > span {
+    color: white;
+    text-decoration: none;
+    font-size: 16px;
+    white-space: nowrap;
+    cursor: pointer;
+
+    padding: 18px 0;
+
+    transition: 0.2s;
+}
+
+.admin-bar > a:hover,
+.admin-grupo > span:hover {
+    color: #ff8c00;
+}
+
+
+/* ================================= */
+/* GRUPOS                            */
+/* ================================= */
+
+.admin-grupo {
+    position: relative;
+    height: 55px;
+
+    display: flex;
+    align-items: center;
+}
+
+
+/* ================================= */
+/* MENU DROPDOWN                     */
+/* ================================= */
+
+.admin-menu {
+    position: absolute;
+
+    top: 55px;
+    left: 0;
+
+    min-width: 230px;
+
+    background: #111;
+
+    border: 1px solid #333;
+    border-radius: 0 0 8px 8px;
+
+    padding: 8px 0;
+
+    display: none;
+    flex-direction: column;
+
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.5);
+}
+
+
+/* ABRIR MENU */
+
+.admin-grupo:hover .admin-menu,
+.admin-grupo:focus-within .admin-menu {
+    display: flex;
+}
+
+
+/* LINKS DO DROPDOWN */
+
+.admin-menu a {
+    display: block;
+
+    color: white;
+    text-decoration: none;
+
+    font-size: 15px;
+
+    padding: 12px 18px;
+
+    white-space: nowrap;
+
+    transition: 0.2s;
+}
+
+
+/* HOVER DOS LINKS */
+
+.admin-menu a:hover {
+    background: #ff8c00;
+    color: #000;
+}

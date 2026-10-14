@@ -6,13 +6,20 @@ require_once __DIR__ . '/../includes/verifica_admin.php';
 ?>
 
 <!DOCTYPE html>
+
 <html lang="pt-br">
 
 <head>
+
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
     <link rel="stylesheet" href="../style/style.css">
+    <link rel="stylesheet" href="../style/header.css">
+    <link rel="stylesheet" href="../style/adm_style.css">
+
     <title>Cadastrar</title>
+
 </head>
 
 <body>
@@ -45,7 +52,6 @@ require_once __DIR__ . '/../includes/verifica_admin.php';
             <input type="radio" name="ativo" id="ativo_nao" value="false">
             <label for="ativo_nao">Não</label>
 
-
             <input type="submit" value="Cadastrar">
             <input type="reset" value="Limpar">
 
@@ -55,7 +61,6 @@ require_once __DIR__ . '/../includes/verifica_admin.php';
 
     <?php
 
-    // Esse if faz o PHP começar somente quando o formulário for enviado
     if ($_SERVER['REQUEST_METHOD'] == "POST") {
 
         $name = $_POST['nome'];
@@ -66,7 +71,14 @@ require_once __DIR__ . '/../includes/verifica_admin.php';
         // Converte "true" e "false" para 1 e 0
         $ativo = $_POST['ativo'] === 'true' ? 1 : 0;
 
-        cadastrar($conexao, $name, $nasc, $senha, $email,);
+        cadastrar(
+            $conexao,
+            $name,
+            $nasc,
+            $senha,
+            $email,
+            $ativo
+        );
     }
 
     include __DIR__ . '/../includes/footer.php';

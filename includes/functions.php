@@ -21,7 +21,7 @@ function cadastrar($conexao, $nome, $nasc, $senha, $email)
 
         $stmt->execute();
 
-        echo "Aluno inserido com sucesso!";
+        echo "Usuário inserido com sucesso!";
 
     } catch (PDOException $e) {
         echo "Erro: " . $e->getMessage();

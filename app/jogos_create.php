@@ -1,4 +1,5 @@
 <?php
+
 // ATENÇÃO: não deixe NENHUMA linha em branco antes do "<?php" acima.
 // Qualquer espaço antes dele faz o header("Location: ...") falhar
 // com o erro "headers already sent".
@@ -7,9 +8,9 @@
 // ARQUIVOS NECESSÁRIOS
 // ============================================================
 
-require_once __DIR__ . '/../includes/functions.php';       // conexão + funções gerais
-require_once __DIR__ . '/../includes/verifica_admin.php';  // só admin entra
-require_once __DIR__ . '/../includes/functions_jogos.php'; // funções dos jogos
+require_once __DIR__ . '/../includes/functions.php';
+require_once __DIR__ . '/../includes/verifica_admin.php';
+require_once __DIR__ . '/../includes/functions_jogos.php';
 
 
 // ============================================================
@@ -18,7 +19,6 @@ require_once __DIR__ . '/../includes/functions_jogos.php'; // funções dos jogo
 
 $erro = '';
 
-// Campos começam vazios: estamos cadastrando um jogo novo.
 $dados = [
     'titulo'         => '',
     'desenvolvedora' => '',
@@ -27,7 +27,7 @@ $dados = [
     'descricao'      => ''
 ];
 
-$categorias     = categorias_listar($conexao);
+$categorias = categorias_listar($conexao);
 $posicoesAtuais = [];
 
 
@@ -41,29 +41,35 @@ if (post_excedeu_limite()) {
 
 } elseif ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
-    // trim() tira espaços do começo e do fim
     $dados['titulo']         = trim($_POST['titulo'] ?? '');
     $dados['desenvolvedora'] = trim($_POST['desenvolvedora'] ?? '');
     $dados['criado_por']     = trim($_POST['criado_por'] ?? '');
     $dados['ano_lancamento'] = trim($_POST['ano_lancamento'] ?? '');
     $dados['descricao']      = trim($_POST['descricao'] ?? '');
 
-    $posicoes       = ler_posicoes();
-    $posicoesAtuais = $posicoes;   // para o formulário não perder o que foi digitado
+    $posicoes = ler_posicoes();
+    $posicoesAtuais = $posicoes;
 
-    // Nomes dos arquivos salvos (null = nada enviado)
     $imagem = null;
-    $video  = null;
+    $video = null;
 
     try {
 
         validar_jogo($dados);
         validar_posicoes($posicoes);
 
-        $imagem = salvar_upload($_FILES['imagem'] ?? null, IMAGEM_TIPOS, IMAGEM_MAX);
-        $video  = salvar_upload($_FILES['video'] ?? null, VIDEO_TIPOS, VIDEO_MAX);
+        $imagem = salvar_upload(
+            $_FILES['imagem'] ?? null,
+            IMAGEM_TIPOS,
+            IMAGEM_MAX
+        );
 
-        // A ordem dos parâmetros precisa ser a mesma de jogo_criar()
+        $video = salvar_upload(
+            $_FILES['video'] ?? null,
+            VIDEO_TIPOS,
+            VIDEO_MAX
+        );
+
         jogo_criar(
             $conexao,
             $dados['titulo'],
@@ -76,13 +82,11 @@ if (post_excedeu_limite()) {
             $posicoes
         );
 
-        // Deu certo: volta ao relatório com a mensagem "criado"
         header("Location: jogos_select.php?ok=criado");
         exit();
 
     } catch (Exception $e) {
 
-        // Se algo falhou, não deixa arquivo órfão no servidor
         apagar_arquivo($imagem);
         apagar_arquivo($video);
 
@@ -91,18 +95,34 @@ if (post_excedeu_limite()) {
 }
 
 $textoBotao = 'Cadastrar jogo';
-$jogoAtual  = null;
+$jogoAtual = null;
 
 ?>
+
 <!DOCTYPE html>
+
 <html lang="pt-br">
 
 <head>
+
     <meta charset="UTF-8">
+
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- CSS geral -->
     <link rel="stylesheet" href="../style/style.css">
+
+    <!-- CSS do cabeçalho -->
+    <link rel="stylesheet" href="../style/header.css">
+
+    <!-- CSS da barra ADMIN -->
+    <link rel="stylesheet" href="../style/adm_style.css">
+
+    <!-- CSS específico dos jogos -->
     <link rel="stylesheet" href="../style/jogos.css">
+
     <title>Novo jogo</title>
+
 </head>
 
 <body>
@@ -114,7 +134,11 @@ $jogoAtual  = null;
         <h1>Cadastrar jogo:</h1>
 
         <?php if ($erro): ?>
-            <p class="msg-erro"><?= esc_html($erro) ?></p>
+
+            <p class="msg-erro">
+                <?= esc_html($erro) ?>
+            </p>
+
         <?php endif; ?>
 
         <?php include __DIR__ . '/../includes/form_jogo.php'; ?>

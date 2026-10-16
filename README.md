@@ -165,7 +165,7 @@ Pronto! Abra **http://localhost:8000** no navegador e aproveite.
 ---
 
 <a name="estrutura-de-pastas"></a>
-## 🗂️ Estrutura de pastas
+##  Estrutura de pastas
 
 ```
 game_erah

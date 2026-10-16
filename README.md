@@ -26,17 +26,16 @@ A plataforma tem dois tipos de acesso:
 
 | Perfil | O que pode fazer |
 |--------|------------------|
-| **Visitante** | Navegar pelas décadas, filtrar jogos por categoria, buscar um jogo e ver a ficha técnica |
-| **Usuário cadastrado** | Tudo do visitante + favoritar jogos e enviar comentários |
-| **Administrador** | Gerenciar (CRUD) usuários, jogos, décadas e categorias de destaque |
+| **Visitante** | Navegar pelas décadas, consultar jogos com classificações por categoria e ver a ficha técnica |
+| **Usuário cadastrado** | Tudo do visitante + curtir, favoritar jogos e enviar ou excluir seus próprios comentários |
+| **Administrador** | Gerenciar (CRUD) usuários e jogos, visualizar painel com métricas e gerenciar comentários |
 
 > [!NOTE]
-> O CRUD completo (cadastrar, listar, atualizar e apagar) funciona integrado ao banco PostgreSQL, tanto para usuários quanto para o conteúdo do site.
+> O CRUD completo (cadastrar, listar, atualizar e apagar) funciona integrado ao banco PostgreSQL, tanto para usuários quanto para os jogos e suas mídias.
 
 ---
 
 ## Índice
-
 
 - [Sobre o projeto](#sobre-o-projeto)
 - [Como rodar o projeto](#como-rodar-o-projeto)
@@ -53,6 +52,7 @@ A plataforma tem dois tipos de acesso:
 - [Protótipos](#protótipos)
 - [Como contribuir](#como-contribuir)
 - [Contato](#contato)
+
 ---
 
 <a name="como-rodar-o-projeto"></a>
@@ -165,26 +165,43 @@ Pronto! Abra **http://localhost:8000** no navegador e aproveite.
 ---
 
 <a name="estrutura-de-pastas"></a>
-##  Estrutura de pastas
+## 🗂️ Estrutura de pastas
 
 ```
 game_erah
-│   index.php                 → página inicial
+│   index.php               → página inicial
+│   jogos.php               → seleção de décadas
+│   decada.php              → exibição dos jogos da década
+│   interagir.php           → processamento de curtidas, favoritos e comentários
 │   README.md
-├───app                       → telas e ações do CRUD
-│       create.php
-│       select.php
-│       select_w.php
-│       update.php
-│       delete.php
-├───css
-│       style.css             → estilos do site
+├───app                     → área administrativa e CRUDs
+│       create.php          → cadastro de usuário
+│       select.php          → relatório de usuários
+│       select_w.php        → consulta de usuário por ID
+│       update.php          → atualização de usuário
+│       delete.php          → exclusão de usuário
+│       jogos_create.php    → cadastro de jogo
+│       jogos_select.php    → relatório e lista de jogos
+│       jogos_update.php    → edição de jogo
+│       jogos_delete.php    → exclusão de jogo
+│       painel.php          → dashboard do administrador
+├───style                   → arquivos de estilo CSS
+│       style.css
+│       header.css
+│       adm_style.css
+│       jogos.css
 ├───database
-│       connect.php           → conexão com o PostgreSQL
-│       dumpgame_erahdb.sql   → estrutura e dados do banco
+│       connect.php         → conexão com o PostgreSQL
+│       dumpgame_erahdb.sql → estrutura e dados do banco
 ├───includes
-│       header.php            → cabeçalho reaproveitado
-│       footer.php            → rodapé reaproveitado
+│       header.php          → cabeçalho reaproveitado
+│       footer.php          → rodapé reaproveitado
+│       functions.php       → funções gerais do sistema
+│       functions_usuarios.php → funções do CRUD de usuários
+│       functions_jogos.php    → funções do CRUD de jogos
+│       functions_interacao.php→ funções de curtir, favoritar e comentar
+│       botoes_decadas.php  → botões de seleção de décadas
+│       view_decada.php     → visualização da página de década
 └───login
         login.php
         cadastrar.php
@@ -199,32 +216,29 @@ game_erah
 <a name="requisitos-funcionais"></a>
 ### Requisitos funcionais
 
-| ID | Título | Descrição | Prioridade | Feito? |
-|----|--------|-----------|:----------:|:------:|
-| **RF01** | Cadastro de usuário | Permitir o registro de novos usuários | Alta | |
-| **RF02** | Relatório de usuários | Listar todos os usuários cadastrados na plataforma | Alta | |
-| **RF03** | Atualização de usuário | Permitir alterar dados e o estado do usuário (Ativo ou Inativo) | Alta | |
-| **RF04** | Exclusão de usuário | Permitir apagar o registro de um usuário do banco de dados | Alta | |
-| **RF05** | Consulta de usuário | Exibir as informações de um usuário a partir do seu id | Alta | |
-| **RF06** | Linha do tempo por décadas | Permitir navegar pela história dos jogos dividida em décadas | Alta | |
-| **RF07** | Filtro por categoria | Filtrar os jogos de cada época em *Mais jogados*, *Melhor qualidade gráfica* e *Melhor jogabilidade* | Média | |
-| **RF08** | Ficha técnica do jogo | Exibir uma página por jogo com ano, desenvolvedora, plataformas, imagens/vídeos e uma breve descrição do impacto cultural | Média | |
-| **RF09** | Painel administrativo | Permitir que administradores cadastrem, editem ou removam jogos, usuários, décadas e categorias | Média | |
-| **RF10** | Busca global | Permitir pesquisar um jogo pelo nome na barra de busca | Baixa | |
-| **RF11** | Favoritar jogo | Permitir que o usuário logado favorite e desfavorite jogos | Baixa | |
-| **RF12** | Comentar jogo | Permitir que o usuário logado envie comentários na página de um jogo | Baixa | |
+| ID | Título | Descrição | Prioridade |
+|----|--------|-----------|:----------:|
+| **RF01** | Cadastro de usuário | Permitir o registro de novos usuários | Alta |
+| **RF02** | Relatório de usuários | Listar todos os usuários cadastrados na plataforma | Alta |
+| **RF03** | Atualização de usuário | Permitir alterar dados e o estado do usuário | Alta |
+| **RF04** | Exclusão de usuário | Permitir apagar o registro de um usuário com travas de segurança | Alta |
+| **RF05** | Consulta de usuário | Exibir as informações de um usuário a partir do seu ID | Alta |
+| **RF06** | Linha do tempo por décadas | Permitir navegar pela história dos jogos dividida em décadas | Alta |
+| **RF07** | Classificação por categoria | Exibir selos de classificação e posição do jogo em cada categoria | Média |
+| **RF08** | Ficha técnica do jogo | Exibir detalhes do jogo com ano, desenvolvedora, autor, imagem, vídeo e descrição | Média |
+| **RF09** | Painel administrativo | Permitir que administradores gerenciem jogos, usuários e visualizem métricas do sistema | Média |
+| **RF10** | Curtir e Favoritar jogo | Permitir que o usuário logado curta e favorite/desfavorite jogos | Média |
+| **RF11** | Comentar jogo | Permitir que o usuário logado envie e exclua comentários na página do jogo | Média |
 
 <a name="requisitos-nao-funcionais"></a>
 ### Requisitos não funcionais
 
-| ID | Título | Descrição | Prioridade | Feito? |
-|----|--------|-----------|:----------:|:------:|
-| **RNF01** | Responsividade | A interface deve funcionar bem em celulares, tablets e computadores | Baixa | |
-| **RNF02** | Desempenho de mídia | Imagens e vídeos devem carregar de forma otimizada (WebP e *lazy loading*), com a página inicial abrindo em menos de 2,5 s | Média | |
-| **RNF03** | Estética e design | Visual temático inspirado na cultura gamer, com modo escuro, detalhes em neon e transições que lembrem a evolução gráfica | Baixa | |
-| **RNF04** | Disponibilidade | Hospedagem com pelo menos 99,5% de tempo online | Baixa | |
-| **RNF05** | SEO | Seguir boas práticas de SEO para que as páginas de jogos e décadas apareçam bem no Google | Alta | |
-| **RNF06** | Segurança | Usar *prepared statements* nas consultas e `password_hash()` para guardar senhas | Alta | |
+| ID | Título | Descrição | Prioridade |
+|----|--------|-----------|:----------:|
+| **RNF01** | Responsividade | A interface deve funcionar bem em celulares, tablets e computadores | Média |
+| **RNF02** | Desempenho de mídia | Fazer upload e exibição otimizada de imagens e vídeos | Média |
+| **RNF03** | Estética e design | Visual temático inspirado na cultura gamer, com modo escuro e barras personalizadas | Baixa |
+| **RNF04** | Segurança | Usar *prepared statements* no banco, `password_hash()` para senhas, validação CSRF e sanitização contra XSS | Alta |
 
 <a name="regras-de-negocio"></a>
 ### Regras de negócio
@@ -232,11 +246,11 @@ game_erah
 | ID | Regra | Descrição |
 |----|-------|-----------|
 | **RN01** | E-mail único | Não é permitido cadastrar dois usuários com o mesmo e-mail |
-| **RN02** | Acesso do administrador | Somente administradores acessam o painel e gerenciam jogos, décadas e categorias |
-| **RN03** | Usuário inativo | Usuários com estado *Inativo* não conseguem fazer login |
-| **RN04** | Login para interagir | Favoritar e comentar exigem sessão ativa |
-| **RN05** | Favorito único | Um usuário só pode favoritar o mesmo jogo uma vez |
-| **RN06** | Campos obrigatórios | Todo jogo precisa ter título, ano de lançamento e década |
+| **RN02** | Acesso do administrador | Somente administradores acessam o painel e os CRUDs |
+| **RN03** | Autoexclusão e último admin | O administrador não pode apagar a própria conta nem remover o último admin |
+| **RN04** | Login para interagir | Curtir, favoritar e comentar exigem sessão ativa de usuário |
+| **RN05** | Alternância de marcação | Curtir e favoritar funcionam no formato *toggle* (liga/desliga) |
+| **RN06** | Exclusão de comentários | O usuário só pode apagar os próprios comentários, enquanto administradores podem apagar qualquer comentário |
 
 ---
 
@@ -245,16 +259,16 @@ game_erah
 
 | # | Ação | Quem pode | Exige login? |
 |---|------|-----------|:------------:|
-| 1 | Criar usuário | Qualquer pessoa | Não |
+| 1 | Criar conta de usuário | Qualquer pessoa | Não |
 | 2 | Excluir usuário | Administrador | Sim |
 | 3 | Consultar todos os usuários | Administrador | Sim |
 | 4 | Consultar um usuário específico | Administrador | Sim |
 | 5 | Atualizar cadastro de usuário | Administrador | Sim |
-| 6 | Consultar jogos por década e categoria | Qualquer pessoa | Não |
-| 7 | Ver detalhes de um jogo específico | Qualquer pessoa | Não |
+| 6 | Consultar jogos por década e classificação | Qualquer pessoa | Não |
+| 7 | Ver detalhes e mídias de um jogo | Qualquer pessoa | Não |
 | 8 | Favoritar um jogo | Usuário cadastrado | Sim |
 | 9 | Curtir um jogo | Usuário cadastrado | Sim |
-| 10 | Enviar comentário sobre um jogo | Usuário cadastrado | Sim |
+| 10 | Enviar e apagar comentário sobre um jogo | Usuário cadastrado / Admin | Sim |
 
 ---
 
@@ -278,15 +292,15 @@ game_erah
 | Campo | Tipo | Restrições | Descrição |
 | ----- | ---- | ---------- | --------- |
 | id | SERIAL | PRIMARY KEY | Identificador da década |
-| nome | VARCHAR(50) | UNIQUE, NOT NULL | Nome da década |
-| ano_inicio | INT | NOT NULL | Ano inicial da década |
+| nome | VARCHAR(50) | UNIQUE, NOT NULL | Nome da década (ex.: "Anos 80") |
+| ano_inicio | INT | NOT NULL | Ano inicial da década (ex.: 1980) |
 
 ### `categoria`
 
 | Campo | Tipo | Restrições | Descrição |
 | ----- | ---- | ---------- | --------- |
 | id | SERIAL | PRIMARY KEY | Identificador da categoria |
-| nome | VARCHAR(60) | UNIQUE, NOT NULL | Nome da categoria |
+| nome | VARCHAR(60) | UNIQUE, NOT NULL | Nome da categoria (ex.: "Mais jogados") |
 
 ### `jogo`
 
@@ -295,13 +309,12 @@ game_erah
 | id | SERIAL | PRIMARY KEY | Identificador do jogo |
 | titulo | VARCHAR(150) | NOT NULL | Nome do jogo |
 | ano_lancamento | INT | NOT NULL | Ano de lançamento |
-| desenvolvedora | VARCHAR(100) | — | Empresa que criou o jogo |
-| plataformas | VARCHAR(200) | — | Plataformas do jogo |
-| descricao | TEXT | — | Descrição do jogo |
-| imagem | VARCHAR(255) | — | Caminho da imagem |
+| desenvolvedora | VARCHAR(100) | — | Empresa desenvolvedora |
+| criado_por | VARCHAR(100) | — | Autor/Criador do jogo |
+| descricao | TEXT | — | Descrição detalhada |
+| imagem | VARCHAR(255) | — | Nome do arquivo de imagem salvo no servidor |
+| video | VARCHAR(255) | — | Nome do arquivo de vídeo salvo no servidor |
 | decada_id | INT | FOREIGN KEY → decada.id | Década do jogo |
-| video | VARCHAR(255) | — | Link do vídeo/trailer do jogo |
-| criado_por | VARCHAR(100) | — | Usuário/Admin que cadastrou o jogo |
 
 ### `jogo_categoria`
 
@@ -309,6 +322,7 @@ game_erah
 | ----- | ---- | ---------- | --------- |
 | jogo_id | INT | FOREIGN KEY → jogo.id | Jogo relacionado |
 | categoria_id | INT | FOREIGN KEY → categoria.id | Categoria relacionada |
+| posicao | INT | NOT NULL | Posição/ranking do jogo na categoria (ex.: 1º lugar) |
 
 **Chave primária:** (jogo_id, categoria_id)
 
@@ -338,7 +352,7 @@ game_erah
 | usuario_id | INT | FOREIGN KEY → usuarios.id | Autor do comentário |
 | jogo_id | INT | FOREIGN KEY → jogo.id | Jogo comentado |
 | texto | TEXT | NOT NULL | Conteúdo do comentário |
-| criado_em | TIMESTAMP | DEFAULT CURRENT_TIMESTAMP | Data e hora do comentário |
+| criado_em | TIMESTAMP | DEFAULT CURRENT_TIMESTAMP | Data e hora de publicação |
 
 ---
 
@@ -372,16 +386,16 @@ erDiagram
         varchar titulo
         int ano_lancamento
         varchar desenvolvedora
-        varchar plataformas
+        varchar criado_por
         text descricao
         varchar imagem
-        int decada_id FK
         varchar video
-        varchar criado_por
+        int decada_id FK
     }
     JOGO_CATEGORIA {
         int jogo_id FK
         int categoria_id FK
+        int posicao
     }
     FAVORITO {
         int usuario_id FK

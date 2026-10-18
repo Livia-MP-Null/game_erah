@@ -1,0 +1,70 @@
+
+/* =====================================================================
+   VÍDEO POR LINK (YouTube)
+   Acrescente este bloco ao FINAL do seu style/style.css
+   (o arquivo que todas as páginas carregam).
+   ===================================================================== */
+
+/* Caixa 16:9 que guarda a miniatura (e depois o player) */
+.video-box {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    background: #000;
+    border: 1px solid #3a2c2c;
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+/* A miniatura é um link que ocupa a caixa toda */
+.video-lazy {
+    position: relative;
+    display: block;
+    width: 100%;
+    height: 100%;
+}
+
+.video-lazy img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+/* Botão redondo de play no centro da miniatura */
+.video-play {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 68px;
+    height: 68px;
+    padding-left: 4px;               /* centraliza o triângulo visualmente */
+    transform: translate(-50%, -50%);
+    background: rgba(0, 0, 0, .65);
+    color: #fff;
+    border: 2px solid #fff;
+    border-radius: 50%;
+    font-size: 1.8rem;
+    transition: background .15s, transform .15s;
+}
+
+.video-lazy:hover .video-play,
+.video-lazy:focus-visible .video-play {
+    background: #ff7f00;
+    transform: translate(-50%, -50%) scale(1.08);
+}
+
+/* O player do YouTube que substitui a miniatura depois do clique */
+.video-box iframe {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    border: 0;
+}
+
+/* Botão "Assistir vídeo" para links de outros sites */
+.video-externo { align-self: flex-start; }

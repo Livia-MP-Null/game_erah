@@ -20,7 +20,9 @@ $dados = [
     'desenvolvedora' => '',
     'criado_por'     => '',
     'ano_lancamento' => '',
-    'descricao'      => ''
+    'descricao'      => '',
+    // Link do vídeo (ex.: YouTube). Não é mais um arquivo enviado.
+    'video'          => ''
 ];
 //cria uma variavel que vai conter os mesmos dados que categorias conexão
 $categorias = categorias_listar($conexao);
@@ -37,13 +39,16 @@ if (post_excedeu_limite()) {
     $erro = "Os arquivos enviados passam do limite do servidor (post_max_size).";
 // Senão chama a variavel server com o method post 
 } elseif ($_SERVER['REQUEST_METHOD'] === 'POST') {
-//trim corrige o que foi enviado deixando sem espaço 
-//o se o dado dentro de dados (a variavel) for igual ao dado que tem na variavel ele posta o dado se não (??) ele posta um vazio e pipoca um erro na tela
+// trim() tira os espaços do começo e do fim do texto enviado.
+// O "??" significa: "se o campo existir, use o valor dele; se não existir, use '' (vazio)".
+// Sem o ??, um campo ausente causaria um aviso de "undefined index" na tela.
     $dados['titulo']         = trim($_POST['titulo'] ?? '');
     $dados['desenvolvedora'] = trim($_POST['desenvolvedora'] ?? '');
     $dados['criado_por']     = trim($_POST['criado_por'] ?? '');
     $dados['ano_lancamento'] = trim($_POST['ano_lancamento'] ?? '');
     $dados['descricao']      = trim($_POST['descricao'] ?? '');
+    // Link do vídeo digitado (ex.: link do YouTube). Pode ficar vazio.
+    $dados['video']          = trim($_POST['video'] ?? '');
 //A variavel posições  é igual a função ler posições que não recebe nenhum parametro
     $posicoes = ler_posicoes();
 // A variavel posiçõesAtuais é igaul a variavel posições
@@ -52,7 +57,8 @@ if (post_excedeu_limite()) {
     $imagem = null;
 //define a variavel video como vazia esperando para receber um valor
     $video = null;
-//ele tenta fk_livros_autor validar o jogo com a variavel dados com mesmos dados que dados 
+// tenta validar os dados, salvar a imagem, validar o link do vídeo e gravar o jogo.
+    // Se qualquer passo falhar (throw), o código pula direto para o catch.
     try {
 
         validar_jogo($dados);
@@ -64,11 +70,12 @@ if (post_excedeu_limite()) {
             IMAGEM_MAX
         );
 
-        $video = salvar_upload(
-            $_FILES['video'] ?? null,
-            VIDEO_TIPOS,
-            VIDEO_MAX
-        );
+        // O vídeo agora é um LINK (o vídeo fica no YouTube, o site fica leve).
+        // video_normalizar() confere o link e devolve a forma padrão dele:
+        //   - campo vazio    -> null (o jogo fica sem vídeo)
+        //   - link válido    -> o link limpo, pronto para gravar
+        //   - link inválido  -> lança um erro (cai no catch e a mensagem aparece na tela)
+        $video = video_normalizar($dados['video']);
 
         jogo_criar(
             $conexao,
@@ -87,8 +94,8 @@ if (post_excedeu_limite()) {
 
     } catch (Exception $e) {
 
+        // Só a imagem é um arquivo no servidor; o vídeo é apenas um link.
         apagar_arquivo($imagem);
-        apagar_arquivo($video);
 
         $erro = $e->getMessage();
     }

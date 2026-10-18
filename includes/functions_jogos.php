@@ -1,5 +1,11 @@
 <?php
 
+// Configuração geral do site (define BASE_URL, usada no endereço dos uploads).
+require_once __DIR__ . '/config.php';
+
+// Vídeo por LINK (video_interpretar, video_normalizar, video_html).
+require_once __DIR__ . '/video.php';
+
 // ============================================================
 // CONFIGURAÇÕES DE UPLOAD
 // ============================================================
@@ -10,6 +16,8 @@ const IMAGEM_TIPOS = [
     'image/webp' => 'webp'
 ];
 
+// ATENÇÃO: o vídeo agora é um LINK. Estas duas constantes (VIDEO_TIPOS e VIDEO_MAX)
+// não são mais usadas e só ficam aqui para não quebrar páginas antigas.
 const VIDEO_TIPOS = [
     'video/mp4'  => 'mp4',
     'video/webm' => 'webm'
@@ -19,7 +27,7 @@ const IMAGEM_MAX = 5 * 1024 * 1024;      // 5 MB
 const VIDEO_MAX  = 100 * 1024 * 1024;    // 100 MB
 
 const PASTA_UPLOADS = __DIR__ . '/../uploads/jogos/';
-const URL_UPLOADS   = '/game_erah/uploads/jogos/';
+define('URL_UPLOADS', BASE_URL . '/uploads/jogos/');   // endereço das imagens no navegador
 
 
 // ============================================================
@@ -118,6 +126,12 @@ function salvar_upload($arquivo, $tiposPermitidos, $tamanhoMax)
 function apagar_arquivo($nome)
 {
     if (!$nome) {
+        return;
+    }
+
+    // Um link (http://..., https://...) não é um arquivo do servidor: não há o que apagar.
+    // Isso protege o vídeo por link caso esta função receba o valor da coluna "video".
+    if (strpos($nome, '://') !== false) {
         return;
     }
 
@@ -412,7 +426,10 @@ function jogos_listar($c, $decada = null)
 // ATUALIZAR JOGO
 // ============================================================
 
-// $imagem / $video = null mantém o arquivo atual.
+// $imagem = null  mantém a imagem atual.
+// $video  = null  REMOVE o vídeo do jogo (o campo do link ficou vazio).
+//                 Um link novo substitui o antigo. A página de edição sempre
+//                 envia o link que está no campo (já preenchido com o atual).
 // $posicoes = null mantém as classificações atuais.
 function jogo_atualizar(
     $c,
@@ -435,7 +452,7 @@ function jogo_atualizar(
             criado_por     = ?,
             descricao      = ?,
             imagem         = COALESCE(?, imagem),
-            video          = COALESCE(?, video),
+            video          = ?,
             decada_id      = (SELECT id FROM decada WHERE ano_inicio = ? LIMIT 1)
         WHERE id = ?
     ";

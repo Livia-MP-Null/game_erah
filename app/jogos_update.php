@@ -1,6 +1,8 @@
-```php
 <?php
 
+
+// ATENÇÃO: apague estas duas linhas (error_reporting e display_errors) antes de
+// publicar o site. Elas mostram erros internos na tela para qualquer visitante.
 
 // Mostra todos os tipos de erros que acontecerem no PHP.
 error_reporting(E_ALL);
@@ -94,6 +96,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         // Pega a descrição do jogo.
         $descricao = trim($_POST['descricao'] ?? '');
 
+        // Pega o LINK do vídeo digitado (ex.: link do YouTube).
+        // Fica guardado nesta variável para voltar ao campo se acontecer um erro.
+        $videoDigitado = trim($_POST['video'] ?? '');
+
 
         // Lê as posições das classificações enviadas pelo formulário.
         $posicoes = ler_posicoes();
@@ -148,30 +154,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         }
 
 
-        // Define inicialmente que nenhum novo vídeo foi enviado.
-        $novoVideo = null;
-
-
-        // Verifica se existe um arquivo chamado "video"
-        // e se o usuário realmente enviou um novo vídeo.
-        if (
-            isset($_FILES['video']) &&
-            $_FILES['video']['error'] !== UPLOAD_ERR_NO_FILE
-        ) {
-
-            // Salva o novo vídeo usando a função de upload.
-            $novoVideo = salvar_upload(
-
-                // Arquivo enviado pelo formulário.
-                $_FILES['video'],
-
-                // Tipos de vídeo permitidos.
-                VIDEO_TIPOS,
-
-                // Tamanho máximo permitido para o vídeo.
-                VIDEO_MAX
-            );
-        }
+        // O vídeo agora é um LINK (não mais um arquivo enviado).
+        // Assim o site fica leve: o vídeo fica hospedado no YouTube.
+        //
+        // video_normalizar() confere o link e devolve a forma padrão dele:
+        //   - campo vazio    -> null (o jogo fica SEM vídeo)
+        //   - link válido    -> o link limpo (ex.: https://www.youtube.com/watch?v=ID)
+        //   - link inválido  -> lança um erro (cai no catch e a mensagem aparece na tela)
+        $video = video_normalizar($videoDigitado);
 
 
         // Atualiza os dados do jogo no banco de dados.
@@ -202,9 +192,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             // Se for null, a imagem antiga é mantida.
             $novaImagem,
 
-            // Novo vídeo.
-            // Se for null, o vídeo antigo é mantido.
-            $novoVideo,
+            // Link do vídeo.
+            // Se for null, o vídeo é REMOVIDO do jogo (o campo do link ficou vazio).
+            $video,
 
             // Novas classificações.
             $posicoes
@@ -221,12 +211,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         }
 
 
-        // Só apaga o vídeo antigo se:
-        // 1. Um novo vídeo foi enviado;
-        // 2. O jogo tinha um vídeo antigo.
-        if ($novoVideo !== null && !empty($jogo['video'])) {
+        // Se o jogo ainda tinha um vídeo ANTIGO guardado como arquivo (de antes do
+        // sistema de links), apaga esse arquivo do servidor para liberar espaço.
+        // apagar_arquivo() ignora links, então só mexe em arquivos de verdade.
+        if (!empty($jogo['video']) && $jogo['video'] !== $video) {
 
-            // Apaga o vídeo antigo do servidor.
             apagar_arquivo($jogo['video']);
         }
 
@@ -246,14 +235,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
             // Apaga a nova imagem para não deixar arquivo desnecessário.
             apagar_arquivo($novaImagem);
-        }
-
-
-        // Verifica se um novo vídeo chegou a ser criado.
-        if (!empty($novoVideo)) {
-
-            // Apaga o novo vídeo para não deixar arquivo desnecessário.
-            apagar_arquivo($novoVideo);
         }
 
 
@@ -282,6 +263,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $jogo['descricao'] =
             $descricao ?? $jogo['descricao'];
 
+        // Mantém o link do vídeo digitado.
+        $jogo['video'] = $videoDigitado ?? $jogo['video'];
+
         // Mantém as classificações selecionadas.
         $classificacoes = $posicoes ?? $classificacoes;
     }
@@ -292,11 +276,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 $decada = decada_do_ano($jogo['ano_lancamento']);
 
 ?>
-```
 
-### Parte HTML
-
-```html
 <!DOCTYPE html>
 <!-- Informa ao navegador que o documento usa HTML5. -->
 
@@ -609,35 +589,51 @@ $decada = decada_do_ano($jogo['ano_lancamento']);
             <div class="campo">
 
                 <label for="video">
-                    Novo vídeo
+                    Link do vídeo (YouTube)
                 </label>
-                <!-- Identifica o campo de vídeo. -->
+                <!-- Agora o vídeo é um LINK. Assim o site fica leve. -->
 
 
-                <?php if (!empty($jogo['video'])): ?>
-                    <!-- Verifica se o jogo já possui um vídeo. -->
+                <?php
+                // O campo só mostra o link se o valor guardado for um link válido.
+                // (Um jogo antigo pode ter o NOME DE UM ARQUIVO no lugar; nesse caso o
+                // campo fica vazio, e é só colar o link do vídeo.)
+                $videoCampo = video_interpretar($jogo['video'] ?? '') !== null
+                    ? $jogo['video']
+                    : '';
 
-                    <p>
-                        Vídeo atual:
-                        <?= esc_html($jogo['video']) ?>
-                    </p>
-                    <!-- Mostra o nome do vídeo atual. -->
-
-                <?php endif; ?>
-
+                // Se houve erro, mostra o que a pessoa tinha digitado.
+                if (isset($videoDigitado)) {
+                    $videoCampo = $videoDigitado;
+                }
+                ?>
 
                 <input
-                    type="file"
+                    type="text"
                     id="video"
                     name="video"
-                    accept="video/mp4,video/webm">
-                <!-- Campo para selecionar um novo vídeo.
-                 Aceita MP4 e WebM. -->
+                    maxlength="255"
+                    inputmode="url"
+                    placeholder="https://www.youtube.com/watch?v=..."
+                    value="<?= esc_html($videoCampo) ?>">
+                <!-- Campo para colar (ou corrigir) o link do vídeo.
+                 inputmode="url" mostra o teclado de endereços no celular. -->
 
                 <small>
-                    Deixe vazio para manter o vídeo atual.
+                    Para trocar o vídeo, edite o link. Para remover, apague o link e salve.
                 </small>
-                <!-- Explica que o vídeo não precisa ser substituído. -->
+                <!-- Explica como corrigir ou remover o vídeo. -->
+
+
+                <?php if ($videoCampo !== '' && video_interpretar($videoCampo) !== null): ?>
+                    <!-- Só mostra a prévia se o link for válido. -->
+
+                    <p>Vídeo atual (clique no play para testar):</p>
+
+                    <?= video_html($videoCampo) ?>
+                    <!-- Mostra a miniatura do vídeo; ao clicar, o player abre. -->
+
+                <?php endif; ?>
 
             </div>
 
@@ -678,4 +674,3 @@ $decada = decada_do_ano($jogo['ano_lancamento']);
 
 </html>
 
-```

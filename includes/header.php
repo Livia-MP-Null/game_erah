@@ -1,135 +1,72 @@
 <?php
-
-require_once __DIR__ . '/config.php';
+require_once __DIR__ . '/config.php';   // BASE_URL + sessão
 
 $logado = !empty($_SESSION['id']);
 $admin  = !empty($_SESSION['admin']);
 
+// Botão "← Voltar": aparece em todas as páginas, menos nestas
+// (a inicial, o painel e a década, que já tem o botão redondo dela).
+$paginaAtual   = basename($_SERVER['SCRIPT_NAME'] ?? '');
+$semVoltar     = ['index.php', 'painel.php', 'decada.php', 'preview_decada.php'];
+$mostrarVoltar = !in_array($paginaAtual, $semVoltar, true);
+
+// Se a pessoa abriu a página direto (sem página anterior), o botão leva para cá:
+$destinoVoltar = BASE_URL . ($admin ? '/app/painel.php' : '/index.php');
 ?>
 
-<header class="topo">
+<!-- Estilo da logo (só a logo; não altera o resto do site) -->
+<link rel="stylesheet" href="<?= BASE_URL ?>/style/logo.css">
 
-    <nav class="navbar">
+<!-- .cabecalho = barra do admin + menu do site, juntos e fixos no topo -->
+<div class="cabecalho">
 
-        <a class="logo" href="<?= BASE_URL ?>/index.php">
-            game.erah
-        </a>
+    <?php
+    // Barra do administrador: aparece em TODAS as páginas, só para admin.
+    if ($admin) {
+        include __DIR__ . '/admin_nav.php';
+    }
+    ?>
 
-        <div class="menu">
+    <header class="topo">
+        <nav class="navbar">
 
-            <a href="<?= BASE_URL ?>/index.php">
-                Início
+            <!-- Logo -->
+            <!-- A logo é uma imagem que também é um link para a página inicial.
+                 alt="game.erah" é o texto lido por leitores de tela e mostrado se a imagem não carregar.
+                 width/height evitam que a página "pule" enquanto a imagem carrega. -->
+            <a class="logo" href="<?= BASE_URL ?>/index.php" aria-label="game.erah, página inicial">
+                <img class="logo-img" src="<?= BASE_URL ?>/img/logo.png" alt="game.erah" width="200" height="120">
             </a>
 
-            <a href="<?= BASE_URL ?>/jogos.php">
-                Jogos
-            </a>
+            <!-- Links do site -->
+            <div class="menu">
+                <a href="<?= BASE_URL ?>/index.php">Início</a>
+                <a href="<?= BASE_URL ?>/jogos.php">Jogos</a>
 
-            <?php if ($admin): ?>
-
-                <a href="<?= BASE_URL ?>/app/painel.php">
-                    Painel Admin
-                </a>
-
-            <?php endif; ?>
-
-        </div>
-
-        <div class="login">
-
-            <?php if ($logado): ?>
-
-                <a href="<?= BASE_URL ?>/login/logout.php" class="btn-contorno">
-                    Sair
-                </a>
-
-            <?php else: ?>
-
-                <a href="<?= BASE_URL ?>/login/cadastrar.php" class="btn-contorno">
-                    Cadastre-se
-                </a>
-
-                <a href="<?= BASE_URL ?>/login/login.php" class="btn-laranja">
-                    Entrar
-                </a>
-
-            <?php endif; ?>
-
-        </div>
-
-    </nav>
-
-</header>
-
-
-<?php if ($admin): ?>
-
-    <nav class="admin-bar">
-
-        <span class="admin-bar-titulo">
-            ADMIN
-        </span>
-
-        <a href="<?= BASE_URL ?>/app/painel.php">
-            Início do admin
-        </a>
-
-        <div class="admin-grupo">
-
-            <span>
-                Usuários ▾
-            </span>
-
-            <div class="admin-menu">
-
-                <a href="<?= BASE_URL ?>/app/create.php">
-                    Cadastrar usuário
-                </a>
-
-                <a href="<?= BASE_URL ?>/app/select.php">
-                    Relatório de usuários
-                </a>
-
-                <a href="<?= BASE_URL ?>/app/select_w.php">
-                    Consultar usuário
-                </a>
-
-                <a href="<?= BASE_URL ?>/app/update.php">
-                    Atualizar usuário
-                </a>
-
-                <a href="<?= BASE_URL ?>/app/delete.php">
-                    Excluir usuário
-                </a>
-
+                <?php if ($admin): ?>
+                    <a href="<?= BASE_URL ?>/app/painel.php">Painel Admin</a>
+                <?php endif; ?>
             </div>
 
-        </div>
-
-        <div class="admin-grupo">
-
-            <span>
-                Jogos ▾
-            </span>
-
-            <div class="admin-menu">
-
-                <a href="<?= BASE_URL ?>/app/jogos_create.php">
-                    Cadastrar jogo
-                </a>
-
-                <a href="<?= BASE_URL ?>/app/jogos_select.php">
-                    Relatório de jogos
-                </a>
-
+            <!-- Login / cadastro / sair -->
+            <div class="login">
+                <?php if ($logado): ?>
+                    <a href="<?= BASE_URL ?>/login/logout.php" class="btn-contorno">Sair</a>
+                <?php else: ?>
+                    <a href="<?= BASE_URL ?>/login/cadastrar.php" class="btn-contorno">Cadastre-se</a>
+                    <a href="<?= BASE_URL ?>/login/login.php" class="btn-laranja">Entrar</a>
+                <?php endif; ?>
             </div>
 
-        </div>
+        </nav>
+    </header>
 
-        <a href="<?= BASE_URL ?>/jogos.php">
-            Ver o site
-        </a>
+</div>
 
-    </nav>
-
+<?php if ($mostrarVoltar): ?>
+    <div class="barra-voltar">
+        <!-- Com histórico: volta para a página anterior. Sem histórico: usa o link. -->
+        <a class="btn-voltar" href="<?= $destinoVoltar ?>"
+           onclick="if (history.length > 1) { history.back(); return false; }">← Voltar</a>
+    </div>
 <?php endif; ?>

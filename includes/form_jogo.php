@@ -6,7 +6,7 @@
 // Ele só mostra os campos usados por jogos_create.php e jogos_update.php.
 //
 // Variáveis esperadas (definidas pela página que inclui este arquivo):
-//   $dados          -> valores dos campos de texto
+//   $dados          -> valores dos campos de texto (inclui 'video' = link do vídeo)
 //   $textoBotao     -> texto do botão de enviar
 //   $jogoAtual      -> jogo em edição (ou null no cadastro)
 //   $categorias     -> lista de categorias (id, nome)
@@ -84,15 +84,34 @@
 
     <input type="file" name="imagem" id="imagem" accept="image/jpeg,image/png,image/webp">
 
-    <!-- VÍDEO -->
-    <label for="video">Vídeo (MP4 ou WebM, até 100 MB):</label>
+    <!-- VÍDEO (por LINK, ex.: YouTube: deixa o site leve) -->
+    <label for="video">Link do vídeo (YouTube):</label>
 
-    <?php if (!empty($jogoAtual['video'])): ?>
-        <video class="previa" src="<?= URL_UPLOADS . esc_html($jogoAtual['video']) ?>" controls></video>
-        <small>Envie outro vídeo apenas se quiser trocar o atual.</small>
+    <?php
+    // Valor que aparece no campo:
+    //  - se a página enviou $dados['video'] (o que a pessoa digitou), usa esse texto;
+    //  - senão, usa o vídeo guardado no jogo, mas só se for um LINK válido
+    //    (jogos antigos podem ter o nome de um arquivo no lugar; aí o campo fica vazio).
+    if (isset($dados['video'])) {
+        $videoCampo = (string) $dados['video'];
+    } else {
+        $videoCampo = (string) ($jogoAtual['video'] ?? '');
+
+        if (video_interpretar($videoCampo) === null) {
+            $videoCampo = '';
+        }
+    }
+    ?>
+
+    <input type="text" name="video" id="video" maxlength="255" inputmode="url"
+           placeholder="https://www.youtube.com/watch?v=..."
+           value="<?= esc_html($videoCampo) ?>">
+    <small>Cole o link do vídeo. Deixe em branco para o jogo ficar sem vídeo.</small>
+
+    <?php if ($videoCampo !== '' && video_interpretar($videoCampo) !== null): ?>
+        <!-- Prévia: clique para testar o link -->
+        <?= video_html($videoCampo) ?>
     <?php endif; ?>
-
-    <input type="file" name="video" id="video" accept="video/mp4,video/webm">
 
     <!-- BOTÕES -->
     <div class="botoes">

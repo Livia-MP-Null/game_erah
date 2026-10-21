@@ -160,20 +160,24 @@ function post_excedeu_limite()
 // VALIDAR OS DADOS DO JOGO
 // ============================================================
 
+// ============================================================
+// VALIDAR OS DADOS DO JOGO (Trocado mb_strlen por strlen nativo)
+// ============================================================
+
 function validar_jogo($d)
 {
     // Nome
-    if (trim($d['titulo'] ?? '') === '' || mb_strlen($d['titulo'] ?? '') > 255) {
+    if (trim($d['titulo'] ?? '') === '' || strlen($d['titulo'] ?? '') > 255) {
         throw new Exception("Informe o nome do jogo (até 255 caracteres).");
     }
 
     // Desenvolvedora
-    if (trim($d['desenvolvedora'] ?? '') === '' || mb_strlen($d['desenvolvedora'] ?? '') > 255) {
+    if (trim($d['desenvolvedora'] ?? '') === '' || strlen($d['desenvolvedora'] ?? '') > 255) {
         throw new Exception("Informe a desenvolvedora (até 255 caracteres).");
     }
 
     // Feito por
-    if (trim($d['criado_por'] ?? '') === '' || mb_strlen($d['criado_por'] ?? '') > 255) {
+    if (trim($d['criado_por'] ?? '') === '' || strlen($d['criado_por'] ?? '') > 255) {
         throw new Exception("Informe quem fez o jogo (até 255 caracteres).");
     }
 

@@ -2,7 +2,7 @@
 // ======================================================================
 // login.php  |  ENTRAR NO SITE
 //
-// Segurança aplicada:
+// Segurança aplicada o que deve conter:
 //   - token CSRF no formulário
 //   - a mesma mensagem para "e-mail não existe" e "senha errada"
 //     (assim ninguém descobre quais e-mails estão cadastrados)

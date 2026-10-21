@@ -1,13 +1,6 @@
 <?php
 // ======================================================================
 // logout.php  |  SAIR DO SITE
-//
-// Segurança aplicada:
-//   - apaga TODOS os dados da sessão
-//   - apaga também o cookie da sessão no navegador
-//   - sem o antigo sleep(2): uma pausa de 2 segundos em cada logout só
-//     deixava o servidor lento (e podia ser usada para sobrecarregá-lo)
-// ======================================================================
 
 // Configuração geral: define BASE_URL e inicia a sessão se ainda não estiver iniciada.
 require_once __DIR__ . '/../includes/config.php';

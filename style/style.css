@@ -347,18 +347,6 @@ a {
 
 
 /* ========================================
-   RESPONSIVIDADE
-   ======================================== */
-
-@media (max-width: 600px) {
-
-    .galeria-faixa {
-        height: 220px;
-    }
-
-}
-
-/* ========================================
    PÁGINAS DE USUÁRIOS
    ======================================== */
 
@@ -375,10 +363,10 @@ main h1 {
 
 
 /* ========================================
-   FORMULÁRIO
+   FORMULÁRIO (Exceto formulários dentro de tabelas)
    ======================================== */
 
-main form {
+main form:not(td form) {
     width: 90%;
     max-width: 500px;
     margin: 0 auto 25px;
@@ -391,7 +379,7 @@ main form {
 
 /* Labels */
 
-main form label {
+main form:not(td form) label {
     display: block;
     color: #fff;
     margin-bottom: 8px;
@@ -401,11 +389,11 @@ main form label {
 
 /* Campos */
 
-main form input[type="text"],
-main form input[type="number"],
-main form input[type="password"],
-main form input[type="email"],
-main form input[type="date"] {
+main form:not(td form) input[type="text"],
+main form:not(td form) input[type="number"],
+main form:not(td form) input[type="password"],
+main form:not(td form) input[type="email"],
+main form:not(td form) input[type="date"] {
     width: 100%;
     padding: 10px;
     margin-bottom: 18px;
@@ -422,11 +410,11 @@ main form input[type="date"] {
 
 /* Campo selecionado */
 
-main form input[type="text"]:focus,
-main form input[type="number"]:focus,
-main form input[type="password"]:focus,
-main form input[type="email"]:focus,
-main form input[type="date"]:focus {
+main form:not(td form) input[type="text"]:focus,
+main form:not(td form) input[type="number"]:focus,
+main form:not(td form) input[type="password"]:focus,
+main form:not(td form) input[type="email"]:focus,
+main form:not(td form) input[type="date"]:focus {
     border-color: #ff8c00;
 }
 
@@ -435,8 +423,8 @@ main form input[type="date"]:focus {
    BOTÕES
    ======================================== */
 
-main form input[type="submit"],
-main form input[type="reset"] {
+main form:not(td form) input[type="submit"],
+main form:not(td form) input[type="reset"] {
     padding: 10px 20px;
     border: none;
     border-radius: 20px;
@@ -445,21 +433,21 @@ main form input[type="reset"] {
 }
 
 
-main form input[type="submit"] {
+main form:not(td form) input[type="submit"] {
     background: #ff8c00;
     color: #fff;
 }
 
 
-main form input[type="reset"] {
+main form:not(td form) input[type="reset"] {
     background: #555;
     color: #fff;
     margin-left: 8px;
 }
 
 
-main form input[type="submit"]:hover,
-main form input[type="reset"]:hover {
+main form:not(td form) input[type="submit"]:hover,
+main form:not(td form) input[type="reset"]:hover {
     opacity: 0.8;
 }
 
@@ -506,11 +494,107 @@ main > a:hover {
    RELATÓRIO
    ======================================== */
 
-main p {
+main > p {
     max-width: 700px;
     margin: 20px auto;
     color: #ccc;
     line-height: 1.6;
+}
+
+
+/* ========================================
+   ESTILOS ESPECÍFICOS DA TABELA (SELECT.PHP)
+   ======================================== */
+
+.tabela-rolagem {
+    width: 100%;
+    max-width: 1100px;
+    margin: 25px auto;
+    overflow-x: auto;
+    background: #121212;
+    border: 1px solid #2a2a2a;
+    border-radius: 10px;
+}
+
+.tabela-rolagem table {
+    width: 100%;
+    border-collapse: collapse;
+    text-align: left;
+    font-size: 16px; /* Fonte maior para a tabela */
+}
+
+.tabela-rolagem th,
+.tabela-rolagem td {
+    padding: 18px 22px; /* Maior espaçamento interno */
+    border-bottom: 1px solid #282828;
+    white-space: nowrap;
+    vertical-align: middle;
+}
+
+.tabela-rolagem th {
+    background: #1c1c1c;
+    color: #ff8c00;
+    font-weight: bold;
+    font-size: 15px;
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+}
+
+.tabela-rolagem tr:hover td {
+    background: #181818;
+}
+
+/* Remove a caixa escura do formulário dentro da célula da tabela */
+.tabela-rolagem td form {
+    display: inline-block !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    background: none !important;
+    border: none !important;
+    box-shadow: none !important;
+    width: auto !important;
+}
+
+/* Alinhamento e botões de ação */
+.acoes {
+    display: flex;
+    align-items: center;
+    gap: 14px; /* Maior distância entre Editar e Apagar */
+}
+
+.acoes a {
+    color: #ff8c00;
+    border: 1px solid #ff8c00;
+    padding: 6px 14px;
+    border-radius: 5px;
+    font-size: 14px;
+    font-weight: bold;
+    transition: background 0.2s, color 0.2s;
+}
+
+.acoes a:hover {
+    background: #ff8c00;
+    color: #000;
+}
+
+/* Botão Apagar Vermelho */
+.btn-perigo,
+.acoes button.btn-perigo {
+    background: #dc3545 !important;
+    color: #ffffff !important;
+    border: none !important;
+    padding: 7px 16px !important;
+    border-radius: 5px !important;
+    font-size: 14px !important;
+    font-weight: bold !important;
+    cursor: pointer !important;
+    transition: background 0.2s ease !important;
+    margin: 0 !important;
+}
+
+.btn-perigo:hover,
+.acoes button.btn-perigo:hover {
+    background: #bb2d3b !important;
 }
 
 
@@ -520,6 +604,10 @@ main p {
 
 @media (max-width: 600px) {
 
+    .galeria-faixa {
+        height: 220px;
+    }
+
     main {
         padding: 30px 10px;
     }
@@ -528,7 +616,7 @@ main p {
         font-size: 23px;
     }
 
-    main form {
+    main form:not(td form) {
         width: 100%;
         padding: 20px;
     }

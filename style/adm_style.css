@@ -196,4 +196,253 @@
     .admin-logo img {
         height: 40px;
     }
+    /* ============================================================
+   ESTILOS DAS TABELAS E RELATÓRIOS DO ADMIN
+   ============================================================ */
+
+main {
+    max-width: 1200px;
+    margin: 30px auto;
+    padding: 0 20px;
+    color: #fff;
+}
+
+main h1 {
+    color: #ff8c00;
+    font-size: 28px;
+    margin-bottom: 20px;
+}
+
+/* Container com rolagem lateral para ecrãs pequenos */
+.tabela-rolagem {
+    width: 100%;
+    overflow-x: auto;
+    margin-top: 20px;
+    background: #181818;
+    border-radius: 8px;
+    border: 1px solid #333;
+}
+
+/* Estrutura da Tabela */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    text-align: left;
+}
+
+th, td {
+    padding: 14px 18px;
+    border-bottom: 1px solid #2a2a2a;
+    white-space: nowrap;
+}
+
+th {
+    background: #222;
+    color: #ff8c00;
+    font-weight: bold;
+    font-size: 15px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+td {
+    color: #ddd;
+    font-size: 15px;
+}
+
+tr:hover {
+    background: #222;
+}
+
+/* Coluna de Ações e Botões */
+.acoes {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.acoes a {
+    color: #ff8c00;
+    text-decoration: none;
+    font-weight: bold;
+    padding: 6px 12px;
+    border: 1px solid #ff8c00;
+    border-radius: 4px;
+    transition: background 0.2s, color 0.2s;
+}
+
+.acoes a:hover {
+    background: #ff8c00;
+    color: #000;
+}
+
+.btn-perigo {
+    background: #dc3545;
+    color: #fff;
+    border: none;
+    padding: 6px 14px;
+    border-radius: 4px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+
+.btn-perigo:hover {
+    background: #bb2d3b;
+}
+
+/* Mensagens de Aviso (Flash) */
+.msg-ok {
+    background: #198754;
+    color: #fff;
+    padding: 12px 18px;
+    border-radius: 6px;
+    margin-bottom: 20px;
+}
+
+.msg-erro {
+    background: #dc3545;
+    color: #fff;
+    padding: 12px 18px;
+    border-radius: 6px;
+    margin-bottom: 20px;
+}
+/* ============================================================
+   SOBREPOSIÇÃO DE ESTILOS DA TABELA DE RELATÓRIO
+   ============================================================ */
+
+main.pagina-relatorio {
+    max-width: 1100px !important;
+    margin: 30px auto !important;
+    padding: 0 20px !important;
+    text-align: left !important;
+    display: block !important;
+    color: #fff !important;
+}
+
+main.pagina-relatorio h1 {
+    color: #ff8c00 !important;
+    font-size: 30px !important;
+    text-align: center !important;
+    margin-bottom: 10px !important;
+}
+
+main.pagina-relatorio .total-usuarios {
+    text-align: center !important;
+    color: #aaa !important;
+    font-size: 15px !important;
+    margin-bottom: 25px !important;
+}
+
+/* Container com rolagem lateral */
+main.pagina-relatorio .tabela-rolagem {
+    width: 100% !important;
+    overflow-x: auto !important;
+    background: #141414 !important;
+    border: 1px solid #333 !important;
+    border-radius: 8px !important;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5) !important;
+}
+
+/* Reset da Tabela */
+main.pagina-relatorio table {
+    width: 100% !important;
+    border-collapse: collapse !important;
+    margin: 0 !important;
+    background: transparent !important;
+    table-layout: auto !important;
+}
+
+main.pagina-relatorio th,
+main.pagina-relatorio td {
+    padding: 14px 18px !important;
+    border-bottom: 1px solid #282828 !important;
+    text-align: left !important;
+    vertical-align: middle !important;
+    white-space: nowrap !important;
+    background: transparent !important;
+    height: auto !important;
+}
+
+main.pagina-relatorio th {
+    background: #1f1f1f !important;
+    color: #ff8c00 !important;
+    font-size: 14px !important;
+    font-weight: bold !important;
+    text-transform: uppercase !important;
+    letter-spacing: 0.5px !important;
+}
+
+main.pagina-relatorio td {
+    color: #ddd !important;
+    font-size: 15px !important;
+}
+
+main.pagina-relatorio tr:hover td {
+    background: #1c1c1c !important;
+}
+
+/* REMOVE A CAIXA ESCURA DOS FORMULÁRIOS DENTRO DA TABELA */
+main.pagina-relatorio table form,
+main.pagina-relatorio .acoes form {
+    display: inline-block !important;
+    background: none !important;
+    border: none !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    box-shadow: none !important;
+    width: auto !important;
+    border-radius: 0 !important;
+}
+
+/* Coluna de Ações */
+main.pagina-relatorio .acoes {
+    display: flex !important;
+    align-items: center !important;
+    gap: 10px !important;
+    flex-direction: row !important;
+}
+
+main.pagina-relatorio .btn-editar {
+    display: inline-block !important;
+    color: #ff8c00 !important;
+    border: 1px solid #ff8c00 !important;
+    background: transparent !important;
+    padding: 6px 14px !important;
+    border-radius: 4px !important;
+    text-decoration: none !important;
+    font-size: 14px !important;
+    font-weight: bold !important;
+    transition: background 0.2s, color 0.2s !important;
+}
+
+main.pagina-relatorio .btn-editar:hover {
+    background: #ff8c00 !important;
+    color: #000 !important;
+}
+
+main.pagina-relatorio .btn-perigo {
+    display: inline-block !important;
+    background: #dc3545 !important;
+    color: #fff !important;
+    border: none !important;
+    padding: 6px 14px !important;
+    border-radius: 4px !important;
+    font-size: 14px !important;
+    font-weight: bold !important;
+    cursor: pointer !important;
+    transition: background 0.2s !important;
+    margin: 0 !important;
+    width: auto !important;
+}
+
+main.pagina-relatorio .btn-perigo:hover {
+    background: #b02a37 !important;
+}
+
+main.pagina-relatorio .tag-voce {
+    color: #777 !important;
+    font-size: 14px !important;
+    font-style: italic !important;
+}
 }

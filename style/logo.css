@@ -1,57 +1,39 @@
-/* =====================================================================
-   LOGO DO SITE (game.erah, o controle com o brilho vermelho / LED)
-
-   Só mexe na logo: nenhum outro estilo do site é alterado.
-   Este arquivo é carregado pelo includes/header.php, então vale para
-   todas as páginas que usam o cabeçalho.
-   ===================================================================== */
-
 :root {
-    /* TAMANHO DA LOGO: mude só este número para aumentar ou diminuir */
-    --altura-logo: 58px;
-
-    /* Altura total do menu com a logo (o resto do site usa isso para que o
-       menu fixo não cubra um jogo quando a página rola até ele). */
-    --altura-menu: 78px;
+    --altura-logo: 45px;
+    --altura-menu: 70px;
 }
 
-/* O link que envolve a imagem (leva para a página inicial) */
-.navbar .logo {
+/* Link da logo (Menu Comum e Admin) */
+.navbar .logo,
+.admin-bar .logo {
     display: inline-flex;
     align-items: center;
-    flex-shrink: 0;            /* a logo nunca é espremida pelo menu */
-    line-height: 0;            /* tira o espaço extra que aparece embaixo de imagens */
+    flex-shrink: 0;
+    line-height: 0;
 }
 
-/* A imagem em si */
-.navbar .logo-img {
+/* A imagem da logo */
+.navbar .logo-img,
+.admin-bar .logo-img {
     display: block;
     height: var(--altura-logo);
-    width: auto;               /* a largura acompanha a altura, sem distorcer */
-
-    /* NÃO coloque overflow:hidden nem borda aqui: isso cortaria o brilho (LED). */
+    max-height: 45px;
+    width: auto;
     transition: transform .2s ease, filter .2s ease;
 }
 
-/* Ao passar o mouse (ou focar pelo teclado), a logo cresce um pouquinho
-   e o brilho vermelho fica mais forte */
+/* Efeito Hover */
 .navbar .logo:hover .logo-img,
-.navbar .logo:focus-visible .logo-img {
+.navbar .logo:focus-visible .logo-img,
+.admin-bar .logo:hover .logo-img,
+.admin-bar .logo:focus-visible .logo-img {
     transform: scale(1.06);
     filter: drop-shadow(0 0 8px rgba(255, 60, 60, .55));
 }
 
-/* Quem prefere menos movimento no sistema não vê o "crescer" */
 @media (prefers-reduced-motion: reduce) {
-    .navbar .logo-img { transition: none; }
+    .navbar .logo-img,
+    .admin-bar .logo-img { transition: none; }
     .navbar .logo:hover .logo-img,
-    .navbar .logo:focus-visible .logo-img { transform: none; }
-}
-
-/* Celular: logo um pouco menor */
-@media (max-width: 760px) {
-    :root {
-        --altura-logo: 46px;
-        --altura-menu: 66px;
-    }
+    .admin-bar .logo:hover .logo-img { transform: none; }
 }

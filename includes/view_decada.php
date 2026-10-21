@@ -2,20 +2,20 @@
 // ============================================================
 // VISUAL DA PÁGINA DE UMA DÉCADA
 // ============================================================
-// Este arquivo só DESENHA a página. Quem entrega os dados é o decada.php
-// (dados reais do banco) ou o preview_decada.php (dados de mentirinha).
-//
-// Variáveis esperadas:
-//   $d               década (ex.: 1960)
-//   $decadas         lista de décadas do site
-//   $jogos           jogos da década
-//   $classif         classificações  [jogo_id => [categoria, posicao]]
-//   $interacoes      curtidas/favoritos  [jogo_id => [...]]
-//   $comentarios     comentários  [jogo_id => [...]]
-//   $logado, $usuarioAtual, $ehAdmin
-//   $anterior, $proxima   décadas vizinhas (ou null)
-//   $erroInteracao   mensagem de erro (ou '')
 
+// Garante valores padrão para as variáveis do include (remove os avisos do VS Code)
+$d             = $d ?? 0;
+$decadas       = $decadas ?? [];
+$jogos         = $jogos ?? [];
+$classif       = $classif ?? [];
+$interacoes    = $interacoes ?? [];
+$comentarios   = $comentarios ?? [];
+$logado        = $logado ?? false;
+$usuarioAtual  = $usuarioAtual ?? 0;
+$ehAdmin       = $ehAdmin ?? false;
+$anterior      = $anterior ?? null;
+$proxima       = $proxima ?? null;
+$erroInteracao = $erroInteracao ?? '';
 
 // Desenha um botão de favoritar/curtir.
 // Logado: é um formulário que envia para interagir.php.
@@ -50,7 +50,7 @@ $padraoInteracao = ['curtidas' => 0, 'favoritos' => 0, 'curtiu' => false, 'favor
        aria-label="Voltar às décadas" title="Voltar às décadas">←</a>
 
     <div class="decada-topo">
-        <span class="btn-decada grande d-<?= (int) $d ?>"><?= esc_html($decadas[$d]) ?></span>
+        <span class="btn-decada grande d-<?= (int) $d ?>"><?= esc_html($decadas[$d] ?? "Anos {$d}") ?></span>
         <p class="sub">
             <?= count($jogos) ?> <?= count($jogos) === 1 ? 'jogo cadastrado' : 'jogos cadastrados' ?>
         </p>
@@ -112,9 +112,9 @@ $padraoInteracao = ['curtidas' => 0, 'favoritos' => 0, 'curtiu' => false, 'favor
                                  alt="<?= esc_html($j['titulo']) ?>">
                         <?php endif; ?>
 
+                        <!-- CHAMADA DA FUNÇÃO QUE CARREGA O YOUTUBE -->
                         <?php if (!empty($j['video'])): ?>
-                            <video src="<?= URL_UPLOADS . esc_html($j['video']) ?>"
-                                   controls preload="metadata"></video>
+                            <?= video_html($j['video']) ?>
                         <?php endif; ?>
 
                     </div>
@@ -197,12 +197,12 @@ $padraoInteracao = ['curtidas' => 0, 'favoritos' => 0, 'curtiu' => false, 'favor
 
         <?php if ($anterior): ?>
             <a class="btn-decada d-<?= (int) $anterior ?>"
-               href="<?= BASE_URL ?>/decada.php?d=<?= (int) $anterior ?>">← <?= esc_html($decadas[$anterior]) ?></a>
+               href="<?= BASE_URL ?>/decada.php?d=<?= (int) $anterior ?>">← <?= esc_html($decadas[$anterior] ?? '') ?></a>
         <?php else: ?><span></span><?php endif; ?>
 
         <?php if ($proxima): ?>
             <a class="btn-decada d-<?= (int) $proxima ?>"
-               href="<?= BASE_URL ?>/decada.php?d=<?= (int) $proxima ?>"><?= esc_html($decadas[$proxima]) ?> →</a>
+               href="<?= BASE_URL ?>/decada.php?d=<?= (int) $proxima ?>"><?= esc_html($decadas[$proxima] ?? '') ?> →</a>
         <?php else: ?><span></span><?php endif; ?>
 
     </nav>

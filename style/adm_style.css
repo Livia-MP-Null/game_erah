@@ -1,125 +1,199 @@
-/* ================================= */
-/* BARRA DO ADMINISTRADOR             */
-/* ================================= */
+/* ============================================================
+   BARRA DO ADMINISTRADOR (game.erah)
+   ============================================================ */
 
 .admin-bar {
     width: 100%;
-    min-height: 55px;
+    height: 70px;
     background: #111;
-    border-bottom: 1px solid #333;
-
+    border-bottom: 2px solid #ff8c00;
     display: flex;
     align-items: center;
-
-    gap: 30px;
-    padding: 0 70px;
-
+    justify-content: space-between;
+    padding: 0 35px;
     box-sizing: border-box;
-
     position: relative;
     z-index: 1000;
 }
 
+/* ============================================================
+   PARTE ESQUERDA (Logo, Badge, Links e Menus)
+   ============================================================ */
 
-/* TÍTULO ADMIN */
-
-.admin-bar-titulo {
-    color: #ff8c00;
-    font-size: 18px;
-    font-weight: bold;
-    margin-right: 10px;
+.admin-bar-esquerda {
+    height: 100%;
+    display: flex;
+    align-items: center;
+    gap: 25px;
 }
 
+/* LOGO ADMIN */
+.admin-logo {
+    height: 100%;
+    display: flex;
+    align-items: center;
+    flex-shrink: 0;
+    text-decoration: none;
+}
 
-/* LINKS PRINCIPAIS DA BARRA */
+.admin-logo img {
+    display: block;
+    height: 48px;
+    width: auto;
+    transition: transform .2s ease, filter .2s ease;
+}
 
-.admin-bar > a,
+.admin-logo:hover img {
+    transform: scale(1.06);
+    filter: drop-shadow(0 0 8px rgba(255, 60, 60, .55));
+}
+
+/* BADGE/TÍTULO ADMIN */
+.admin-bar-titulo {
+    color: #000;
+    background: #ff8c00;
+    font-size: 15px;
+    font-weight: bold;
+    text-decoration: none;
+    white-space: nowrap;
+    padding: 6px 14px;
+    border-radius: 6px;
+}
+
+/* LINKS PRINCIPAIS DA ESQUERDA */
+.admin-bar-esquerda a:not(.admin-logo):not(.admin-bar-titulo),
 .admin-grupo > span {
     color: white;
     text-decoration: none;
     font-size: 16px;
     white-space: nowrap;
     cursor: pointer;
-
-    padding: 18px 0;
-
-    transition: 0.2s;
+    transition: color .2s ease;
 }
 
-.admin-bar > a:hover,
+.admin-bar-esquerda a:not(.admin-logo):not(.admin-bar-titulo):hover,
 .admin-grupo > span:hover {
     color: #ff8c00;
 }
 
-
-/* ================================= */
-/* GRUPOS                            */
-/* ================================= */
+/* ============================================================
+   GRUPOS E MENUS DROPDOWN
+   ============================================================ */
 
 .admin-grupo {
     position: relative;
-    height: 55px;
-
+    height: 100%;
     display: flex;
     align-items: center;
 }
 
-
-/* ================================= */
-/* MENU DROPDOWN                     */
-/* ================================= */
-
 .admin-menu {
     position: absolute;
-
-    top: 55px;
+    top: 100%;
     left: 0;
-
-    min-width: 230px;
-
+    min-width: 200px;
     background: #111;
-
     border: 1px solid #333;
     border-radius: 0 0 8px 8px;
-
     padding: 8px 0;
-
     display: none;
     flex-direction: column;
-
-    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.5);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, .5);
+    z-index: 2000;
 }
-
-
-/* ABRIR MENU */
 
 .admin-grupo:hover .admin-menu,
 .admin-grupo:focus-within .admin-menu {
     display: flex;
 }
 
-
-/* LINKS DO DROPDOWN */
-
 .admin-menu a {
     display: block;
-
     color: white;
     text-decoration: none;
-
-    font-size: 15px;
-
-    padding: 12px 18px;
-
+    font-size: 14px;
+    padding: 10px 16px;
     white-space: nowrap;
-
-    transition: 0.2s;
+    transition: background .2s ease, color .2s ease;
 }
-
-
-/* HOVER DOS LINKS */
 
 .admin-menu a:hover {
     background: #ff8c00;
     color: #000;
+}
+
+/* ============================================================
+   PARTE DIREITA E BOTÃO SAIR
+   ============================================================ */
+
+.admin-bar-direita {
+    display: flex;
+    align-items: center;
+    flex-shrink: 0;
+}
+
+.admin-sair {
+    color: white;
+    text-decoration: none;
+    font-size: 15px;
+    border: 1px solid #ff8c00;
+    border-radius: 5px;
+    padding: 7px 18px;
+    transition: background .2s ease, color .2s ease;
+}
+
+.admin-sair:hover {
+    background: #ff8c00;
+    color: #111;
+}
+
+/* ============================================================
+   BOTÃO VOLTAR (CÍRCULO PERFEITO)
+   ============================================================ */
+
+.barra-voltar {
+    padding: 20px 0 0 35px;
+}
+
+.btn-voltar {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 38px;
+    height: 38px;
+    background: #e0e0e0;
+    color: #000;
+    border-radius: 50%;
+    text-decoration: none;
+    font-weight: bold;
+    font-size: 18px;
+    transition: background 0.2s ease, transform 0.2s ease;
+}
+
+.btn-voltar:hover {
+    background: #ffffff;
+    transform: scale(1.05);
+}
+
+/* ============================================================
+   RESPONSIVIDADE
+   ============================================================ */
+
+@media (max-width: 900px) {
+    .admin-bar {
+        padding: 0 20px;
+    }
+
+    .admin-bar-esquerda {
+        gap: 15px;
+    }
+
+    .admin-bar-esquerda a:not(.admin-logo):not(.admin-bar-titulo),
+    .admin-grupo > span {
+        font-size: 14px;
+    }
+
+    .admin-logo img {
+        height: 40px;
+    }
 }

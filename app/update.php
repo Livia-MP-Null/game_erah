@@ -1,4 +1,3 @@
-```php
 <?php
 // ======================================================================
 // update.php | ATUALIZAR USUÁRIO (somente administrador)
@@ -540,4 +539,3 @@ $flash = flash_pegar();
 </body>
 
 </html>
-```

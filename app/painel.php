@@ -83,28 +83,28 @@ try {
 
 <head>
 
-    // Define a codificação de caracteres utilizada pela página.
+    <!--Define a codificação de caracteres utilizada pela página.-->
     <meta charset="UTF-8">
 
-    // Faz a página se adaptar a diferentes tamanhos de tela.
+    <!--Faz a página se adaptar a diferentes tamanhos de tela.-->
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 
-    // Importa o CSS principal do site.
+    <!--Importa o CSS principal do site.-->
     <link rel="stylesheet" href="../style/style.css">
 
-    // Importa o CSS responsável pelo cabeçalho.
+    <!--Importa o CSS responsável pelo cabeçalho.-->
     <link rel="stylesheet" href="../style/header.css">
 
-    // Importa o CSS específico da área administrativa.
+    <!--Importa o CSS específico da área administrativa.-->
     <link rel="stylesheet" href="../style/adm_style.css">
 
-    // Importa o CSS relacionado aos jogos.
+    <!-- Importa o CSS relacionado aos jogos.-->
     <link rel="stylesheet" href="../style/jogos.css">
 
 
-    // Define o título que aparece na aba do navegador.
-    <title>Painel do administrador</title>
+    <!--Define o título que aparece na aba do navegador.
+    <title>Painel do administrador</title> -->
 
 </head>
 

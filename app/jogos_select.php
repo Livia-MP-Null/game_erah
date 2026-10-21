@@ -404,23 +404,23 @@ $ok = $mensagens[$_GET['ok'] ?? ''] ?? '';
                                     -->
                                     <?php if ($j['imagem']): ?>
 
+                                        <!--
+                                            ATENÇÃO: comentário HTML NUNCA pode ficar
+                                            DENTRO de uma tag (entre <img e o >).
+                                            Por isso as explicações ficam aqui, antes da tag.
+
+                                            URL_UPLOADS contém o caminho da pasta onde as
+                                            imagens estão.
+
+                                            esc_html() protege o nome do arquivo antes de
+                                            colocá-lo no HTML.
+
+                                            O atributo alt (texto alternativo) usa o título
+                                            do jogo.
+                                        -->
                                         <img
                                             class="miniatura"
-
-                                            <!--
-                                                URL_UPLOADS contém o caminho
-                                                da pasta onde as imagens estão.
-
-                                                esc_html() protege o nome
-                                                do arquivo antes de colocá-lo
-                                                no HTML.
-                                            -->
                                             src="<?= URL_UPLOADS . esc_html($j['imagem']) ?>"
-
-                                            <!--
-                                                Define o título do jogo como
-                                                texto alternativo da imagem.
-                                            -->
                                             alt="<?= esc_html($j['titulo']) ?>"
                                         >
 
@@ -648,21 +648,21 @@ $ok = $mensagens[$_GET['ok'] ?? ''] ?? '';
                                         method="post" envia o ID de forma
                                         mais adequada do que colocar o ID
                                         diretamente em um link.
+
+                                        O atributo onsubmit antes de enviar o
+                                        formulário pergunta ao administrador se
+                                        realmente deseja apagar o jogo.
+
+                                        Se clicar em "Cancelar", confirm()
+                                        retorna false e o formulário NÃO é enviado.
+
+                                        ATENÇÃO: este comentário fica FORA da tag
+                                        <form>. Dentro da tag (entre <form e o >)
+                                        só podem existir atributos, nunca comentários.
                                     -->
                                     <form
                                         action="jogos_delete.php"
                                         method="post"
-
-                                    </form>
-
-                                        <!-- Antes de enviar o formulário,
-                                            pergunta ao administrador se
-                                            realmente deseja apagar o jogo.
-
-                                            Se clicar em "Cancelar",
-                                            confirm() retorna false e o
-                                            formulário não é enviado. -->
-
                                         onsubmit="return confirm('Apagar este jogo? Isso não pode ser desfeito.');"
                                     >
 

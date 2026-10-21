@@ -1,11 +1,16 @@
 <?php
+// A primeira linha deste arquivo precisa ser exatamente "<?php" (nada antes dela).
 
-// Barra do administrador
+// Barra do administrador (incluída pelo header.php quando a pessoa é admin).
 // Para acrescentar uma área nova no futuro, basta adicionar um <a> aqui.
-
 ?>
 
 <nav class="admin-bar" aria-label="Área do administrador">
+
+    <!-- LOGO (imagem que leva para a página inicial) -->
+    <a class="admin-logo" href="<?= BASE_URL ?>/index.php" aria-label="game.erah, página inicial">
+        <img src="<?= BASE_URL ?>/img/logo.png" alt="game.erah" width="200" height="120">
+    </a>
 
     <span class="admin-bar-titulo">
         ADMIN
@@ -15,8 +20,8 @@
         Início do admin
     </a>
 
-    <!-- Grupo: usuários -->
 
+    <!-- Grupo: usuários -->
     <div class="admin-grupo" tabindex="0">
 
         <span>
@@ -49,8 +54,8 @@
 
     </div>
 
-    <!-- Grupo: jogos -->
 
+    <!-- Grupo: jogos -->
     <div class="admin-grupo" tabindex="0">
 
         <span>
@@ -71,8 +76,15 @@
 
     </div>
 
+
     <a href="<?= BASE_URL ?>/jogos.php">
         Ver o site
+    </a>
+
+
+    <!-- BOTÃO SAIR (encostado na direita da barra) -->
+    <a class="admin-sair" href="<?= BASE_URL ?>/login/logout.php">
+        Sair
     </a>
 
 </nav>

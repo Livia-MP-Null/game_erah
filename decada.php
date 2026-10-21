@@ -7,6 +7,7 @@ require_once __DIR__ . '/includes/config.php';
 require_once __DIR__ . '/database/conect.php';
 require_once __DIR__ . '/includes/functions_jogos.php';
 require_once __DIR__ . '/includes/functions_interacao.php';
+require_once __DIR__ . '/includes/video.php'; // <-- NECESSÁRIO PARA O VÍDEO DO YOUTUBE
 
 $decadas = decadas_site();
 
@@ -33,9 +34,6 @@ $classif = classificacoes_todas($conexao);
 $ids = array_map('intval', array_column($jogos, 'id'));
 
 // ---- Curtidas, favoritos e comentários
-
-// Se essas tabelas ainda não existirem no banco,
-// a página continua funcionando sem essa parte.
 
 try {
 
@@ -74,7 +72,6 @@ $anterior = $chaves[$pos - 1] ?? null;
 $proxima  = $chaves[$pos + 1] ?? null;
 
 ?>
-
 <!DOCTYPE html>
 <html lang="pt-br">
 

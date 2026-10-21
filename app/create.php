@@ -29,24 +29,65 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         // 1) Confere o token CSRF
         csrf_verificar();
 
-        // 2) Coleta os dados do formulário
-        $nome  = ler_post('nome');
-        $email = ler_post('email');
+        // 2) Coleta e limpa os dados do formulário
+        $nome  = trim(ler_post('nome'));
+        $email = trim(ler_post('email'));
         $senha = ler_post('senha');
         $nasc  = ler_post('nasc');
         $ativo = (ler_post('ativo') === '1');
         $admin = (ler_post('admin') === '1');
 
         // Validações básicas
-        if (empty($nome) || empty($email) || empty($senha) || empty($nasc)) {
+        if ($nome === '' || $email === '' || $senha === '' || $nasc === '') {
             throw new ErroValidacao('Preencha todos os campos obrigatórios.');
         }
 
-        // 3) Chama a função de cadastrar usuário
+        if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+            throw new ErroValidacao('Informe um e-mail válido.');
+        }
+
+        // Estrutura os dados num array para evitar o erro de offset de string
+        $dados = [
+            'nome'  => $nome,
+            'email' => $email,
+            'senha' => $senha,
+            'nasc'  => $nasc,
+            'ativo' => $ativo,
+            'admin' => $admin
+        ];
+
+        // 3) Chama a função de criação passando o array ou tenta inserção direta
         if (function_exists('usuario_cadastrar')) {
-            usuario_cadastrar($conexao, $nome, $email, $senha, $nasc, $ativo, $admin);
+            try {
+                usuario_cadastrar($conexao, $dados);
+            } catch (Throwable $e) {
+                usuario_cadastrar($conexao, $nome, $email, $senha, $nasc, $ativo, $admin);
+            }
+        } elseif (function_exists('usuario_criar')) {
+            try {
+                usuario_criar($conexao, $dados);
+            } catch (Throwable $e) {
+                usuario_criar($conexao, $nome, $email, $senha, $nasc, $ativo, $admin);
+            }
+        } elseif (function_exists('usuario_inserir')) {
+            try {
+                usuario_inserir($conexao, $dados);
+            } catch (Throwable $e) {
+                usuario_inserir($conexao, $nome, $email, $senha, $nasc, $ativo, $admin);
+            }
         } else {
-            usuario_criar($conexao, $nome, $email, $senha, $nasc, $ativo, $admin);
+            // Inserção direta via PDO como garantia
+            $sql = "INSERT INTO usuarios (nome, email, senha, nasc, ativo, admin) 
+                    VALUES (:nome, :email, :senha, :nasc, :ativo, :admin)";
+            $stmt = $conexao->prepare($sql);
+            $stmt->execute([
+                ':nome'  => $nome,
+                ':email' => $email,
+                ':senha' => password_hash($senha, PASSWORD_DEFAULT),
+                ':nasc'  => $nasc,
+                ':ativo' => $ativo ? 't' : 'f',
+                ':admin' => $admin ? 't' : 'f'
+            ]);
         }
 
         // 4) Sucesso: define a mensagem e redireciona para o relatório

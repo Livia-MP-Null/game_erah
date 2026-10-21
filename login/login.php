@@ -52,20 +52,21 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             throw new ErroValidacao('Sistema indisponível no momento. Tente novamente mais tarde.');
         }
 
-        // 4) Leitura dos campos do formulário.
-        $email = mb_strtolower(trim(ler_post('email')));
+        // 4) Lê o e-mail (sem espaços e em minúsculas) e a senha (que NÃO leva trim).
+        $email = strtolower(trim(ler_post('email')));
         $senha = ler_post('senha');
 
-        $emailDigitado = mb_strlen($email) <= EMAIL_MAX ? $email : '';
+        // Guarda o e-mail para devolvê-lo ao campo (só se tiver um tamanho razoável).
+        $emailDigitado = strlen($email) <= EMAIL_MAX ? $email : '';
 
         // 5) Campos vazios.
         if ($email === '' || $senha === '') {
             throw new ErroValidacao('Informe o e-mail e a senha.');
         }
 
-        // 6) Procura o usuário pelo e-mail.
+        // 6) Procura o usuário pelo e-mail. Se o e-mail for gigante, nem consulta o banco.
         $usuario = false;
-        if (mb_strlen($email) <= EMAIL_MAX) {
+        if (strlen($email) <= EMAIL_MAX) {
             $usuario = usuario_buscar_por_email($conexao, $email);
         }
 
@@ -107,13 +108,11 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         $_SESSION['admin'] = pg_para_bool($usuario['admin']);
 
         redirecionar(BASE_URL . ($_SESSION['admin'] ? '/app/painel.php' : '/index.php'));
-
     } catch (ErroValidacao $e) {
         $erro = $e->getMessage();
-
     } catch (Throwable $e) {
         error_log('login.php: ' . $e->getMessage());
-        
+
         // Exibe o erro real na tela para diagnóstico no ambiente local/rede:
         $erro = 'Erro no sistema: ' . $e->getMessage() . ' (' . basename($e->getFile()) . ':' . $e->getLine() . ')';
     }
@@ -175,8 +174,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                         maxlength="<?= EMAIL_MAX ?>"
                         autocomplete="username"
                         value="<?= escapar($emailDigitado) ?>"
-                        required
-                    >
+                        required>
 
                     <!-- SENHA -->
                     <label for="senha">Senha</label>
@@ -188,14 +186,12 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                             placeholder="Digite sua senha"
                             maxlength="1000"
                             autocomplete="current-password"
-                            required
-                        >
+                            required>
 
                         <button
                             type="button"
                             class="ver-senha"
-                            aria-label="Mostrar senha"
-                        >
+                            aria-label="Mostrar senha">
                             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                                 <path d="M1 12s4-7 11-7 11 7 11 7-4 7-11 7S1 12 1 12z" />
                                 <circle cx="12" cy="12" r="3" />
@@ -230,8 +226,8 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
     <!-- MOSTRAR / ESCONDER SENHA -->
     <script>
-        document.querySelectorAll('.ver-senha').forEach(function (botao) {
-            botao.addEventListener('click', function () {
+        document.querySelectorAll('.ver-senha').forEach(function(botao) {
+            botao.addEventListener('click', function() {
                 var campo = botao.parentElement.querySelector('input');
                 var mostrando = campo.type === 'text';
                 campo.type = mostrando ? 'password' : 'text';
@@ -241,4 +237,5 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     </script>
 
 </body>
+
 </html>

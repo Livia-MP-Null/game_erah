@@ -1,7 +1,7 @@
 <footer class="rodape">
 
     <h4>Anuncie aqui:</h4>
-
+<!--Nao funciona-->
     <p class="rodape-titulo">Assine para receber novidades</p>
 
     <form class="newsletter" action="#" method="post">

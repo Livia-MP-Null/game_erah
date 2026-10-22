@@ -1,5 +1,5 @@
 <?php
-
+//RELATORIO
 // Importa as funções gerais do sistema.
 // Esse arquivo contém funções como esc_html() e também a conexão com o banco.
 require_once __DIR__ . '/../includes/functions.php';
@@ -418,11 +418,8 @@ $ok = $mensagens[$_GET['ok'] ?? ''] ?? '';
                                             O atributo alt (texto alternativo) usa o título
                                             do jogo.
                                         -->
-                                        <img
-                                            class="miniatura"
-                                            src="<?= URL_UPLOADS . esc_html($j['imagem']) ?>"
-                                            alt="<?= esc_html($j['titulo']) ?>"
-                                        >
+                                        <img class="miniatura" src="<?= URL_UPLOADS . esc_html($j['imagem']) ?>"
+                                            alt="<?= esc_html($j['titulo']) ?>">
 
                                     <?php else: ?>
 
@@ -629,10 +626,7 @@ $ok = $mensagens[$_GET['ok'] ?? ''] ?? '';
                                         Isso permite que a página de
                                         atualização saiba qual jogo editar.
                                     -->
-                                    <a
-                                        class="btn-editar"
-                                        href="jogos_update.php?id=<?= (int) $j['id'] ?>"
-                                    >
+                                    <a class="btn-editar" href="jogos_update.php?id=<?= (int) $j['id'] ?>">
                                         Editar
                                     </a>
 
@@ -660,11 +654,8 @@ $ok = $mensagens[$_GET['ok'] ?? ''] ?? '';
                                         <form>. Dentro da tag (entre <form e o >)
                                         só podem existir atributos, nunca comentários.
                                     -->
-                                    <form
-                                        action="jogos_delete.php"
-                                        method="post"
-                                        onsubmit="return confirm('Apagar este jogo? Isso não pode ser desfeito.');"
-                                    >
+                                    <form action="jogos_delete.php" method="post"
+                                        onsubmit="return confirm('Apagar este jogo? Isso não pode ser desfeito.');">
 
                                         <!--
                                             Campo escondido que envia o ID
@@ -674,21 +665,14 @@ $ok = $mensagens[$_GET['ok'] ?? ''] ?? '';
                                             mas seu valor é enviado junto
                                             com o formulário.
                                         -->
-                                        <input
-                                            type="hidden"
-                                            name="id"
-                                            value="<?= (int) $j['id'] ?>"
-                                        >
+                                        <input type="hidden" name="id" value="<?= (int) $j['id'] ?>">
 
 
                                         <!--
                                             Botão que envia o formulário
                                             de exclusão.
                                         -->
-                                        <button
-                                            type="submit"
-                                            class="btn-perigo"
-                                        >
+                                        <button type="submit" class="btn-perigo">
                                             Apagar
                                         </button>
 
@@ -699,7 +683,7 @@ $ok = $mensagens[$_GET['ok'] ?? ''] ?? '';
 
                             </tr>
 
-                        <!--
+                            <!--
                             Finaliza o foreach.
 
                             A tabela terá uma linha <tr> para cada jogo

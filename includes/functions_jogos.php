@@ -16,8 +16,7 @@ const IMAGEM_TIPOS = [
     'image/webp' => 'webp'
 ];
 
-// ATENÇÃO: o vídeo agora é um LINK. Estas duas constantes (VIDEO_TIPOS e VIDEO_MAX)
-// não são mais usadas e só ficam aqui para não quebrar páginas antigas.
+
 const VIDEO_TIPOS = [
     'video/mp4'  => 'mp4',
     'video/webm' => 'webm'
@@ -49,15 +48,16 @@ function decadas_site()
 
 
 // ============================================================
-// ESCAPAR TEXTO PARA HTML
+// Proteção de dados
 // ============================================================
-
+//serve para proteger o seu site
 function esc_html($texto)
 {
     return htmlspecialchars((string) $texto, ENT_QUOTES, 'UTF-8');
 }
-
-
+//htmlspecialchars(...): Converte caracteres especiais do HTML (como <, >, &, aspas) em entidades seguras.
+//ENT_QUOTES: Garante que tanto aspas simples quanto duplas sejam convertidas, impedindo que o código quebre ou seja injetado em atributos HTML.
+//'UTF-8': Assegura que acentos e caracteres especiais da língua portuguesa não sejam corrompidos.
 // ============================================================
 // UPLOAD
 // ============================================================
@@ -241,6 +241,7 @@ function categorias_listar($c)
 // Classificações de UM jogo: [categoria_id => posicao]
 function classificacoes_do_jogo($c, $jogoId)
 {
+    //O $s guarda a consulta SQL "pré-montada" com interrogações ? no lugar dos dados
     $s = $c->prepare(
         "SELECT categoria_id, posicao
          FROM jogo_categoria

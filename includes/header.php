@@ -1,11 +1,12 @@
 <?php
-// A primeira linha deste arquivo precisa ser exatamente "<?php" (nada antes dela).
 
 require_once __DIR__ . '/config.php';
+//É ele que executa o session_start(). Sem ele rodar antes de qualquer outra coisa, as variáveis de sessão ($_SESSION) simplesmente não existiriam.
 
 $logado = !empty($_SESSION['id']);
+//Verifica se a variável de sessão id existe e não está vazia (!empty). Se o usuário fez login com sucesso, ele tem um ID guardado na sessão, logo $logado assume o valor true (verdadeiro). Se ninguém estiver logado, assume false (falso).
 $admin  = !empty($_SESSION['admin']);
-
+//O que faz: Verifica se a credencial de administrador está ativa na sessão do usuário atual. Se estiver, $admin vira true; caso contrário, vira false.
 // Lista de páginas onde o botão "← Voltar" NÃO deve aparecer no topo
 $paginaAtual   = basename($_SERVER['SCRIPT_NAME'] ?? '');
 $semVoltar     = ['index.php', 'painel.php', 'decada.php', 'preview_decada.php', 'jogos.php'];

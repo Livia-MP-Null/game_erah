@@ -92,7 +92,10 @@ if (post_excedeu_limite()) {
         header("Location: jogos_select.php?ok=criado");
         exit();
 
-    } catch (Exception $e) {
+    } catch (Throwable $e) {
+        // Throwable captura TODO tipo de erro (inclusive erros internos do PHP),
+        // e não só as "Exception". Assim a mensagem aparece na caixa vermelha da página
+        // em vez de a pessoa ver a tela de "HTTP ERROR 500".
 
         // Só a imagem é um arquivo no servidor; o vídeo é apenas um link.
         apagar_arquivo($imagem);

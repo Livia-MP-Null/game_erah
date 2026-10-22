@@ -17,7 +17,7 @@ require_once __DIR__ . '/includes/functions_jogos.php';
     <title>Jogos por década</title>
 </head>
 
-<body>
+<body class="pagina-interna">
 
     <?php include __DIR__ . '/includes/header.php'; ?>
 

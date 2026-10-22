@@ -127,6 +127,7 @@ function normalizar_id($valor)
 
 // ----------------------------------------------------------------------
 // CSRF: token que prova que o formulário veio DESTE site.
+//Falsificação de Solicitação entre Sites
 // ----------------------------------------------------------------------
 // Sem token, um site malicioso poderia esconder um formulário que apaga
 // usuários e fazer o admin enviá-lo sem perceber (só por abrir o site).

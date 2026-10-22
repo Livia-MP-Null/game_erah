@@ -1,5 +1,5 @@
 <?php
-// A primeira linha deste arquivo precisa ser exatamente "<?php" (nada antes dela).
+
 
 // Barra do administrador (incluída pelo header.php quando a pessoa é admin).
 // Para acrescentar uma área nova no futuro, basta adicionar um <a> aqui.

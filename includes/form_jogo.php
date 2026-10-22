@@ -1,10 +1,8 @@
 <?php
 // ============================================================
-// formulario_jogo.php | FORMULÁRIO REUTILIZÁVEL DE JOGO
+// formulario_jogo.php | 
 // ============================================================
 //
-// Este arquivo contém apenas o HTML e o PHP necessários
-// para exibir o formulário de cadastro ou edição de jogos.
 //
 // Ele é incluído por páginas como jogos_create.php
 // e jogos_update.php.

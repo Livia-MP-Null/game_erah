@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+<!-- primeira area acessada por qualquer que netre no game erah-->
 
 <html lang="pt-br">
 
@@ -136,7 +137,7 @@
 
         </section>
 
-        <!-- 5) GALERIA -->
+        <!-- 5) GALERIA?imagens decorativas-->
         <section class="galeria">
 
             <div class="galeria-faixa">
@@ -152,7 +153,7 @@
 
             </div>
 
-            <a class="galeria-botao" href="/game_erah/app/select.php">
+            <a class="galeria-botao" href="/game_erah/jogos.php">
                 Explore o mundo dos games
             </a>
 

@@ -1,8 +1,6 @@
 <?php
-// ATENÇÃO: a PRIMEIRA linha deste arquivo precisa ser exatamente "<?php".
-// Nenhum espaço, linha em branco ou texto de marcação copiado do chat pode vir antes dela.
-// Qualquer coisa antes faz o header("Location: ...") falhar com o erro
-// "headers already sent", e o redirecionamento não acontece.
+
+
 
 // Página sem HTML: apaga o jogo e volta para o relatório.
 

@@ -5,6 +5,7 @@
 
 // Garante valores padrão para as variáveis do include (remove os avisos do VS Code)
 $d             = $d ?? 0;
+//d botoes decada
 $decadas       = $decadas ?? [];
 $jogos         = $jogos ?? [];
 $classif       = $classif ?? [];
@@ -39,7 +40,7 @@ $botaoInteracao = function ($acao, $classe, $icone, $texto, $ativo, $total, $jog
        . '<button type="submit" class="' . $classes . '">' . $rotulo . '</button>'
        . '</form>';
 };
-
+//array
 $padraoInteracao = ['curtidas' => 0, 'favoritos' => 0, 'curtiu' => false, 'favoritou' => false];
 ?>
 
@@ -85,7 +86,7 @@ $padraoInteracao = ['curtidas' => 0, 'favoritos' => 0, 'curtiu' => false, 'favor
 
                 <?php foreach ($classif[$id] ?? [] as $cl): ?>
                     <span class="selo">
-                        🏆 <?= esc_html($cl['categoria']) ?> · <?= (int) $cl['posicao'] ?>º lugar
+                         <?= esc_html($cl['categoria']) ?> · <?= (int) $cl['posicao'] ?>º lugar
                     </span>
                 <?php endforeach; ?>
 

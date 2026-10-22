@@ -8,6 +8,7 @@
 
 // Favoritar / curtir funcionam como um "liga e desliga":
 // se já existe, remove; se não existe, cria.
+// c representa a conexão ativa com o banco de dados
 function alternar_marca($c, $tabela, $usuarioId, $jogoId)
 {
     // O nome da tabela vem de código nosso, nunca do usuário; mesmo assim

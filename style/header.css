@@ -1,10 +1,20 @@
-/* HEADER */
+/* ========================================
+   HEADER
+   ======================================== */
+
 .topo {
-    position: absolute;      /* fica por cima da imagem do hero */
+    position: absolute;      /* Fica por cima da imagem do hero na página inicial */
     top: 0;
     left: 0;
     width: 100%;
     z-index: 10;
+}
+
+/* Classe para páginas internas (sem o hero) */
+.topo.topo-interno {
+    position: relative;      /* Fica no fluxo normal do ecrã, evitando sobreposições */
+    background: #000;        /* Garante o fundo preto sólido */
+    margin-bottom: 20px;     /* Espaçamento antes do conteúdo seguinte */
 }
 
 .navbar {
@@ -49,4 +59,10 @@
 .btn-laranja:hover,
 .btn-contorno:hover {
     opacity: 0.8;
+}
+/* Ajuste automático para o topo em páginas internas */
+body.pagina-interna .topo {
+    position: relative;
+    background: #000;
+    margin-bottom: 20px;
 }

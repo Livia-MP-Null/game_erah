@@ -13,13 +13,13 @@ require_once __DIR__ . '/../includes/functions.php';
 
 <head>
 
-    <!-- Define a codificação de caracteres da página -->
+    
     <meta charset="UTF-8">
 
-    <!-- Faz a página se adaptar a diferentes tamanhos de tela -->
+   
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <!-- Define o título que aparece na aba do navegador -->
+    
     <title>Cadastrar</title>
 
     <!-- Importa o arquivo CSS responsável pelo estilo da página de autenticação -->

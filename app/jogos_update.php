@@ -1,15 +1,8 @@
 <?php
 
 
-// ATENÇÃO: apague estas duas linhas (error_reporting e display_errors) antes de
-// publicar o site. Elas mostram erros internos na tela para qualquer visitante.
 
-// Mostra todos os tipos de erros que acontecerem no PHP.
-error_reporting(E_ALL);
 
-// Faz os erros aparecerem diretamente na tela.
-// É útil durante o desenvolvimento para descobrir problemas.
-ini_set('display_errors', 1);
 
 
 // Carrega as funções gerais do sistema.
@@ -227,7 +220,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
         // Interrompe a execução depois do redirecionamento.
         exit;
-    } catch (Exception $e) {
+    } catch (Throwable $e) {
+        // Throwable captura TODO tipo de erro (inclusive erros internos do PHP),
+        // e não só as "Exception". Assim a mensagem aparece na caixa vermelha da página
+        // em vez de a pessoa ver a tela de "HTTP ERROR 500".
 
         // Se alguma coisa der errado durante a atualização,
         // verifica se uma nova imagem chegou a ser criada.
@@ -345,19 +341,13 @@ $decada = decada_do_ano($jogo['ano_lancamento']);
         <?php endif; ?>
 
 
-        <form
-            class="form-admin"
-            method="post"
-            enctype="multipart/form-data">
+        <form class="form-admin" method="post" enctype="multipart/form-data">
             <!-- Cria o formulário.
          method="post" envia os dados através de POST.
          multipart/form-data permite enviar arquivos. -->
 
 
-            <input
-                type="hidden"
-                name="id"
-                value="<?= (int) $jogo['id'] ?>">
+            <input type="hidden" name="id" value="<?= (int) $jogo['id'] ?>">
             <!-- Campo invisível que guarda o ID do jogo.
              Ele é enviado junto com o formulário. -->
 
@@ -370,12 +360,7 @@ $decada = decada_do_ano($jogo['ano_lancamento']);
                 </label>
                 <!-- Texto que identifica o campo. -->
 
-                <input
-                    type="text"
-                    id="titulo"
-                    name="titulo"
-                    maxlength="255"
-                    required
+                <input type="text" id="titulo" name="titulo" maxlength="255" required
                     value="<?= esc_html($jogo['titulo']) ?>">
                 <!-- Campo onde o administrador pode editar o nome.
                  maxlength limita o tamanho.
@@ -392,12 +377,7 @@ $decada = decada_do_ano($jogo['ano_lancamento']);
                 </label>
                 <!-- Identifica o campo da desenvolvedora. -->
 
-                <input
-                    type="text"
-                    id="desenvolvedora"
-                    name="desenvolvedora"
-                    maxlength="255"
-                    required
+                <input type="text" id="desenvolvedora" name="desenvolvedora" maxlength="255" required
                     value="<?= esc_html($jogo['desenvolvedora']) ?>">
                 <!-- Campo para alterar a desenvolvedora. -->
 
@@ -411,12 +391,7 @@ $decada = decada_do_ano($jogo['ano_lancamento']);
                 </label>
                 <!-- Identifica quem criou o jogo. -->
 
-                <input
-                    type="text"
-                    id="criado_por"
-                    name="criado_por"
-                    maxlength="255"
-                    required
+                <input type="text" id="criado_por" name="criado_por" maxlength="255" required
                     value="<?= esc_html($jogo['criado_por']) ?>">
                 <!-- Campo para editar o criador do jogo. -->
 
@@ -430,14 +405,8 @@ $decada = decada_do_ano($jogo['ano_lancamento']);
                 </label>
                 <!-- Identifica o campo do ano. -->
 
-                <input
-                    type="number"
-                    id="ano_lancamento"
-                    name="ano_lancamento"
-                    min="1950"
-                    max="<?= (int) date('Y') + 2 ?>"
-                    required
-                    value="<?= (int) $jogo['ano_lancamento'] ?>">
+                <input type="number" id="ano_lancamento" name="ano_lancamento" min="1950"
+                    max="<?= (int) date('Y') + 2 ?>" required value="<?= (int) $jogo['ano_lancamento'] ?>">
                 <!-- Campo numérico para alterar o ano.
                  min define o menor ano permitido.
                  date('Y') pega o ano atual.
@@ -453,10 +422,7 @@ $decada = decada_do_ano($jogo['ano_lancamento']);
                 </label>
                 <!-- Identifica a informação da década. -->
 
-                <input
-                    type="text"
-                    value="<?= (int) $decada ?>s"
-                    readonly>
+                <input type="text" value="<?= (int) $decada ?>s" readonly>
                 <!-- Mostra a década calculada automaticamente.
                  readonly impede o administrador de editar esse campo. -->
 
@@ -475,10 +441,7 @@ $decada = decada_do_ano($jogo['ano_lancamento']);
                 </label>
                 <!-- Identifica o campo da descrição. -->
 
-                <textarea
-                    id="descricao"
-                    name="descricao"
-                    rows="6"
+                <textarea id="descricao" name="descricao" rows="6"
                     required><?= esc_html($jogo['descricao']) ?></textarea>
                 <!-- Área de texto para editar a descrição do jogo.
                  rows="6" deixa o campo com aproximadamente 6 linhas. -->
@@ -523,13 +486,8 @@ $decada = decada_do_ano($jogo['ano_lancamento']);
                         </label>
                         <!-- Mostra o nome da categoria. -->
 
-                        <input
-                            type="number"
-                            name="posicao[<?= $categoriaId ?>]"
-                            min="1"
-                            max="100"
-                            value="<?= esc_html($valorPosicao) ?>"
-                            placeholder="Posição">
+                        <input type="number" name="posicao[<?= $categoriaId ?>]" min="1" max="100"
+                            value="<?= esc_html($valorPosicao) ?>" placeholder="Posição">
                         <!-- Campo para informar a posição do jogo.
                          O nome posicao[ID] permite enviar várias posições
                          associadas aos IDs das categorias. -->
@@ -559,9 +517,7 @@ $decada = decada_do_ano($jogo['ano_lancamento']);
                     </p>
                     <!-- Mostra o nome do arquivo da imagem atual. -->
 
-                    <img
-                        class="miniatura"
-                        src="<?= URL_UPLOADS . esc_html($jogo['imagem']) ?>"
+                    <img class="miniatura" src="<?= URL_UPLOADS . esc_html($jogo['imagem']) ?>"
                         alt="<?= esc_html($jogo['titulo']) ?>">
                     <!-- Mostra uma miniatura da imagem atual.
                      URL_UPLOADS indica a pasta onde os uploads estão. -->
@@ -569,11 +525,7 @@ $decada = decada_do_ano($jogo['ano_lancamento']);
                 <?php endif; ?>
 
 
-                <input
-                    type="file"
-                    id="imagem"
-                    name="imagem"
-                    accept="image/jpeg,image/png,image/webp">
+                <input type="file" id="imagem" name="imagem" accept="image/jpeg,image/png,image/webp">
                 <!-- Campo para selecionar uma nova imagem.
                  accept limita os tipos de arquivo mostrados/aceitos
                  pelo navegador. -->
@@ -608,14 +560,8 @@ $decada = decada_do_ano($jogo['ano_lancamento']);
                 }
                 ?>
 
-                <input
-                    type="text"
-                    id="video"
-                    name="video"
-                    maxlength="255"
-                    inputmode="url"
-                    placeholder="https://www.youtube.com/watch?v=..."
-                    value="<?= esc_html($videoCampo) ?>">
+                <input type="text" id="video" name="video" maxlength="255" inputmode="url"
+                    placeholder="https://www.youtube.com/watch?v=..." value="<?= esc_html($videoCampo) ?>">
                 <!-- Campo para colar (ou corrigir) o link do vídeo.
                  inputmode="url" mostra o teclado de endereços no celular. -->
 
@@ -641,18 +587,14 @@ $decada = decada_do_ano($jogo['ano_lancamento']);
             <div class="admin-acoes">
                 <!-- Área onde ficam os botões. -->
 
-                <button
-                    type="submit"
-                    class="btn-admin">
+                <button type="submit" class="btn-admin">
                     Salvar alterações
                 </button>
                 <!-- Botão que envia o formulário para o PHP.
                  Como type é submit, os dados são enviados. -->
 
 
-                <a
-                    href="jogos_select.php"
-                    class="btn-secundario">
+                <a href="jogos_select.php" class="btn-secundario">
                     Cancelar
                 </a>
                 <!-- Link que leva de volta para a lista de jogos. -->
@@ -668,183 +610,8 @@ $decada = decada_do_ano($jogo['ano_lancamento']);
 
     <?php include __DIR__ . '/../includes/footer.php'; ?>
     <!-- Inclui o rodapé do site. -->
-     <?php
-
-// Mostra todos os tipos de erros que acontecerem no PHP para facilitar o diagnóstico.
-error_reporting(E_ALL);
-ini_set('display_errors', 1);
-
-// Carrega as funções gerais do sistema.
-require_once __DIR__ . '/../includes/functions.php';
-
-// Verifica se o usuário que está acessando é administrador.
-require_once __DIR__ . '/../includes/verifica_admin.php';
-
-// Carrega as funções específicas relacionadas aos jogos.
-require_once __DIR__ . '/../includes/functions_jogos.php';
-
-// Cria uma variável vazia para guardar mensagens de erro.
-$erro = '';
-
-// Cria uma variável vazia para guardar mensagens de sucesso.
-$sucesso = '';
-
-// Pega o ID enviado pelo formulário ou pela URL.
-$id = (int) ($_POST['id'] ?? $_GET['id'] ?? 0);
-
-// Verifica se o ID é inválido.
-if ($id <= 0) {
-    die('ID do jogo inválido.');
-}
-
-// Busca o jogo no banco de dados usando o ID recebido.
-$jogo = jogo_buscar($conexao,$id);
-
-// Se nenhum jogo foi encontrado...
-if (!$jogo) {
-    die('Jogo não encontrado.');
-}
-
-// Busca todas as categorias existentes no banco.
-$categorias = categorias_listar($conexao);
-
-// Busca as classificações que já pertencem ao jogo.
-$classificacoes = classificacoes_do_jogo($conexao,$id);
-
-// Verifica se o formulário foi enviado usando POST.
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-
-    // Inicia o bloco try/catch capturando Throwable (evita Erro 500 no navegador)
-    try {
-
-        if (post_excedeu_limite()) {
-            throw new Exception('O envio ultrapassou o limite permitido pelo servidor.');
-        }
-
-        $titulo         = trim($_POST['titulo'] ?? '');
-        $desenvolvedora = trim($_POST['desenvolvedora'] ?? '');
-        $criado_por     = trim($_POST['criado_por'] ?? '');
-        $ano            =$_POST['ano_lancamento'] ?? '';
-        $descricao      = trim($_POST['descricao'] ?? '');
-        $videoDigitado  = trim($_POST['video'] ?? '');
-
-        // Lê as posições das classificações enviadas pelo formulário.
-        $posicoes = ler_posicoes();
-
-        // Valida os dados básicos do jogo.
-        validar_jogo([
-            'titulo'         => $titulo,
-            'desenvolvedora' => $desenvolvedora,
-            'criado_por'     => $criado_por,
-            'ano_lancamento' => $ano,
-            'descricao'      => $descricao
-        ]);
-
-        // Verifica se as posições das classificações são válidas.
-        validar_posicoes($posicoes);
-
-        $novaImagem = null;
-
-        // Upload da nova imagem se enviada
-        if (
-            isset($_FILES['imagem']) &&$_FILES['imagem']['error'] !== UPLOAD_ERR_NO_FILE
-        ) {
-            $novaImagem = salvar_upload($_FILES['imagem'],
-                IMAGEM_TIPOS,
-                IMAGEM_MAX
-            );
-        }
-
-        // Valida e normaliza o link do vídeo
-        $video = video_normalizar($videoDigitado);
-
-        // Atualiza os dados do jogo no banco de dados.
-        jogo_atualizar(
-            $conexao,$id,
-            $titulo,$ano,
-            $desenvolvedora,$criado_por,
-            $descricao,$novaImagem,
-            $video,$posicoes
-        );
-
-        // Apaga a imagem antiga se uma nova foi enviada com sucesso
-        if ($novaImagem !== null && !empty($jogo['imagem'])) {
-            apagar_arquivo($jogo['imagem']);
-        }
-
-        // Apaga o vídeo antigo se era um arquivo local do servidor
-        if (!empty($jogo['video']) && $jogo['video'] !==$video) {
-            apagar_arquivo($jogo['video']);
-        }
-
-        // Redireciona para a listagem
-        header('Location: jogos_select.php?ok=atualizado');
-        exit;
-
-    } catch (Throwable $e) {
-
-        // Se der erro, apaga a nova imagem enviada para não deixar lixo no servidor
-        if (!empty($novaImagem)) {
-            apagar_arquivo($novaImagem);
-        }
-
-        // Exibe o erro de forma clara na tela
-        $erro = 'Erro ao atualizar: ' .$e->getMessage() . ' (Arquivo: ' . basename($e->getFile()) . ', Linha: ' .$e->getLine() . ')';
-
-        // Mantém no formulário os valores que o administrador digitou
-        $jogo['titulo']         =$titulo ?? $jogo['titulo'];$jogo['desenvolvedora'] = $desenvolvedora ?? $jogo['desenvolvedora'];
-        $jogo['criado_por']     =$criado_por ?? $jogo['criado_por'];$jogo['ano_lancamento'] = $ano ?? $jogo['ano_lancamento'];
-        $jogo['descricao']      =$descricao ?? $jogo['descricao'];$jogo['video']          = $videoDigitado ?? $jogo['video'];
-
-        $classificacoes = $posicoes ?? $classificacoes;
-    }
-}
-
-// Calcula a década com base no ano de lançamento.
-$decada = decada_do_ano($jogo['ano_lancamento']);
-
-?>
-<!DOCTYPE html>
-<html lang="pt-br">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-    <link rel="stylesheet" href="../style/style.css">
-    <link rel="stylesheet" href="../style/header.css">
-    <link rel="stylesheet" href="../style/adm_style.css">
-    <link rel="stylesheet" href="../style/jogos.css">
-
-    <title>Editar jogo</title>
-</head>
-<body>
-
-    <?php include __DIR__ . '/../includes/header.php'; ?>
-
-    <main class="admin-conteudo">
-
-        <div class="admin-titulo">
-            <h1>Editar jogo</h1>
-            <p>Altere as informações do jogo abaixo.</p>
-        </div>
-
-        <?php if ($erro): ?>
-            <p class="msg-erro">
-                <?= function_exists('esc_html') ? esc_html($erro) : htmlspecialchars($erro) ?>
-            </p>
-        <?php endif; ?>
-
-        <form class="form-admin" method="post" enctype="multipart/form-data">
-
-            <input type="hidden" name="id" value="<?= (int) $jogo['id'] ?>">
-
-            <div class="campo">
-                <label for="titulo">Nome do jogo</label>
-                <input
-                    type="text"
 
 </body>
 
 
 </html>
-

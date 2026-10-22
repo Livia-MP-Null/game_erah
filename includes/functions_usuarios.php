@@ -3,9 +3,6 @@
 // functions_usuarios.php
 // Funções que VALIDAM e GRAVAM usuários no banco (tabela "usuarios").
 //
-// IMPORTANTE: este arquivo NÃO exige nenhuma mudança no banco de dados.
-// Tudo é feito em PHP, usando só as colunas que já existem em "usuarios"
-// (id, nome, nasc, email, senha, ativo, admin).
 //
 // Regras de segurança aplicadas aqui:
 //   - todas as consultas usam "?" (prepared statements): impede SQL injection

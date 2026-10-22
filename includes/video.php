@@ -20,6 +20,12 @@
 
 // ----------------------------------------------------------------------
 // video_esc(): protege um texto antes de colocá-lo no HTML.
+//htmlspecialchars(...): É a função nativa do PHP responsável por "escapar" caracteres especiais. Ela pega caracteres que o navegador interpretaria como código HTML/JavaScript (como <, >, ", ' e &) e os transforma em entidades HTML seguras (por exemplo, o < vira &lt;).
+
+//(string) $texto: Garante que tudo o que for passado para dentro da função seja forçado a ser tratado como um texto puro, evitando erros de tipo no PHP.
+
+//ENT_QUOTES: Diz para a função converter tanto as aspas duplas quanto as aspas simples, o que aumenta drasticamente a segurança contra injeções de código em atributos HTML.
+//'UTF-8': Define o padrão de codificação de caracteres, garantindo que acentos e símbolos da língua portuguesa não sejam corrompidos no processo.
 // (É igual ao esc_html, mas fica aqui para este arquivo não depender de outro.)
 // ----------------------------------------------------------------------
 function video_esc($texto)
@@ -53,7 +59,7 @@ function video_interpretar($texto)
     }
 
     // Se a pessoa colou o link sem "https://" (ex.: youtube.com/watch?v=...),
-    // acrescentamos. Mas só se houver uma "/" no texto: isso impede que um
+    // acrescentamos. Mas só se houver uma "/" no texto:não transforma isso impede que um
     // nome de arquivo antigo (como abc123.mp4) seja confundido com um site.
     if (!preg_match('#^https?://#i', $texto)) {
 

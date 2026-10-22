@@ -1,107 +1,95 @@
 <?php
 // ======================================================================
 // create.php  |  CADASTRAR USUÁRIO  (somente administrador)
+//
+// Fluxo de segurança desta página:
+//   1. confere se quem acessa é administrador
+//   2. confere o token CSRF
+//   3. valida TODOS os campos (todos são obrigatórios)
+//   4. confere se o e-mail já existe
+//   5. grava (senha com hash) e redireciona
 // ======================================================================
 
-// Importa as configurações do site (define BASE_URL)
-require_once __DIR__ . '/../includes/config.php';
-
-// Confere login + administrador e cria a conexão $conexao.
+// Confere se há alguém logado E se é administrador. Caso contrário, manda a
+// pessoa embora e para o arquivo aqui. Também cria a conexão $conexao com o banco.
 require_once __DIR__ . '/../includes/verifica_admin.php';
 
-// Ferramentas de segurança.
+// Carrega as ferramentas de segurança (escapar, CSRF, mensagens...).
 require_once __DIR__ . '/../includes/seguranca.php';
 
-// Funções de usuários.
+// Carrega as funções que validam e gravam usuários.
 require_once __DIR__ . '/../includes/functions_usuarios.php';
 
-// Cabeçalhos HTTP de proteção.
+// Envia os cabeçalhos HTTP de proteção.
 cabecalhos_seguranca();
 
-// Para aqui se o banco não estiver acessível.
+// Para a página aqui se o banco de dados não estiver acessível.
 exigir_conexao($conexao ?? null);
 
-$erro = '';
+// Lista onde guardamos as mensagens de erro para mostrar na tela.
+$erros = [];
 
-// Processa o formulário enviado via POST
+
+
+// Valores dos campos. Começam vazios; se houver erro, voltam preenchidos
+// para a pessoa não precisar digitar tudo de novo.
+$dados = ['nome' => '', 'email' => '', 'nasc' => '', 'ativo' => ''];
+
+// Este bloco só roda quando o formulário foi ENVIADO (método POST).
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+
     try {
-        // 1) Confere o token CSRF
+        // 1) Confere o token CSRF. Se for inválido, lança um erro e pula para o "catch".
         csrf_verificar();
 
-        // 2) Coleta e limpa os dados do formulário
-        $nome  = trim(ler_post('nome'));
-        $email = trim(ler_post('email'));
-        $senha = ler_post('senha');
-        $nasc  = ler_post('nasc');
-        $ativo = (ler_post('ativo') === '1');
-        $admin = (ler_post('admin') === '1');
+        // 2) Lê os campos do formulário (ler_post só aceita texto) e limpa os espaços.
+        $dados = usuario_normalizar([
+            'nome'  => ler_post('nome'),
+            'email' => ler_post('email'),
+            'senha' => ler_post('senha'),
+            'nasc'  => ler_post('nasc'),
+            'ativo' => ler_post('ativo'),
+        ]);
 
-        // Validações básicas
-        if ($nome === '' || $email === '' || $senha === '' || $nasc === '') {
-            throw new ErroValidacao('Preencha todos os campos obrigatórios.');
+        // 3) Valida os campos. "true, true" = senha obrigatória e "ativo" obrigatório.
+        $erros = usuario_erros_validacao($dados, true, true);
+
+        // 4) Só consulta o banco se os campos estiverem corretos.
+        if (!$erros && usuario_email_em_uso($conexao, $dados['email'])) {
+            // Já existe alguém com este e-mail.
+            $erros[] = 'Já existe um usuário com este e-mail.';
         }
 
-        if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
-            throw new ErroValidacao('Informe um e-mail válido.');
+        // 5) Se não houve nenhum erro, grava no banco.
+        if (!$erros) {
+
+            // Cria o usuário (a função aplica o hash na senha).
+            usuario_criar($conexao, $dados);
+
+            // Guarda uma mensagem de sucesso para a próxima tela.
+            flash_definir('ok', 'Usuário cadastrado com sucesso.');
+
+            // Redireciona para a mesma página. Assim, F5 não cadastra o usuário de novo.
+            redirecionar('create.php');
         }
-
-        // Estrutura os dados num array para evitar o erro de offset de string
-        $dados = [
-            'nome'  => $nome,
-            'email' => $email,
-            'senha' => $senha,
-            'nasc'  => $nasc,
-            'ativo' => $ativo,
-            'admin' => $admin
-        ];
-
-        // 3) Chama a função de criação passando o array ou tenta inserção direta
-        if (function_exists('usuario_cadastrar')) {
-            try {
-                usuario_cadastrar($conexao, $dados);
-            } catch (Throwable $e) {
-                usuario_cadastrar($conexao, $nome, $email, $senha, $nasc, $ativo, $admin);
-            }
-        } elseif (function_exists('usuario_criar')) {
-            try {
-                usuario_criar($conexao, $dados);
-            } catch (Throwable $e) {
-                usuario_criar($conexao, $nome, $email, $senha, $nasc, $ativo, $admin);
-            }
-        } elseif (function_exists('usuario_inserir')) {
-            try {
-                usuario_inserir($conexao, $dados);
-            } catch (Throwable $e) {
-                usuario_inserir($conexao, $nome, $email, $senha, $nasc, $ativo, $admin);
-            }
-        } else {
-            // Inserção direta via PDO como garantia
-            $sql = "INSERT INTO usuarios (nome, email, senha, nasc, ativo, admin) 
-                    VALUES (:nome, :email, :senha, :nasc, :ativo, :admin)";
-            $stmt = $conexao->prepare($sql);
-            $stmt->execute([
-                ':nome'  => $nome,
-                ':email' => $email,
-                ':senha' => password_hash($senha, PASSWORD_DEFAULT),
-                ':nasc'  => $nasc,
-                ':ativo' => $ativo ? 't' : 'f',
-                ':admin' => $admin ? 't' : 'f'
-            ]);
-        }
-
-        // 4) Sucesso: define a mensagem e redireciona para o relatório
-        flash_definir('ok', 'Usuário "' . $nome . '" criado com sucesso!');
-        redirecionar('select.php');
 
     } catch (ErroValidacao $e) {
-        $erro = $e->getMessage();
+        // Erro causado pela pessoa (ex.: token vencido): a mensagem pode ser mostrada.
+        $erros[] = $e->getMessage();
+
     } catch (Throwable $e) {
+        // Erro interno: registra os detalhes no log (terminal do servidor)...
         error_log('create.php: ' . $e->getMessage());
-        $erro = 'Não foi possível cadastrar o usuário. Verifique se o e-mail já existe ou tente novamente.';
+
+        // ...e mostra à pessoa só uma mensagem genérica.
+        $erros[] = 'Não foi possível cadastrar agora. Tente novamente.';
     }
 }
 
+// Por segurança, a senha nunca volta para o formulário.
+unset($dados['senha']);
+
+// A variável $flash serve para armazenar e exibir mensagens temporárias de feedback (como "Usuário cadastrado com sucesso") na tela.
 $flash = flash_pegar();
 ?>
 <!DOCTYPE html>
@@ -111,12 +99,12 @@ $flash = flash_pegar();
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <!-- CSS padronizado do site -->
-    <link rel="stylesheet" href="<?= BASE_URL ?>/style/style.css">
-    <link rel="stylesheet" href="<?= BASE_URL ?>/style/header.css">
-    <link rel="stylesheet" href="<?= BASE_URL ?>/style/adm_style.css">
+    <!-- Os três arquivos de estilo do site (caminhos relativos: funcionam por IP ou localhost) -->
+    <link rel="stylesheet" href="../style/style.css">
+    <link rel="stylesheet" href="../style/header.css">
+    <link rel="stylesheet" href="../style/adm_style.css">
 
-    <title>Cadastrar Usuário</title>
+    <title>Cadastrar</title>
 </head>
 
 <body>
@@ -127,70 +115,85 @@ $flash = flash_pegar();
     <main class="admin-conteudo">
 
         <div class="admin-titulo">
-            <h1>Cadastrar Novo Usuário</h1>
-            <p>Preencha os campos abaixo para registrar um novo usuário no sistema.</p>
+
+            <h1>Cadastro de usuário</h1>
+
+            <p>Preencha todos os campos. O usuário será cadastrado como usuário comum.</p>
+
         </div>
 
-        <!-- Mensagens de retorno -->
+        <!-- Mensagem de sucesso (aparece uma vez, depois de cadastrar) -->
         <?php if ($flash): ?>
             <p class="<?= $flash['tipo'] === 'ok' ? 'msg-ok' : 'msg-erro' ?>"><?= escapar($flash['texto']) ?></p>
         <?php endif; ?>
 
-        <?php if ($erro): ?>
+        <!-- Mensagens de erro: uma linha para cada erro -->
+        <?php foreach ($erros as $erro): ?>
             <p class="msg-erro"><?= escapar($erro) ?></p>
-        <?php endif; ?>
+        <?php endforeach; ?>
 
         <section class="admin-card">
 
             <form action="" method="post" class="admin-form">
 
-                <!-- Token CSRF escondido -->
+                <!-- Token CSRF escondido (prova que o formulário veio deste site) -->
                 <?= csrf_campo() ?>
 
                 <div class="campo">
-                    <label for="nome">Nome Completo</label>
-                    <input type="text" name="nome" id="nome" value="<?= escapar($_POST['nome'] ?? '') ?>" required placeholder="Digite o nome completo">
+                    <label for="nome">Nome:</label>
+                    <input type="text" name="nome" id="nome" required
+                           minlength="<?= NOME_MIN ?>" maxlength="<?= NOME_MAX ?>"
+                           value="<?= escapar($dados['nome']) ?>">
                 </div>
 
                 <div class="campo">
-                    <label for="email">E-mail</label>
-                    <input type="email" name="email" id="email" value="<?= escapar($_POST['email'] ?? '') ?>" required placeholder="exemplo@email.com">
+                    <label for="senha">Senha (mínimo <?= SENHA_MIN ?> caracteres):</label>
+                    <!-- autocomplete="new-password" evita que o navegador preencha com a senha do admin -->
+                    <input type="password" name="senha" id="senha" required
+                           minlength="<?= SENHA_MIN ?>" maxlength="<?= SENHA_MAX ?>"
+                           autocomplete="new-password">
                 </div>
 
                 <div class="campo">
-                    <label for="senha">Senha</label>
-                    <input type="password" name="senha" id="senha" required placeholder="Digite a senha inicial">
+                    <label for="email">E-mail:</label>
+                    <input type="email" name="email" id="email" required
+                           maxlength="<?= EMAIL_MAX ?>"
+                           value="<?= escapar($dados['email']) ?>">
                 </div>
 
                 <div class="campo">
-                    <label for="nasc">Data de Nascimento</label>
-                    <input type="date" name="nasc" id="nasc" value="<?= escapar($_POST['nasc'] ?? '') ?>" required>
+                    <label for="nasc">Nascimento:</label>
+                    <!-- max = hoje: o navegador não deixa escolher uma data futura -->
+                    <input type="date" name="nasc" id="nasc" required
+                           min="1900-01-01" max="<?= date('Y-m-d') ?>"
+                           value="<?= escapar($dados['nasc']) ?>">
                 </div>
 
                 <div class="campo">
-                    <label for="ativo">Status da Conta</label>
-                    <select name="ativo" id="ativo" style="width: 100%; padding: 10px; background: #000; color: #fff; border: 1px solid #555; border-radius: 6px; margin-bottom: 18px;">
-                        <option value="1" selected>Sim (Ativo)</option>
-                        <option value="0">Não (Inativo/Bloqueado)</option>
-                    </select>
+                    <label>Ativo:</label>
+
+                    <!-- "required" no primeiro botão basta para o grupo todo ser obrigatório -->
+                    <div>
+                        <input type="radio" name="ativo" id="ativo_sim" value="true" required
+                               <?= $dados['ativo'] === 'true' ? 'checked' : '' ?>>
+                        <label for="ativo_sim">Sim</label>
+
+                        <input type="radio" name="ativo" id="ativo_nao" value="false"
+                               <?= $dados['ativo'] === 'false' ? 'checked' : '' ?>>
+                        <label for="ativo_nao">Não</label>
+                    </div>
                 </div>
 
-                <div class="campo">
-                    <label for="admin">Tipo de Usuário</label>
-                    <select name="admin" id="admin" style="width: 100%; padding: 10px; background: #000; color: #fff; border: 1px solid #555; border-radius: 6px; margin-bottom: 18px;">
-                        <option value="0" selected>Comum</option>
-                        <option value="1">Administrador</option>
-                    </select>
-                </div>
+                <div class="admin-acoes">
 
-                <div class="admin-acoes" style="display: flex; gap: 15px; margin-top: 10px;">
-                    <button type="submit" class="btn-laranja" style="border: none; cursor: pointer; padding: 10px 22px; font-weight: bold;">
+                    <button type="submit" class="btn-admin">
                         Cadastrar
                     </button>
 
-                    <a href="select.php" style="padding: 10px 18px; border: 1px solid #555; border-radius: 20px; color: #fff; text-decoration: none; font-size: 14px;">
-                        Ver Relatório
+                    <a href="select.php" class="btn-secundario">
+                        Ver relatório
                     </a>
+
                 </div>
 
             </form>

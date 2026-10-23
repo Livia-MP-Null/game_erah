@@ -155,6 +155,8 @@ Na raiz do projeto, inicie o servidor embutido do PHP:
 # se não estiver na raiz ainda
 cd game_erah
 
+cd ..
+
 php -S localhost:8000
 ```
 

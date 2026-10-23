@@ -102,15 +102,15 @@ psql -U postgres
 **b)** Se já existir um banco de testes anterior, apague e crie de novo:
 
 ```sql
-DROP DATABASE IF EXISTS dumpGameErahDB;
-CREATE DATABASE dumpGameErahDB;
+DROP DATABASE IF EXISTS dumpgameerahdb;
+CREATE DATABASE dumpgameerahdb;
 ```
 
 **c)** Crie um usuário exclusivo para o projeto e torne-o dono do banco:
 
 ```sql
 CREATE USER game_erah WITH PASSWORD 'sua_senha';
-ALTER DATABASE dumpGameErahDB OWNER TO game_erah;
+ALTER DATABASE dumpgameerahdb OWNER TO game_erah;
 \q
 ```
 
@@ -121,7 +121,7 @@ ALTER DATABASE dumpGameErahDB OWNER TO game_erah;
 
 ```bash
 cd database
-psql -U game_erah -h localhost -d dumpGameErahDB -f dumpGameErahDB.sql
+psql -U game_erah -h localhost -d dumpgameerahdb -f dumpGameErahDB.sql
 cd ..
 ```
 
@@ -136,7 +136,7 @@ Abra o arquivo `database/connect.php` no VSCode e altere **somente** a senha:
 
 ```php
 $host     = "localhost";      // não altere
-$dbname   = "dumpGameErahDB";    // não altere
+$dbname   = "dumpgameerahdb";    // não altere
 $user     = "game_erah";      // não altere
 $password = "SUA_SENHA_AQUI"; // altere apenas este campo
 ```

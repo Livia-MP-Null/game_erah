@@ -152,7 +152,7 @@ $password = "SUA_SENHA_AQUI"; // altere apenas este campo
 Na raiz do projeto, inicie o servidor embutido do PHP:
 
 ```bash
-# se não estiver na raiz ainda
+
 
 
 php -S localhost:8000

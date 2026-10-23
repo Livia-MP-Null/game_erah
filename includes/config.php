@@ -30,7 +30,11 @@ if (!defined('BASE_URL')) {
 //Padroniza também as barras do caminho raiz do servidor web para o mesmo formato.
     if ($raizServidor !== '' && stripos($raizProjeto, $raizServidor) === 0) {
         //Compara os dois caminhos para ver se o projeto está devidamente guardado dentro da pasta raiz do servidor.
+        //calcula dinamicamente o caminho base (a pasta relativa) onde o seu projeto está instalado dentro do servidor web.
         $base = (string) substr($raizProjeto, strlen($raizServidor));
+        //Pega o caminho completo da pasta onde o projeto está salvo e corta fora o pedaço inicial correspondente ao servidor,
+        //substr é a abreviação de substring (que significa "subtexto" ou "pedaço de texto"
+        
     } else {
         $base = '/game_erah';   // plano B
     }

@@ -7,6 +7,7 @@
 $d             = $d ?? 0;
 //d botoes decada
 $decadas       = $decadas ?? [];
+//Uma lista contendo várias décadas para preencher os botões de navegação do site.
 $jogos         = $jogos ?? [];
 $classif       = $classif ?? [];
 $interacoes    = $interacoes ?? [];

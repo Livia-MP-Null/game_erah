@@ -31,7 +31,7 @@ function usuario_normalizar($bruto)
         // Nome: tira espaços do começo e do fim.
         'nome'  => trim($bruto['nome'] ?? ''),
 
-        // E-mail: tira espaços e põe tudo em minúsculas (usando strtolower nativo)
+        // E-mail: tira espaços e põe tudo em minúsculas (usando strtolower)
         'email' => strtolower(trim($bruto['email'] ?? '')),
 
         // Senha: NÃO usamos trim, porque espaços podem fazer parte dela.

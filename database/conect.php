@@ -1,6 +1,6 @@
 <?php 
 $host = "localhost";
-$dbname = "dumpGameErahDB";
+$dbname = "dumpgameerahdb";
 $user = "game_erah";
 $pass = "sua_senha_aqui";
 try {

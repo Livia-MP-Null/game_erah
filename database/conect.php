@@ -1,8 +1,8 @@
 <?php 
-$host = "192.168.1.193";
-$dbname = "game_erahdb";
-$user = "game_era";
-$pass = "LIli3004";
+$host = "localhost";
+$dbname = "dumpGameErahDB";
+$user = "game_erah";
+$pass = "sua_senha_aqui";
 try {
     $conexao = new PDO(
         "pgsql:host=$host;dbname=$dbname",

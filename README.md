@@ -137,7 +137,7 @@ Abra o arquivo `database/connect.php` no VSCode e altere **somente** a senha:
 
 ```php
 $host     = "localhost";      // não altere
-$dbname   = "game_erahdb";    // não altere
+$dbname   = "dumpGameErahDB";    // não altere
 $user     = "game_erah";      // não altere
 $password = "SUA_SENHA_AQUI"; // altere apenas este campo
 ```

@@ -539,14 +539,5 @@ Feito com 💜 para quem ama jogos.
 </div>
 ```
 
-**As correções principais foram:**
-
-- `database/connect.php` → `database/conect.php`
-- `connect.php` na estrutura de pastas → `conect.php`
-- `php -S localhost:8000` → `php -S 0.0.0.0:8000`
-- adicionado acesso pelo **IPv4** para outro computador
-- explicado que o PostgreSQL continua em `localhost`
-- `dumpgame_erahdb.sql` → `dumpGameErahDB.sql`, para ficar igual ao arquivo usado no comando de restauração
-- `decada_id` → `decada` na tabela `jogo`
 - `decada` no diagrama também foi atualizado
 - "dois tipos de acesso" → **três tipos de acesso**, porque o README lista Visitante, Usuário cadastrado e Administrador.

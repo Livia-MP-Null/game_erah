@@ -79,8 +79,7 @@ Abra o *Git Bash* e rode:
 
 ```bash
 # Baixa o projeto do GitHub
-git clone [https://github.com/Livia-MP-Null/game_erah.git](https://github.com/Livia-MP-Null/game_erah.git)
-
+git clone https://github.com/Livia-MP-Null/game_erah.git
 # Entra na pasta do projeto
 cd game_erah
 ```

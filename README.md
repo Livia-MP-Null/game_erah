@@ -120,8 +120,13 @@ ALTER DATABASE dumpgameerahdb OWNER TO game_erah;
 **d)** Restaure as tabelas e os registros usando o arquivo de dump:
 
 ```bash
+
 cd database
+
+su (só se tiver no linux)
+
 psql -U game_erah -h localhost -d dumpgameerahdb -f dumpGameErahDB.sql
+
 cd ..
 ```
 

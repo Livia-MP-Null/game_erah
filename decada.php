@@ -65,11 +65,13 @@ unset($_SESSION['erro_interacao']);
 // ---- Década anterior e próxima
 
 $chaves = array_keys($decadas);
-
+//Pega todas as chaves (que são os anos das décadas, como 1980, 1990, 2000) do array $decadas e cria uma lista simples e ordenada com elas.
 $pos = array_search($d, $chaves);
-
+//Pesquisa em qual posição numérica (índice) a década atual ($d) está dentro dessa lista de chaves.
 $anterior = $chaves[$pos - 1] ?? null;
+//Pega o elemento localizado na posição anterior ($pos - 1). O operador ?? null (chamado de null coalescing) é uma rede de segurança: se o usuário estiver na primeira década e não houver nenhuma antes dela, o resultado não quebra o site, assumindo o valor null (vazio).
 $proxima  = $chaves[$pos + 1] ?? null;
+//Pega o elemento localizado na posição seguinte ($pos + 1), representando a próxima década. Da mesma forma, se o usuário estiver na última década registrada, o operador garante que o valor será null para que o botão "Próxima" não seja exibido incorretamente.
 
 ?>
 <!DOCTYPE html>

@@ -103,15 +103,15 @@ psql -U postgres
 **b)** Se já existir um banco de testes anterior, apague e crie de novo:
 
 ```sql
-DROP DATABASE IF EXISTS game_erahdb;
-CREATE DATABASE game_erahdb;
+DROP DATABASE IF EXISTS dumpGameErahDB;
+CREATE DATABASE dumpGameErahDB;
 ```
 
 **c)** Crie um usuário exclusivo para o projeto e torne-o dono do banco:
 
 ```sql
 CREATE USER game_erah WITH PASSWORD 'sua_senha';
-ALTER DATABASE game_erahdb OWNER TO game_erah;
+ALTER DATABASE dumpGameErahDB OWNER TO game_erah;
 \q
 ```
 

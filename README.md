@@ -122,7 +122,7 @@ ALTER DATABASE dumpGameErahDB OWNER TO game_erah;
 
 ```bash
 cd database
-psql -U game_erah -h localhost -d game_erahdb -f dumpgame_erahdb.sql
+psql -U game_erah -h localhost -d dumpGameErahDB -f dumpGameErahDB.sql
 cd ..
 ```
 

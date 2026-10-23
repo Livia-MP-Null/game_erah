@@ -257,7 +257,7 @@ game_erah
 ---
 
 <a name="o-que-o-sistema-faz"></a>
-## ⚙️ O que o sistema faz
+##  O que o sistema faz
 
 | # | Ação | Quem pode | Exige login? |
 |---|------|-----------|:------------:|
@@ -359,7 +359,7 @@ game_erah
 ---
 
 <a name="diagramas"></a>
-## 🧭 Diagramas
+##  Diagramas
 
 ### Modelo Entidade-Relacionamento
 
